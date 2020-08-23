@@ -1,1 +1,36 @@
-//公共数据酷
+-- 公共数据酷
+
+CREATE TABLE `player` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `updatetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+  `tag` varchar(20) COLLATE utf8_bin NOT NULL COMMENT '玩家标签',
+  `name` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '游戏名称',
+  `town` bigint(5) DEFAULT NULL COMMENT '大本营等级',
+  `towlevel` bigint(3) DEFAULT NULL COMMENT '大本营防御等级',
+  `json` text COLLATE utf8_bin COMMENT 'json数据',
+  `exp` bigint(10) DEFAULT NULL COMMENT '玩家等级',
+  `clantag` varchar(20) COLLATE utf8_bin DEFAULT NULL COMMENT '玩家部落标签',
+  `clanname` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '玩家部落名称',
+  `buillevel` bigint(5) DEFAULT NULL COMMENT '夜世界大本营等级',
+  `trophies` bigint(10) DEFAULT NULL COMMENT '主世界奖杯',
+  `buildtrophies` bigint(10) DEFAULT NULL COMMENT '夜世界奖杯',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `tag` (`tag`) USING HASH
+) ENGINE=InnoDB AUTO_INCREMENT=1146222 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+CREATE TABLE `cocclan` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `updatetime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+  `tag` varchar(20) COLLATE utf8_bin NOT NULL COMMENT '部落标签\r\n',
+  `name` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '部落名称',
+  `level` bigint(7) DEFAULT NULL COMMENT '部落等级',
+  `points` bigint(10) DEFAULT NULL COMMENT '主世界奖杯',
+  `verpoints` bigint(10) DEFAULT NULL COMMENT '夜世界奖杯',
+  `members` bigint(4) DEFAULT NULL COMMENT '部落人数',
+  `location` bigint(10) DEFAULT NULL COMMENT '部落地址ID',
+  `league` bigint(10) DEFAULT NULL COMMENT '联赛等级',
+  `json` text COLLATE utf8_bin COMMENT '原始JSON',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `tags` (`tag`) USING BTREE COMMENT 'te'
+) ENGINE=InnoDB AUTO_INCREMENT=41151 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;

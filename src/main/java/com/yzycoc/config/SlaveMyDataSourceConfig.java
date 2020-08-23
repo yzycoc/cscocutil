@@ -20,7 +20,7 @@ import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
  * @Version 1.0
  **/
 @Configuration
-@MapperScan(basePackages = "com.yzycoc.cocutil.my",sqlSessionFactoryRef = "slaveSqlSessionFactory")
+@MapperScan(basePackages = "com.yzycoc.cocutil.SQLmy",sqlSessionFactoryRef = "slaveSqlSessionFactory")
 public class SlaveMyDataSourceConfig {
     @Bean(name = "slaveDataSource")
     @ConfigurationProperties("spring.datasource.my")

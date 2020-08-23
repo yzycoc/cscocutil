@@ -40,7 +40,9 @@ public class AjaxHttpResult {
         this.success = true;
         this.data = data;
     }
-
+    public AjaxHttpResult(Boolean success) {
+        this.success = true;
+    }
     public AjaxHttpResult() {
         super();
     }

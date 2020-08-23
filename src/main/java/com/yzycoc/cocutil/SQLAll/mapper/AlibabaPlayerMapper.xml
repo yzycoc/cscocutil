@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yzycoc.cocutil.SQLAll.mapper.AlibabaPlayerMapper">
+	
+	<select id="saves" >
+		replace into player(id, tag,name,town,towlevel,json,exp,clantag,clanname,trophies,buillevel,buildtrophies) 
+		VALUES(#{id},#{tag},#{name},#{town},#{towlevel},#{json},#{exp},#{clantag},#{clanname},#{trophies},#{buillevel},#{buildtrophies})
+	</select>
+	
+</mapper>

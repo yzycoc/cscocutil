@@ -22,7 +22,7 @@ import javax.sql.DataSource;
  **/
 
 @Configuration
-@MapperScan(basePackages = "com.yzycoc.cocutil.all",sqlSessionFactoryRef = "masterSqlSessionFactory")
+@MapperScan(basePackages = "com.yzycoc.cocutil.SQLAll",sqlSessionFactoryRef = "masterSqlSessionFactory")
 public class MasterAllDataSourceConfig {
     @Primary
     @Bean(name = "masterDataSource")

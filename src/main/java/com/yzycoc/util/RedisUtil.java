@@ -112,9 +112,9 @@ public class RedisUtil {
             try {
                 return future.get(10000, TimeUnit.MILLISECONDS);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                System.out.println("redis获取错误1【"+key+"】");
             } catch (ExecutionException e) {
-                e.printStackTrace();
+                System.out.println("redis获取错误2【"+key+"】");
             } catch (TimeoutException e) {
                 System.out.println("redis获取超时【"+key+"】");
             }finally {

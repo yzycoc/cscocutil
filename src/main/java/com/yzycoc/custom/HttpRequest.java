@@ -1,7 +1,10 @@
 package com.yzycoc.custom;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.yzycoc.config.CocConfig;
+import com.forte.qqrobot.BaseConfiguration;
+import com.gargoylesoftware.htmlunit.HttpMethod;
+import com.yzycoc.cocutil.service.result.ClanResult;
+import com.yzycoc.config.ConfigParameter;
 import com.yzycoc.custom.result.AjaxHttpResult;
 import com.yzycoc.util.RedisUtil;
 
@@ -489,7 +492,7 @@ public class HttpRequest {
         if(time>0){
             String jsons = (String)redis.get(urlPath);
             if(jsons!=null) {
-                log.info("调用缓存数据"+urlPath);
+                System.out.println("调用缓存数据"+urlPath);
                 return new AjaxHttpResult(true,"获取缓存", JSONObject.parseObject(jsons));
             }
         }
@@ -510,7 +513,7 @@ public class HttpRequest {
             connection.setRequestMethod("GET");
             connection.setRequestProperty("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
             connection.setRequestProperty("connection", "Keep-Alive");
-            connection.setRequestProperty("authorization", "Bearer " + CocConfig.CocApi);
+            connection.setRequestProperty("authorization", "Bearer " + ConfigParameter.CocApi);
             connection.setRequestProperty("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:65.0) Gecko/20100101 Firefox/65.0");
             // 设置连接主机服务器的超时时间：15000毫秒
             connection.setConnectTimeout(staTime);
@@ -571,6 +574,162 @@ public class HttpRequest {
         }
         return result;
     }
+
+    /***
+     * 发送请求
+     * @param requestUrl
+     * @param data
+     * @param method
+     * @return
+     */
+    public static ClanResult getJarvis(String requestUrl, Map<String,Object> data, HttpMethod method){
+        long startTime=System.currentTimeMillis();
+        HttpURLConnection conn = null;
+        BufferedReader br = null;
+        StringBuffer sb = new StringBuffer();
+        if(null == method || HttpMethod.GET == method){
+            requestUrl = requestUrl+"?"+urlEncode(data);
+        }
+        int responseCode = 0;
+        try {
+            URL url = new URL(requestUrl);
+            conn = (HttpURLConnection) url.openConnection();
+            System.out.println(requestUrl);
+            //设置请求方式
+            if(HttpMethod.GET == method || null == method){
+                conn.setRequestMethod("GET");
+            }else{
+                conn.setRequestMethod("POST");
+                //使用URL连接输出
+                conn.setDoOutput(true);
+            }
+            //设置请求内核
+            conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36");
+            conn.setRequestProperty("Cookie","_ga=GA1.2.1599053079.1569457387; _gid=GA1.2.2047943731.1569457387");
+            //设置使用缓存
+            conn.setUseCaches(false);
+            //设置链接超时时间,毫秒为单位
+            conn.setConnectTimeout(60000);
+            //设置读取超时时间，毫秒为单位
+            conn.setReadTimeout(60000);
+            //开启链接
+            conn.connect();
+            //获取反馈的情况200
+            responseCode = conn.getResponseCode();
+            if(responseCode == 200) {
+                //获取反馈回来的数据类型
+                String contentType = conn.getContentType();
+                if("application/json; charset=utf-8".equals(contentType)) {
+                    //处理post请求时的参数
+                    if(null != data && HttpMethod.POST == method){
+                        DataOutputStream out = new DataOutputStream(conn.getOutputStream());
+                        out.writeBytes(urlEncode(data));
+                    }
+                    //获取字符输入流
+                    br = new BufferedReader(new InputStreamReader(conn.getInputStream(),"UTF-8"));
+                    String strContent = null;
+                    while((strContent = br.readLine()) != null){
+                        sb.append(strContent);
+                    }
+                    String content = sb.toString();
+                    JSONObject j = JSON.parseObject(content);
+                    Integer ok = j.getInteger("ok");
+                    String msg = j.getString("msg");
+                    if(ok  == 1){
+                        return new ClanResult(true,msg);
+                    }else{
+                        return new ClanResult(false,msg);
+                    }
+                }
+            }
+            return new ClanResult(false,"查询失败，接口正在维护！");
+        } catch (Exception e) {
+            return new ClanResult(false,"查询超时，无法获取图片！");
+        }finally{
+            long endTime=System.currentTimeMillis();
+            System.out.println(responseCode+"傻仙接口调用时间： "+(endTime-startTime)+"ms  "+data.get("info"));
+            //关闭流和链接
+            if(null != br){
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if(null != conn){
+                conn.disconnect();
+            }
+        }
+    }
+
+    public static ClanResult getOSSImage(String retrueImagePath) {
+        long startTime1 = System.currentTimeMillis();
+        HttpURLConnection conn = null;
+        BufferedReader br = null;
+        int responseCode = 0;
+        try {
+            String Url = ConfigParameter.HttpOSS_Alibaba + retrueImagePath;
+            URL url = new URL(Url);
+            conn = (HttpURLConnection) url.openConnection();
+            //设置请求方式
+            conn.setRequestMethod("GET");
+            //设置请求内核
+            conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.81 Safari/537.36");
+            conn.setRequestProperty("Referer","936642284");
+            //设置使用缓存
+            conn.setUseCaches(false);
+            //设置链接超时时间,毫秒为单位
+            conn.setConnectTimeout(60000);
+            //设置读取超时时间，毫秒为单位
+            conn.setReadTimeout(60000);
+            //设置当前链接是否自动处理重定向。setFollowRedirects设置所有的链接是否自动处理重定向
+            //conn.setInstanceFollowRedirects(false);
+            //开启链接
+            conn.connect();
+            //获取反馈的情况200
+            responseCode = conn.getResponseCode();
+            if(responseCode == 200) {
+                //获取反馈回来的数据类型
+                String contentType = conn.getContentType();
+                if("image/png".equals(contentType)){
+                    InputStream inStream = conn.getInputStream();
+                    ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+                    byte[] date = new byte[1024];
+                    int is = 0;
+                    while((is = inStream.read(date)) != -1){
+                        outStream.write(date,0,is);
+                    }
+                    String fileurl= ConfigParameter.filePath_jarvis_Image+"\\"+retrueImagePath;
+                    File file = new File(fileurl);
+                    FileOutputStream op = new FileOutputStream(file);
+                    op.write(outStream.toByteArray());
+                    op.close();
+                    return new ClanResult(true,retrueImagePath.replaceAll(".png",""),ConfigParameter.filePath_jarvis_Image,"png");
+                }else {
+                    return new ClanResult(false,"未知反馈，请截图反馈作者"+contentType);
+                }
+            }
+            return new ClanResult(false,"查询失败，接口正在维护！");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ClanResult(false,"查询超时，无法获取图片！");
+        }finally{
+            long endTime=System.currentTimeMillis();
+            System.out.println(responseCode+": OOS下载图片用时： "+(endTime-startTime1)+"ms");
+            //关闭流和链接
+            if(null != br){
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if(null != conn){
+                conn.disconnect();
+            }
+        }
+    }
+
     /***
      * 转码
      * @param data
