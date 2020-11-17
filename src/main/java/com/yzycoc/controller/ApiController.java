@@ -92,7 +92,8 @@ public class ApiController {
      */
     @RequestMapping(value="/getImageClanAll")
     @ResponseBody
-    private ClanResult getImageClanAll(String tag){
+    private ClanResult getImageClanAll(String tag)
+    {
         return clanApiService.getImageClanAll(tag);
     }
     /***
