@@ -1,7 +1,6 @@
 package com.yzycoc.custom;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.forte.qqrobot.BaseConfiguration;
 import com.gargoylesoftware.htmlunit.HttpMethod;
 import com.yzycoc.cocutil.service.result.ClanResult;
 import com.yzycoc.config.ConfigParameter;
@@ -81,7 +80,6 @@ public class HttpRequest {
      * @return       远程资源的响应结果
      */
     public static AjaxHttpResult doPost(String url, Map<String, ?> data) {
-        AjaxHttpResult result = new AjaxHttpResult(false,"");
         BufferedReader bufferedReader = null;
         PrintWriter out = null;
         int responseCode = 101;
@@ -113,7 +111,6 @@ public class HttpRequest {
             return  new AjaxHttpResult("发送GET请求出现异常！！！");
         }finally {
             try {
-
                 if(null != out) {
                     out.close();
                 }
@@ -746,6 +743,20 @@ public class HttpRequest {
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
+            }
+            return sb.toString();
+        }
+    }
+    //将map型转为请求参数型
+    public static String urlEncode(String data) {
+        if(data == null){
+            return "";
+        }else{
+            StringBuilder sb = new StringBuilder();
+            try {
+                sb.append(URLEncoder.encode(data + "", "UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
             }
             return sb.toString();
         }

@@ -5,8 +5,12 @@ import com.yzycoc.config.ConfigParameter;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.nio.channels.FileChannel;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.yzycoc.config.ConfigParameter.file_YuQing_HTML;
 
 /**
  * @program: cscocutil
@@ -501,25 +505,30 @@ public class CocApiAndCqCustom {
         }
     }
 
+    public static void main(String[] args) {
+        //System.out.println(YqHtmlCustom.htmlAll.toString() );
+        new CocApiAndCqCustom().saveTxt("123");
+    }
     /***
      * 鱼情
      * @param sendGetCoc 需要储存的内容
      */
-    public static void saveTxt(String sendGetCoc) {
-        File file = new File(ConfigParameter.file_YuQing_HTML);
-        if(!file.exists()){
-            file.getParentFile().mkdirs();
-        }else {
-            file.delete();
-            file.getParentFile().mkdirs();
-        }
+    public void saveTxt(String sendGetCoc) {
+        FileChannel inputChannel = null;
+        FileChannel outputChannel = null;
         try {
-            file.createNewFile();
+            inputChannel = new FileInputStream(ConfigParameter.file_YuQing_TEXT).getChannel();
+            outputChannel = new FileOutputStream( ConfigParameter.file_YuQing_HTML).getChannel();
+            outputChannel.transferFrom(inputChannel, 0, inputChannel.size());
+            inputChannel.close();
+            outputChannel.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        File file = new File(ConfigParameter.file_YuQing_HTML);
+        try {
             FileWriter fw = new FileWriter(file, true);
-            BufferedWriter bw = new BufferedWriter(fw);
-            bw.write(sendGetCoc);
-            bw.flush();
-            bw.close();
+            fw.write(sendGetCoc);
             fw.close();
         } catch (IOException e) {
             System.out.println("写TXT文件报错");

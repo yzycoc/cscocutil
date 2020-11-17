@@ -1,5 +1,6 @@
 package com.yzycoc.config;
 
+import com.yzycoc.custom.TimeUtiles;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -33,7 +34,7 @@ public class MasterAllDataSourceConfig {
 
     @Bean(name = "masterSqlSessionFactory")
     public SqlSessionFactory sqlSessionFactory(@Qualifier("masterDataSource") DataSource dataSource) throws Exception {
-        System.out.println("链接“ALL”中心数据库！");
+        System.out.println("链接“ALL”中心数据库！"+ TimeUtiles.getStringDate());
         MybatisSqlSessionFactoryBean sessionFactoryBean = new MybatisSqlSessionFactoryBean();
         sessionFactoryBean.setDataSource(dataSource);
         return sessionFactoryBean.getObject();

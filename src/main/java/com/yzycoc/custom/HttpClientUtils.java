@@ -1,11 +1,10 @@
 package com.yzycoc.custom;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.InputStream;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -20,6 +19,8 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import javax.servlet.http.HttpUtils;
 
+import com.yzycoc.config.ConfigParameter;
+import net.coobird.thumbnailator.Thumbnails;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -48,7 +49,9 @@ import org.slf4j.LoggerFactory;
 public class HttpClientUtils {
 
 
+
     private static final Logger logger = LoggerFactory.getLogger(HttpUtils.class);
+
 
     /**
      * 定义类型，用于获取不同类型的httpclient
@@ -271,6 +274,7 @@ public class HttpClientUtils {
             }
             return null;
         } catch (Exception ex) {
+            ex.printStackTrace();
             throw new RuntimeException("请求：" + url + " 异常:" + ex.getMessage());
         } finally {
             try {
@@ -280,6 +284,7 @@ public class HttpClientUtils {
             }
         }
     }
+
     /**
      * get 请求的实际方法
      *
@@ -349,7 +354,7 @@ public class HttpClientUtils {
         if(type == CLIENT_TYPE.HTTPS) {//https类型
             return new SSLClient();
         } else {
-            throw new RuntimeException("未知协议类型，请重新指定");
+            return new SSLClient();
         }
     }
 
@@ -382,5 +387,56 @@ public class HttpClientUtils {
             SchemeRegistry sr = ccm.getSchemeRegistry();
             sr.register(new Scheme("https", 443, ssf));
         }
+    }
+
+
+
+    public static String httpGetCqRobot(String url, Map<String, String> paramMap,String saveFilePath) {
+        HttpClient httpClient = null;
+        try {
+            if (paramMap!=null) {// 拼接参数
+                // 设置请求体
+                List<NameValuePair> content = getNameValuePairList(paramMap);
+                UrlEncodedFormEntity entity = new UrlEncodedFormEntity(content, "UTF-8");
+                String params = EntityUtils.toString(entity);
+                url = url + "?" + params;
+            }
+            HttpGet get = new HttpGet(url);
+            get.addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36");
+            httpClient = getClient(CLIENT_TYPE.HTTPS);
+            RequestConfig config = RequestConfig.custom().setConnectTimeout(1000) //连接超时时间
+                    .setSocketTimeout(1000) //数据传输的超时时间
+                    .build();
+            get.setConfig(config);
+            HttpResponse response = httpClient.execute(get);            //发送请求并接收返回数据
+            if (response != null) {
+                HttpEntity resEntity = response.getEntity();
+                String value = resEntity.getContentType().getValue();
+                System.out.println("返回图片为"+value);
+                String[] split = value.split("/");
+                String ImageType = "png";
+                InputStream content = resEntity.getContent();
+                BufferedImage cocImageAll = ImageIO.read(content);
+                Thumbnails.of(cocImageAll).outputFormat(ImageType).scale(1f).outputQuality(1f).toFile(new File(ConfigParameter.filePath_vip+"\\"+saveFilePath));
+                return ImageType;
+            }
+            return null;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            //throw new RuntimeException("请求：" + url + " 异常:" + ex.getMessage());
+            return null;
+        } finally {
+            try {
+
+            } catch (Exception e) {
+                logger.error("请求：" + url + " 流关闭异常或者httpclient关闭异常");
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        String a = "image/gif";
+        String[] split = a.split("/");
+        System.out.println(Arrays.toString(split));
     }
 }

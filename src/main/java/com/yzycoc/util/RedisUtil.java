@@ -157,7 +157,7 @@ public class RedisUtil {
             }
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("保存set方法保存失败：{key:"+key+",value:"+value+"}");
             return false;
         }
     }

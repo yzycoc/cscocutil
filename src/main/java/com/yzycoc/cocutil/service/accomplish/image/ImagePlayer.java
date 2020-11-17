@@ -2,7 +2,6 @@ package com.yzycoc.cocutil.service.accomplish.image;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.forte.qqrobot.utils.BaseLocalThreadPool;
 import com.yzycoc.cocutil.service.result.*;
 import com.yzycoc.cocutil.util.*;
 import com.yzycoc.cocutil.util.enums.ClanApiHttp;
@@ -10,6 +9,7 @@ import com.yzycoc.config.ConfigParameter;
 import com.yzycoc.custom.ErweimaQRCodeUtil;
 import com.yzycoc.custom.HttpClientUtils;
 import com.yzycoc.custom.result.AjaxHttpResult;
+import com.yzycoc.util.BaseLocalThreadPool;
 import net.coobird.thumbnailator.Thumbnails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

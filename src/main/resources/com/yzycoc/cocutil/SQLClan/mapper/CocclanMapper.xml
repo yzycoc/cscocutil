@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yzycoc.cocutil.SQLClan.mapper.CocclanMapper">
+	
+	<select id="saves" >
+		replace into cocclan(id, tag,name,level,points,verpoints,members,location,league,json) 
+		VALUES(#{id},#{tag},#{name},#{level},#{points},#{verpoints},#{members},#{location},#{league},#{json})
+	</select>
+	
+</mapper>

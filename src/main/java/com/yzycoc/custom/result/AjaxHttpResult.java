@@ -25,9 +25,8 @@ public class AjaxHttpResult {
             try {
                 this.data = JSONObject.parseObject(data);
             }catch (Exception e){}
-        }else{
-            this.errorMsg = data;
         }
+        this.errorMsg = data;
         this.success = success;
     }
 
@@ -69,5 +68,14 @@ public class AjaxHttpResult {
 
     public void setData(JSONObject data) {
         this.data = data;
+    }
+
+    @Override
+    public String toString() {
+        return "AjaxHttpResult{" +
+                "success=" + success +
+                ", errorMsg='" + errorMsg + '\'' +
+                ", data=" + data +
+                '}';
     }
 }

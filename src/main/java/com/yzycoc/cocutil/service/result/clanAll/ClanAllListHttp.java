@@ -45,7 +45,9 @@ public class ClanAllListHttp extends ClanResult {
     }
     public ClanAllListHttp(Boolean success, String msg) {
         super(success, msg);
-        // TODO Auto-generated constructor stub
+        if(success!=null&&!success){
+            System.out.println(msg);
+        }
     }
     public ClanAllListHttp(String msg) {
         super(msg);

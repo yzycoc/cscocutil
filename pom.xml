@@ -110,52 +110,6 @@
             <artifactId>jsoup</artifactId>
             <version>1.8.3</version>
         </dependency>
-        <!-- QQ机器人框架 框架 -->
-        <!--<dependency>
-            <groupId>love.forte.simple-robot-component</groupId>
-            <artifactId>component-mirai</artifactId>
-            <version>1.2.0-1.16</version>
-        </dependency>-->
-        <dependency>
-            <groupId>love.forte.simple-robot</groupId>
-            <artifactId>component-mirai-spring-boot-starter</artifactId>
-            <version>1.15.0</version>
-            <!--排除某个依赖  -->
-            <exclusions>
-                <exclusion>
-                    <groupId>love.forte.simple-robot-component</groupId>
-                    <artifactId>component-mirai</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>io.github.ForteScarlet</groupId>
-                    <artifactId>simple-robot-core</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.jetbrains.kotlin</groupId>
-                    <artifactId>kotlin-stdlib</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <dependency>
-            <groupId>love.forte.simple-robot-component</groupId>
-            <artifactId>component-mirai</artifactId>
-            <version>1.4.0-1.16</version>
-        </dependency>
-
-
-        <!-- kt -->
-        <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-stdlib-jdk8</artifactId>
-            <version>1.4.0</version>
-        </dependency>
-        <!-- kt -->
-        <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-stdlib</artifactId>
-            <version>1.4.0</version>
-        </dependency>
 
 
 

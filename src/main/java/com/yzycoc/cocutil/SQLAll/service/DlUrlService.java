@@ -12,4 +12,5 @@ import com.yzycoc.cocutil.SQLAll.bean.DlUrl;
  **/
 public interface DlUrlService extends IService<DlUrl> {
 
+    String dl(String url);
 }

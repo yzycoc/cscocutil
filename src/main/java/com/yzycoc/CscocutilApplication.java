@@ -1,59 +1,67 @@
 package com.yzycoc;
 
 import com.baomidou.mybatisplus.autoconfigure.MybatisPlusAutoConfiguration;
-import com.forte.qqrobot.beans.messages.result.GroupList;
-import com.forte.qqrobot.beans.messages.result.inner.Group;
-import com.forte.qqrobot.bot.*;
-import com.forte.qqrobot.sender.MsgSender;
+import com.yzycoc.cocutil.SQLAll.bean.MyIps;
+import com.yzycoc.cocutil.SQLAll.service.MyIpsService;
 import com.yzycoc.config.ConfigParameter;
-import com.yzycoc.custom.SpringContextUtil;
+import com.yzycoc.custom.*;
+import com.yzycoc.custom.result.AjaxHttpResult;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.Environment;
-import org.springframework.util.StringUtils;
+import org.springframework.scheduling.annotation.EnableScheduling;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.HashMap;
 
 @EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class, DataSourceTransactionManagerAutoConfiguration.class, MybatisPlusAutoConfiguration.class})
 @SpringBootApplication
+@EnableScheduling
 public class CscocutilApplication {
-
     public static void main(String[] args) {
-        ConfigurableApplicationContext run = SpringApplication.run(CscocutilApplication.class, args);
-        BotManager bean = run.getBean(BotManager.class);
-
-        System.out.println("读取默认配置项，配置到类文件");
+        SpringApplication.run(CscocutilApplication.class, args);
         Environment env = SpringContextUtil.getBean(Environment.class);
-
-        //配置最高管理员
-        String administrator = env.getProperty("simbot.administrator.qq");
-        if(!StringUtils.isEmpty(administrator))
-            ConfigParameter.RobotAdministratorQq = administrator;
-
-        String bots = env.getProperty("simbot.core.bots");
-        String[] bot = bots.split(",");
-        for (int i = 0; i < bot.length; i++) {
-            String[] Bot = bot[i].split(":");
-            if(Bot.length == 2){
-                String qqCode = Bot[0];
-                MsgSender sender = bean.getBot(qqCode).getSender();
-                StringBuffer result = new StringBuffer("￥￥机器人启动成功￥￥");
-                GroupList groupList = sender.GETTER.getGroupList();
-                Group[] list = groupList.getList();
-                result.append("\n● 顶级："+ConfigParameter.RobotAdministratorQq);
-                result.append("\n● 加入群："+list.length+"个");
-                System.out.println(result.toString());
-                sender.SENDER.sendPrivateMsg(ConfigParameter.RobotAdministratorQq,result.toString());
-            }
+        String port = env.getProperty("server.port");
+        InetAddress address = null;
+        String myips = "";
+        try {
+            address = InetAddress.getLocalHost();
+            myips = address.getHostAddress();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
         }
-
-
-
-
-
-
+        AjaxHttpResult sendTxtGets = HttpRequest.doGet("http://pv.sohu.com/cityjson?ie=utf-8", new HashMap<>());
+        String sendTxtGet = sendTxtGets.getErrorMsg();
+        String IP = sendTxtGet.substring(sendTxtGet.indexOf("cip") + 7, sendTxtGet.indexOf("cid") - 4);
+        ConfigParameter.network_Path = "http://"+IP+":"+port+"/";
+        ConfigParameter.LAN_Path = "http://"+myips +":"+port;
+        ConfigParameter.PROT = port;
+        ConfigParameter.network_Path_IP = IP;
+        ConfigParameter.LAN_Path_IP = myips;
+        System.out.println("外网API："+ConfigParameter.network_Path);
+        System.out.println("局域网API："+ConfigParameter.LAN_Path);
+        MyIpsService myIpsService = SpringContextUtil.getBean(MyIpsService.class);
+        MyIps myIps = myIpsService.query().eq("ip", IP).eq("prot",port).one();
+        if(myIps == null){
+            myIps = new MyIps();
+            myIps.setIp(IP);
+            myIps.setProt(Integer.valueOf(port));
+            myIps.setStatus(true);
+            myIps.setWeight(1);//权重
+            myIps.setCreateDate(TimeUtiles.getStringDate());
+            myIps.setCreateName("系统");
+            System.out.println("请重启系统，填入APPKEY");
+        }else{
+            System.out.println("密钥更新为 ["+ myIps.getCocApi()+"]");
+            ConfigParameter.CocApi =" "+ myIps.getCocApi();
+        }
+        myIps.setIntranetIp(myips);
+        myIps.setUpdateDate(TimeUtiles.getStringDate());
+        myIpsService.saveOrUpdate(myIps);
     }
 
 }

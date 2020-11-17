@@ -9,6 +9,7 @@ import com.yzycoc.cocutil.util.enums.WarLeagueEnum;
 import com.yzycoc.config.ConfigParameter;
 import com.yzycoc.custom.*;
 import com.yzycoc.custom.result.AjaxHttpResult;
+import com.yzycoc.util.BaseLocalThreadPool;
 import net.coobird.thumbnailator.Thumbnails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +23,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executor;
-import com.forte.qqrobot.utils.BaseLocalThreadPool;
 /**
  * @program: cscocutil
  * @description: 生成部落图片
@@ -318,7 +318,7 @@ public class ImageClan {
                 count.countDown();
             }
         }
-        String PLAY_TXT = ConfigParameter.HttpUrl+"qq/cocApi/clancoc?tag="+tag.substring(1, tag.length());
+        String PLAY_TXT = ConfigParameter.HttpUrlClan+tag.substring(1, tag.length());
         threadPool.execute(()->{
             try {
                 BufferedImage image = ErweimaQRCodeUtil.createImage(PLAY_TXT, ConfigParameter.file_QRcode, true);

@@ -2,7 +2,6 @@ package com.yzycoc.cocutil.service.accomplish.common;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.forte.qqrobot.utils.BaseLocalThreadPool;
 import com.yzycoc.cocutil.service.result.clanAll.ClanAllListHttp;
 import com.yzycoc.cocutil.util.CocApiAndCqCustom;
 import com.yzycoc.cocutil.util.CocEquilibrium;
@@ -10,6 +9,7 @@ import com.yzycoc.cocutil.util.enums.ClanApiHttp;
 import com.yzycoc.config.ConfigParameter;
 import com.yzycoc.custom.HttpClientUtils;
 import com.yzycoc.custom.result.AjaxHttpResult;
+import com.yzycoc.util.BaseLocalThreadPool;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -103,7 +103,6 @@ public class ClanListAll {
             clanAllListHttp.setSuccess(true);
             return clanAllListHttp;
         } catch (Exception e2) {
-            e2.printStackTrace();
             return new ClanAllListHttp(false,"获取配置异常，请重新查询。如反复查询异常，请反馈给作者。");
         }
     }

@@ -1,10 +1,18 @@
 package com.yzycoc.cocutil.util;
 
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.yzycoc.cocutil.SQLClan.bean.ClanJson;
+import com.yzycoc.cocutil.SQLClan.bean.PlayerJson;
+import com.yzycoc.cocutil.SQLClan.controller.CocClanSave;
+import com.yzycoc.cocutil.SQLClan.controller.PlayerSave;
+import com.yzycoc.cocutil.SQLClan.service.ClanJsonService;
+import com.yzycoc.cocutil.SQLClan.service.PlayerJsonService;
 import com.yzycoc.cocutil.util.enums.ClanApiHttp;
 import com.yzycoc.config.ConfigParameter;
 import com.yzycoc.custom.HttpRequest;
+import com.yzycoc.custom.Utf8Util;
 import com.yzycoc.util.RedisUtil;
 
 import org.slf4j.Logger;
@@ -13,8 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Component;
 import com.yzycoc.custom.result.AjaxHttpResult;
-
-
 
 /**
  * @program: cscocutil
@@ -32,6 +38,11 @@ public class CocEquilibrium {
 
     private Logger log = LoggerFactory.getLogger(getClass());
 
+    @Autowired
+    private PlayerJsonService service;
+
+    @Autowired
+    private ClanJsonService clanservice;
     public AjaxHttpResult get(String tagCode, ClanApiHttp api, Boolean Istag){
         if(Istag!=null&&Istag) {
             Boolean istag = isTag(tagCode);
@@ -45,7 +56,7 @@ public class CocEquilibrium {
         if(sendGetCoc.getSuccess()) {
             if(!"获取缓存".equals(sendGetCoc.getErrorMsg())&& ConfigParameter.clanHttpSaveSql) {
                 //保存更新数据
-
+                taskclassify(api,sendGetCoc.getData());
             }
             return sendGetCoc;
         }else {
@@ -68,7 +79,7 @@ public class CocEquilibrium {
         if(sendGetCoc.getSuccess()){
             if(!"获取缓存".equals(sendGetCoc.getErrorMsg())&& ConfigParameter.clanHttpSaveSql) {
                 //保存更新数据
-
+                taskclassify(api,sendGetCoc.getData());
             }
             return sendGetCoc;
         }else{
@@ -94,8 +105,37 @@ public class CocEquilibrium {
         if(remsg!=null&&("403".equals(remsg)||"429".equals(remsg)||"500".equals(remsg)||"503".equals(remsg))) {
             JSONObject object = new JSONObject();
             if(api == ClanApiHttp.Clan) {
+                ClanJson one = clanservice.query().eq("tag", "#"+tag).one();
+                if(one!=null) {
+                    String json = one.getJson();
+                    object = JSONObject.parseObject(json);
+                    object.put("name", Utf8Util.unicodeToString(object.getString("name")));
+                    object.put("description", Utf8Util.unicodeToString(object.getString("description")));
+                    JSONArray memberList =object.getJSONArray("memberList");
+                    for (int i = 0; i < memberList.size(); i++) {
+                        JSONObject member = memberList.getJSONObject(i);
+                        String Clan_Play_Name = Utf8Util.unicodeToString(member.getString("name"));
+                        member.put("name", Clan_Play_Name);
+                    }
+                    coc.setData(object);
+                    coc.setSuccess(true);
+                }
 
-
+            }
+            if(api == ClanApiHttp.player) {
+                PlayerJson one = service.query().eq("tag","#"+tag).one();
+                if(one!=null) {
+                    String json = one.getJson();
+                    object = JSONObject.parseObject(json);
+                    object.put("name", Utf8Util.unicodeToString(object.getString("name")));
+                    JSONObject clan = object.getJSONObject("clan");
+                    if(clan!=null) {
+                        String ClanName = Utf8Util.unicodeToString(clan.getString("name"));
+                        clan.put("name", ClanName);
+                    }
+                    coc.setData(object);
+                    coc.setSuccess(true);
+                }
             }
 
         }
@@ -153,15 +193,20 @@ public class CocEquilibrium {
      * @param object
      */
     private void taskclassify(ClanApiHttp api, JSONObject object) {
-        switch (api) {
-            case player:
-                //taskExecutor.execute(new PlayerSave(object.toString()));
-                break;
-            case Clan:
-                //taskExecutor.execute(new CocClanSave(object.toString()));
-                break;
-            default:
-                break;
+        try {
+            switch (api) {
+                case player:
+                    taskExecutor.execute(new PlayerSave(object.toString()));
+                    break;
+                case Clan:
+                    taskExecutor.execute(new CocClanSave(object.toString()));
+                    break;
+                default:
+                    break;
+            }
+        }catch (Exception e){
+            System.out.println("储存玩家数据到CocSQL失败");
         }
+
     }
 }
