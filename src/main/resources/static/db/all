@@ -34,3 +34,35 @@ CREATE TABLE `cocclan` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `tags` (`tag`) USING BTREE COMMENT 'te'
 ) ENGINE=InnoDB AUTO_INCREMENT=41151 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+CREATE TABLE `cs_user` (
+  `id` int(11) NOT NULL auto_increment,
+  `create_date` varchar(255) default NULL,
+  `create_name` varchar(255) default NULL,
+  `group_number` varchar(255) default NULL,
+  `perpetual` bit(1) default NULL,
+  `robot_number` varchar(255) default NULL,
+  `time` datetime NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `scire_store` (
+  `id` int(11) NOT NULL auto_increment,
+  `create_date` varchar(255) default NULL,
+  `create_name` varchar(255) default NULL,
+  `name` varchar(255) default NULL,
+  `name_remark` varchar(255) default NULL,
+  `number` varchar(255) default NULL,
+  `unit` varchar(255) default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `scire_store`(`id`, `create_date`, `create_name`, `name`, `name_remark`, `number`, `unit`) VALUES (1, '2020-03-17 02:18:08', '开发者', '聊天系统', '积分#1#数量#受益人', '10', '天');
+INSERT INTO `scire_store`(`id`, `create_date`, `create_name`, `name`, `name_remark`, `number`, `unit`) VALUES (2, '2020-03-17 02:20:56', '开发者', 'QQ好友增加', '积分#2', '999', '个');
+INSERT INTO `scire_store`(`id`, `create_date`, `create_name`, `name`, `name_remark`, `number`, `unit`) VALUES (3, '2020-03-27 12:51:35', '仓鼠的 group', '群自动进群', '积分#3#群号', '100', '个');
+INSERT INTO `scire_store`(`id`, `create_date`, `create_name`, `name`, `name_remark`, `number`, `unit`) VALUES (4, '2020-03-18 08:47:01', '', '群自动进群', '积分#4#群号', '2000', '个');
+INSERT INTO `scire_store`(`id`, `create_date`, `create_name`, `name`, `name_remark`, `number`, `unit`) VALUES (5, '2020-03-18 08:47:01', '', 'QQ点歌', '积分#5#群号', '5', '首');
+INSERT INTO `scire_store`(`id`, `create_date`, `create_name`, `name`, `name_remark`, `number`, `unit`) VALUES (6, '2020-03-18 08:47:01', '', '网易点歌', '积分#6#群号', '5', '首');
+INSERT INTO `scire_store`(`id`, `create_date`, `create_name`, `name`, `name_remark`, `number`, `unit`) VALUES (7, '2020-03-22 06:58:54', '仓鼠的 group', '点赞', '积分#7#QQ', '20', '10个');
+INSERT INTO `scire_store`(`id`, `create_date`, `create_name`, `name`, `name_remark`, `number`, `unit`) VALUES (8, '2020-07-21 12:05:08', '仓鼠的 group', '查询部落科技', '积分#8#编号', '20', '张');

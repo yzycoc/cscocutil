@@ -1,6 +1,6 @@
 package com.yzycoc.custom;
 
-import java.sql.Date;
+import java.util.Date;
 import java.text.*;
 import java.time.*;
 import java.util.Calendar;
@@ -14,21 +14,54 @@ import java.util.Calendar;
  **/
 public class TimeUtiles {
 
+    public static ThreadLocal<SimpleDateFormat> date_sdf = new ThreadLocal<SimpleDateFormat>() {
+        @Override
+        protected SimpleDateFormat initialValue() {
+            return new SimpleDateFormat("yyyy-MM-dd");
+        }
+    };
+    public static ThreadLocal<SimpleDateFormat> yyyyMMdd = new ThreadLocal<SimpleDateFormat>() {
+        @Override
+        protected SimpleDateFormat initialValue() {
+            return new SimpleDateFormat("yyyyMMdd");
+        }
+    };
+    public static ThreadLocal<SimpleDateFormat> date_sdf_wz = new ThreadLocal<SimpleDateFormat>() {
+        @Override
+        protected SimpleDateFormat initialValue() {
+            return new SimpleDateFormat("yyyy年MM月dd日");
+        }
+    };
+    public static ThreadLocal<SimpleDateFormat> time_sdf = new ThreadLocal<SimpleDateFormat>() {
+        @Override
+        protected SimpleDateFormat initialValue() {
+            return new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        }
+    };
+    public static ThreadLocal<SimpleDateFormat> yyyymmddhhmmss = new ThreadLocal<SimpleDateFormat>() {
+        @Override
+        protected SimpleDateFormat initialValue() {
+            return new SimpleDateFormat("yyyyMMddHHmmss");
+        }
+    };
+    public static ThreadLocal<SimpleDateFormat> short_time_sdf = new ThreadLocal<SimpleDateFormat>() {
+        @Override
+        protected SimpleDateFormat initialValue() {
+            return new SimpleDateFormat("HH:mm");
+        }
+    };
+    public static ThreadLocal<SimpleDateFormat> datetimeFormat = new ThreadLocal<SimpleDateFormat>() {
+        @Override
+        protected SimpleDateFormat initialValue() {
+            return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        }
+    };
+
     public static boolean isLetterDigit(String str) {
         String regex = "^[a-z0-9A-Z]+$";
         return str.matches(regex);
     }
 
-    /**
-     * 获取当前系统时间
-     *
-     * @return
-     */
-    public static Date getNowTime() {
-        LocalDate date = LocalDate.now();
-        Date date1 = Date.valueOf(date);
-        return date1;
-    }
 
     /**
      *
@@ -105,54 +138,6 @@ public class TimeUtiles {
         String dateString = formatter.format(time);
         return dateString;
     }
-    /**
-     * 获取当前系统时间一年后的时间
-     *
-     * @return
-     */
-    public static Date getDeadline() {
-        LocalDate date = LocalDate.now();
-        LocalDate date1 = date.plusYears(1);
-        Date date2 = Date.valueOf(date1);
-        return date2;
-    }
-
-    /***
-     * 判断时间是否为之后时间 与现在时间比较
-     *
-     * @param time 被比较时间
-     * @return
-     */
-
-    public static boolean AfterTime(Date time) {
-        LocalDate date = LocalDate.now();
-        Date date1 = Date.valueOf(date);
-        if (time.after(date1)) {
-            return true;
-        } else {
-
-            return false;
-        }
-    }
-
-    /***
-     * 判断时间是否为之前时间 与现在时间比较
-     *
-     * @param time 被比较时间
-     * @return
-     */
-
-    public static boolean BeforeTime(Date time) {
-        LocalDate date = LocalDate.now();
-        Date date1 = Date.valueOf(date);
-        if (time.before(date1)) {
-            return true;
-        } else {
-
-            return false;
-        }
-    }
-
 
     /****
      * 当前时间于string 之间相差多少秒
@@ -174,8 +159,6 @@ public class TimeUtiles {
             e.printStackTrace();
             return -1;
         }
-
-
     }
 
     /****
@@ -294,6 +277,7 @@ public class TimeUtiles {
         return DlNumber(parseInt);
     }
 
+
     public static String DlNumber(int num){
         String tcMsg = "";
         char sl = 0;
@@ -310,6 +294,46 @@ public class TimeUtiles {
         return tcMsg;
     }
 
+    /**
+     * date2比date1多的天数
+     * @param date1
+     * @param date2
+     * @return
+     */
+    public static int differentDays(Date date1,Date date2)
+    {
+        Calendar cal1 = Calendar.getInstance();
+        cal1.setTime(date1);
+
+        Calendar cal2 = Calendar.getInstance();
+        cal2.setTime(date2);
+        int day1= cal1.get(Calendar.DAY_OF_YEAR);
+        int day2 = cal2.get(Calendar.DAY_OF_YEAR);
+
+        int year1 = cal1.get(Calendar.YEAR);
+        int year2 = cal2.get(Calendar.YEAR);
+        if(year1 != year2)   //同一年
+        {
+            int timeDistance = 0 ;
+            for(int i = year1 ; i < year2 ; i ++)
+            {
+                if(i%4==0 && i%100!=0 || i%400==0)    //闰年
+                {
+                    timeDistance += 366;
+                }
+                else    //不是闰年
+                {
+                    timeDistance += 365;
+                }
+            }
+
+            return timeDistance + (day2-day1) ;
+        }
+        else    //不同年
+        {
+            return day2-day1;
+        }
+    }
     public static CharSequence LongTime(Long lastTime) {
         try {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

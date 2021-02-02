@@ -6,6 +6,8 @@ import com.yzycoc.cocutil.SQLAll.service.MyIpsService;
 import com.yzycoc.config.ConfigParameter;
 import com.yzycoc.custom.*;
 import com.yzycoc.custom.result.AjaxHttpResult;
+import com.yzycoc.custom.result.Result;
+import com.yzycoc.util.RedisUtil;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,10 +15,14 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.util.StringUtils;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisShardInfo;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.HashMap;
+import java.util.UUID;
 
 @EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class, DataSourceTransactionManagerAutoConfiguration.class, MybatisPlusAutoConfiguration.class})
 @SpringBootApplication
@@ -44,6 +50,7 @@ public class CscocutilApplication {
         ConfigParameter.LAN_Path_IP = myips;
         System.out.println("外网API："+ConfigParameter.network_Path);
         System.out.println("局域网API："+ConfigParameter.LAN_Path);
+        System.out.println("swagger-UI API："+ConfigParameter.LAN_Path+"/swagger-ui.html");
         MyIpsService myIpsService = SpringContextUtil.getBean(MyIpsService.class);
         MyIps myIps = myIpsService.query().eq("ip", IP).eq("prot",port).one();
         if(myIps == null){
@@ -62,6 +69,20 @@ public class CscocutilApplication {
         myIps.setIntranetIp(myips);
         myIps.setUpdateDate(TimeUtiles.getStringDate());
         myIpsService.saveOrUpdate(myIps);
+        RedisUtil redisUtil = SpringContextUtil.getBean(RedisUtil.class);
+        try {
+            Object object = redisUtil.get("friend");
+            if(StringUtils.isEmpty(object)) {
+                String randomUUID = UUID.randomUUID().toString().replaceAll("-","").substring(0, 6).toUpperCase();
+                redisUtil.set("friend", randomUUID,3600);
+                System.out.println("redis:"+randomUUID);
+            }else{
+                String randomUUID = String.valueOf(object);
+                System.out.println("redis:"+randomUUID);
+            }
+        }catch (Exception e){
+           e.printStackTrace();
+        }
     }
 
 }

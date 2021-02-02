@@ -4,8 +4,7 @@ import com.yzycoc.cocutil.service.result.ClanResult;
 import com.yzycoc.custom.CacheMap;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @program: cscocutil
@@ -15,6 +14,8 @@ import java.util.List;
  * @Version 1.0
  **/
 public class ConfigParameter {
+    //小栗子系统文件
+    public static Map<String,String> xlzFile = new HashMap<>();
 
     public static final String HttpUrl = "http://yzycoc.com/";
     // 正在生成中的缓存
@@ -38,7 +39,7 @@ public class ConfigParameter {
     public static String http_document ="";
     //兵种最高等级
     public static Integer ClanPlayermax = 259;
-    //数据是否保存到数据库
+    //COC数据是否保存到数据库
     public static boolean clanHttpSaveSql = true;
 
     //是否使用将常用图片缓存到Map中
@@ -71,12 +72,12 @@ public class ConfigParameter {
     //jarvis获取的图片存放地址
     public static final String filePath_jarvis_Image = "c:\\cocutil\\imageJarvis";
 
-
+    public static final String file_vips = "c:\\cocutil\\vip";
     /***
      * 默认文件存放地址
      */
     //二维码 中间Logo所在位置
-    public static final String file_QRcode = "c:\\cocutil\\matter\\QRcode.jpg";
+    public static final String file_QRcode = "c:\\cocutil\\matter\\QRcode02.png";
     //二维码 Error 报错后的文件
     public static final String file_QRcode_Default = "c:\\cocutil\\matter\\QRcode.png";
     //部落 --头部

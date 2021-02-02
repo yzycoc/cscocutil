@@ -1,18 +1,24 @@
 package com.yzycoc.cocutil.service.impl;
 
 import com.yzycoc.cocutil.SQLAll.bean.ImageDown;
+import com.yzycoc.cocutil.SQLAll.bean.vip.VipApplyForLog;
 import com.yzycoc.cocutil.SQLAll.service.ImageDownService;
+import com.yzycoc.cocutil.SQLAll.service.VipApplyForLogService;
 import com.yzycoc.cocutil.service.ApiService;
+import com.yzycoc.cocutil.service.accomplish.image.ImageVip;
 import com.yzycoc.cocutil.service.result.ClanResult;
 import com.yzycoc.config.ConfigParameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Base64Utils;
 
+import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.List;
 
 /**
  * @program: cscocutil
@@ -23,8 +29,13 @@ import java.io.*;
  **/
 @Service
 public class ApiImpl implements ApiService {
+
+
     @Autowired
     private ImageDownService imageDownService;
+
+    @Autowired
+    private VipApplyForLogService vipApplyForLogService;
     /***
      * 重新启动机器人
      * @param path
@@ -95,6 +106,36 @@ public class ApiImpl implements ApiService {
         }catch (Exception e){
             return new ClanResult(false,"图片文件下载出现异常啦！");
         }
+    }
+
+    @Override
+    public void Qrcode(String httpUrl, HttpServletRequest request, HttpServletResponse response, String uuid) {
+        BufferedImage image = null;
+        try {
+            List<VipApplyForLog> list = vipApplyForLogService.query().eq("uuid", uuid).orderByDesc("create_date").list();
+            VipApplyForLog uid = list.get(0);
+            image = new ImageVip().compound(httpUrl,uid);
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            ImageIO.write(image, "png", os);
+            InputStream fis = new ByteArrayInputStream(os.toByteArray());
+            response.setContentType("image/png");
+            response.addHeader("Content-Disposition", "attachment; filename=" + "QrCode");
+            ServletOutputStream out = response.getOutputStream();
+            byte[] buf = new byte[1024];
+            int n = 0;
+            while ((n = fis.read(buf)) != -1)
+                out.write(buf, 0, n);
+            fis.close();
+            out.flush();
+            out.close();
+            uid.setUuidstatus("已生成");
+            vipApplyForLogService.updateById(uid);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private String getStr(HttpServletRequest request, String fileName) {

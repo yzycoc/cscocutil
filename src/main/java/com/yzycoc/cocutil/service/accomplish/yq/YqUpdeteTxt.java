@@ -35,8 +35,4 @@ public class YqUpdeteTxt {
         return byId;
     }
 
-
-
-
-
 }

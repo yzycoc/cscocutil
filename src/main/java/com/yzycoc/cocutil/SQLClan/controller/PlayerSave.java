@@ -17,7 +17,6 @@ public class PlayerSave implements Runnable{
     public void run() {
         long startTime=System.currentTimeMillis();
         try {
-
             Player player = new Player();
             //转json字符集以便保存
             String name = Utf8Util.stringToUnicode(json.getString("name"));

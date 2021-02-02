@@ -44,7 +44,7 @@ public class OpenLayoutImpl extends ServiceImpl<OpenLayoutMapper, OpenLayout> im
         result.append("\n");
         result.append("\\uD83C\\uDF0F");
         result.append(dlurl);
-        result.append("[CQ:image,file="+open.getImageUrl()+"]");
+        result.append("[CQ:image,file="+open.getImageUrl()+"&token=Yaozhenyong-]");
         return new ClanResult(result.toString());
     }
 
@@ -66,7 +66,7 @@ public class OpenLayoutImpl extends ServiceImpl<OpenLayoutMapper, OpenLayout> im
             result.append("\n");
             result.append("\\uD83C\\uDF0F");
             result.append(dlurl);
-            result.append("[CQ:image,file="+open.getImageUrl()+"]");
+            result.append("[CQ:image,file="+open.getImageUrl()+"&token=Yaozhenyong-]");
             return new ClanResult(result.toString());
         }
         return new ClanResult(false,"未找到阵型！");

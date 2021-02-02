@@ -1,7 +1,6 @@
 package com.yzycoc.custom;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.InputStream;
+import java.io.*;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.*;
@@ -85,6 +84,17 @@ public class HttpClientUtils {
     }
 
     /**
+     * http post请求
+     *
+     * @param url        请求地址
+     * @param headerMap  请求头信息
+     * @param contentMap 请求体信息
+     * @return 结果返回
+     */
+    public static String httpsPostGBK(String url, Map<String, String> headerMap, Map<String, String> contentMap) {
+        return httpsPost(url, headerMap, contentMap, "GBK");
+    }
+    /**
      * https get请求
      *
      * @param url      请求地址
@@ -114,6 +124,17 @@ public class HttpClientUtils {
 
         return null;
     }
+
+    /**
+     * https get请求
+     *
+     * @param url      请求地址
+     * @param paramMap 请求参数
+     * @return 结果返回
+     */
+    public static InputStream  httpsGetFile(String url, Map<String, String> paramMap) {
+        return httpsGetFile(url, paramMap, "UTF-8");
+    }
     /**
      * https get请求
      *
@@ -134,6 +155,22 @@ public class HttpClientUtils {
      */
     public static BufferedImage httpGet(String url, Map<String, String> paramMap) {
         return httpGet(url, paramMap, "UTF-8");
+    }
+
+    /**
+     * http get请求
+     *
+     * @param url      请求地址
+     * @param paramMap 请求参数
+     * @return 结果返回
+     */
+    public static BufferedImage httpGetNull(String url, Map<String, String> paramMap) {
+        try {
+            return httpGet(url, paramMap, "UTF-8");
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 
     /**
@@ -166,6 +203,16 @@ public class HttpClientUtils {
      */
     public static BufferedImage httpsGet(String url, Map<String, String> paramMap, String charset) {
         return get(url, paramMap, charset, CLIENT_TYPE.HTTPS);
+    }
+
+    /**
+     * @param url      请求地址
+     * @param paramMap 请求参数
+     * @param charset  编码类型
+     * @return 结果返回
+     */
+    public static InputStream httpsGetFile(String url, Map<String, String> paramMap, String charset) {
+        return getFile(url, paramMap, charset, CLIENT_TYPE.HTTPS);
     }
     /**
      * @param url      请求地址
@@ -230,6 +277,54 @@ public class HttpClientUtils {
                 if (null != httpClient && null != httpClient.getConnectionManager()) {
                     httpClient.getConnectionManager().shutdown();
                 }
+            } catch (Exception e) {
+                logger.error("请求：" + url + " 流关闭异常或者httpclient关闭异常");
+            }
+        }
+    }
+
+    /**
+     * get 请求的实际方法
+     *
+     * @param url      请求地址
+     * @param paramMap 请求参数
+     * @param charset  编码类型
+     * @param type     协议类型
+     * @return 结果返回
+     */
+    private static InputStream getFile(String url, Map<String, String> paramMap, String charset, CLIENT_TYPE type) {
+
+        HttpClient httpClient = null;
+        try {
+            if (paramMap!=null) {// 拼接参数
+                // 设置请求体
+                List<NameValuePair> content = getNameValuePairList(paramMap);
+                UrlEncodedFormEntity entity = new UrlEncodedFormEntity(content, charset);
+                String params = EntityUtils.toString(entity);
+                url = url + "?" + params;
+            }
+            HttpGet get = new HttpGet(url);
+            get.addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36");
+            httpClient = getClient(type);
+            RequestConfig config = RequestConfig.custom().setConnectTimeout(1000) //连接超时时间
+                    .setSocketTimeout(1000) //数据传输的超时时间
+                    .build();
+            get.setConfig(config);
+            HttpResponse response = httpClient.execute(get);            //发送请求并接收返回数据
+            if (response != null) {
+                HttpEntity resEntity = response.getEntity();
+                String value = resEntity.getContentType().getValue();
+                System.out.println("返回图片为"+value);
+                InputStream content = resEntity.getContent();
+                return content;
+            }
+            return null;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw new RuntimeException("请求：" + url + " 异常:" + ex.getMessage());
+        } finally {
+            try {
+
             } catch (Exception e) {
                 logger.error("请求：" + url + " 流关闭异常或者httpclient关闭异常");
             }

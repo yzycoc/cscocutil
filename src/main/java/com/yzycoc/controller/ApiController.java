@@ -5,6 +5,7 @@ import com.yzycoc.cocutil.SQLAll.service.OpenLayoutService;
 import com.yzycoc.cocutil.service.*;
 import com.yzycoc.cocutil.service.result.ClanResult;
 import com.yzycoc.cocutil.util.enums.JarvisEnum;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
  * @create: 2020-08-30 11:19
  * @Version 1.0
  **/
+@Api(value = "COC相关接口",tags = "COC相关接口")
 @Controller
 public class ApiController {
 
@@ -35,7 +37,8 @@ public class ApiController {
      * 测试链接是否正常
      * @return
      */
-    @RequestMapping(value={"/state","/"})
+    @ApiOperation(value = "查询机器人状态", notes = "V1.0")
+    @GetMapping(value={"/state","/"})
     @ResponseBody
     private Boolean state(){
         return true;
@@ -45,7 +48,8 @@ public class ApiController {
      * 更新鱼情信息
      * @return
      */
-    @RequestMapping(value="/yq")
+    @ApiOperation(value = "更新鱼情信息", notes = "V1.1")
+    @GetMapping(value="/yq")
     @ResponseBody
     private int updateYq() {
         try {
@@ -61,7 +65,9 @@ public class ApiController {
      * @param tag
      * @return
      */
-    @RequestMapping(value="/getImageClan")
+    @ApiOperation(value = "生成部落图片", notes = "V1.1")
+    @ApiImplicitParam(name="tag",value = "标签[不带#]",dataType = "String")
+    @GetMapping(value="/getImageClan")
     @ResponseBody
     private ClanResult getImageClan(String tag){
        return clanApiService.getImageClan(tag);
@@ -71,7 +77,9 @@ public class ApiController {
      * @param tag
      * @return
      */
-    @RequestMapping(value="/getImagePlayer")
+    @ApiOperation(value = "生成玩家信息", notes = "V1.1")
+    @ApiImplicitParam(name="tag",value = "标签[不带#]",dataType = "String")
+    @GetMapping(value="/getImagePlayer")
     @ResponseBody
     private ClanResult getImagePlayer(String tag){
         return clanApiService.getImagePlayer(tag);
@@ -80,7 +88,8 @@ public class ApiController {
      * 生成鱼情信息
      * @return
      */
-    @RequestMapping(value="/getImageYq")
+    @ApiOperation(value = "生成鱼情信息", notes = "V1.1")
+    @GetMapping(value="/getImageYq")
     @ResponseBody
     private ClanResult getImageYq(){
         return clanApiService.getImageYq();
@@ -90,9 +99,12 @@ public class ApiController {
      * @param tag
      * @return
      */
-    @RequestMapping(value="/getImageClanAll")
+    @ApiOperation(value = "生成部落配置", notes = "V1.1")
+    @ApiImplicitParam(name="tag",value = "标签[不带#]",dataType = "String")
+    @GetMapping(value="/getImageClanAll")
     @ResponseBody
     private ClanResult getImageClanAll(String tag)
+
     {
         return clanApiService.getImageClanAll(tag);
     }
@@ -101,7 +113,9 @@ public class ApiController {
      * @param tag
      * @return
      */
-    @RequestMapping(value="/getImageClanAllCollectText")
+    @ApiOperation(value = "部落配置分析[文本]", notes = "V1.1")
+    @ApiImplicitParam(name="tag",value = "标签[不带#]",dataType = "String")
+    @GetMapping(value="/getImageClanAllCollectText")
     @ResponseBody
     private ClanResult getImageClanAllCollectText(String tag){
         return clanApiService.getImageClanAllCollectText(tag);
@@ -111,7 +125,9 @@ public class ApiController {
      * @param tag
      * @return
      */
-    @RequestMapping(value="/getImageClanAllCollectImage")
+    @ApiOperation(value = "部落配置分析[图片]", notes = "V1.1")
+    @ApiImplicitParam(name="tag",value = "标签[不带#]",dataType = "String")
+    @GetMapping(value="/getImageClanAllCollectImage")
     @ResponseBody
     private ClanResult getImageClanAllCollectImage(String tag){
         return clanApiService.getImageClanAllCollectImage(tag);
@@ -121,7 +137,9 @@ public class ApiController {
      * @param name
      * @return
      */
-    @RequestMapping(value="/getNameClan")
+    @ApiOperation(value = "查询部落名", notes = "V1.1")
+    @ApiImplicitParam(name="name",value = "原查询内容",dataType = "String")
+    @GetMapping(value="/getNameClan")
     @ResponseBody
     private ClanResult getNameClan(String name){
         System.out.println("查询部落名:"+name);
@@ -133,7 +151,9 @@ public class ApiController {
      * @param name
      * @return
      */
-    @RequestMapping(value="/getNamePlayer")
+    @ApiOperation(value = "查询玩家名", notes = "V1.1")
+    @ApiImplicitParam(name="name",value = "原查询内容",dataType = "String")
+    @GetMapping(value="/getNamePlayer")
     @ResponseBody
     private ClanResult getNamePlayer(String name){
         System.out.println("查询玩家名:"+name);
@@ -148,7 +168,13 @@ public class ApiController {
      * @param war
      * @return
      */
-    @RequestMapping(value="/getJarvis")
+    @ApiOperation(value = "jarvis", notes = "V1.1")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="tag",value = "标签[不带#]",dataType = "String"),
+            @ApiImplicitParam(name="jarvis",value = "类型clanwar：部落战，leagueinfo：联赛，leaguewar：联赛对战",dataType = "String")
+
+    })
+    @GetMapping(value="/getJarvis")
     @ResponseBody
     private ClanResult getJarvis(String tag, String jarvis, String war){
         JarvisEnum jarvisEnum = JarvisEnum.get(jarvis);
@@ -166,7 +192,9 @@ public class ApiController {
      * @param tag
      * @return
      */
-    @RequestMapping(value="/getClan")
+    @ApiOperation(value = "获取部落", notes = "V1.1")
+    @ApiImplicitParam(name="tag",value = "标签[不带#]",dataType = "String")
+    @GetMapping(value="/getClan")
     @ResponseBody
     private ClanResult getClan(String tag){
         return clanApiService.getClan(tag);
@@ -177,7 +205,9 @@ public class ApiController {
      * @param tag
      * @return
      */
-    @RequestMapping(value="/getPlayer")
+    @ApiOperation(value = "获取部落", notes = "V1.1")
+    @ApiImplicitParam(name="tag",value = "标签[不带#]",dataType = "String")
+    @GetMapping(value="/getPlayer")
     @ResponseBody
     private ClanResult getPlayer(String tag){
         return clanApiService.getPlayer(tag);
@@ -187,17 +217,20 @@ public class ApiController {
      * 获取一个随机阵型
      * @return
      */
-    @RequestMapping(value="/getRandomFormation")
+    @ApiOperation(value = "获取一个随机阵型", notes = "V1.1")
+    @GetMapping(value="/getRandomFormation")
     @ResponseBody
     private ClanResult getRandomFormation(){
          System.out.println("获取随机阵型！");
         return openLayoutService.getRandomFormation();
     }
     /**
-     * 获取一个随机阵型
+     * 获取一个阵型
      * @return
      */
-    @RequestMapping(value="/getFormation")
+    @ApiOperation(value = "根据标号查询阵型", notes = "V1.1")
+    @ApiImplicitParam(name="tag",value = "编号",dataType = "String")
+    @GetMapping(value="/getFormation")
     @ResponseBody
     private ClanResult getFormation(String tag){
         System.out.println("获取阵型:"+tag);
@@ -207,7 +240,8 @@ public class ApiController {
      * 重新启动机器人
      * @param path
      */
-    @RequestMapping(value="/result")
+    @ApiOperation(value = "重新启动机器人", notes = "V1.1")
+    @GetMapping(value="/result")
     @ResponseBody
     private void result(String path){
         apiService.resultQQRobot(path);
@@ -222,7 +256,9 @@ public class ApiController {
      * @param request
      * @return
      */
-    @RequestMapping(value="/imageDown")
+    @ApiOperation(value = "图片下载", notes = "V1.1")
+    @ApiImplicitParam(name="id",value = "uuid",dataType = "String")
+    @GetMapping(value="/imageDown")
     @ResponseBody
     private ClanResult imageDown(String id, HttpServletResponse response,HttpServletRequest request){
         System.out.println(request.getRequestURL());

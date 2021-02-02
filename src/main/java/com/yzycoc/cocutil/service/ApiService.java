@@ -25,4 +25,7 @@ public interface ApiService {
      * @return
      */
     ClanResult imageDown(String id, HttpServletResponse response,HttpServletRequest request);
+
+
+    void Qrcode(String httpUrl, HttpServletRequest request, HttpServletResponse response, String uuid);
 }
