@@ -19,7 +19,7 @@ import java.util.Map;
  **/
 @Controller
 @RequestMapping(value="/syn")
-@Api(value = "同步数据库",tags = "数据同步")
+@Api(value = "Z-同步数据库",tags = "数据同步")
 public class SynchronizationController {
     @Autowired
     private MyLexiconService myLexiconService;

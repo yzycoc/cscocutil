@@ -83,7 +83,17 @@ public class CocBindingImpl extends ServiceImpl<CocBindingMapper, CocBinding> im
                 cocBinding.setQqcode(qqcode);
                 cocBinding.setTag(tag);
                 this.save(cocBinding);
-                return Result.ok("绑定成功，您下次可以使用【查询绑定#"+msg+"】查询#"+tag+"的"+type+"信息！");
+                StringBuffer resultMsg = new StringBuffer();
+                resultMsg.append("绑定成功，您下次可以输入");
+                if(type.equals("村庄")&&msg.equals("我的村庄")){
+                    resultMsg.append("【@我 我的村庄】");
+                }else if(type.equals("部落")&&msg.equals("我的部落")){
+                    resultMsg.append("【@我 我的部落】");
+                }else{
+                    resultMsg.append("【查询绑定#"+msg+"】");
+                }
+                resultMsg.append("查询#"+tag+"的"+type+"信息！");
+                return Result.ok(resultMsg.toString());
             }else if(ajaxHttpResult!=null&&!ajaxHttpResult.getSuccess()){
                 return Result.error(    ajaxHttpResult.getErrorMsg());
             }

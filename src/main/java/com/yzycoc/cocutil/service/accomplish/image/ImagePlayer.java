@@ -48,7 +48,7 @@ public class ImagePlayer {
         try {
             long endTime=System.currentTimeMillis();
             log.info("V2.0玩家 获取玩家数据成功  共耗时："+(endTime-startTime)+"ms");
-            return  ImageCompound(playersdata, tagData, tag);
+            return  ImageCompound(playersdata, tagData, tag,ajaxHttpResult.getTime());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -57,7 +57,29 @@ public class ImagePlayer {
         return new ClanResult(false,tag+"玩家图片生成失败");
     }
 
-    private ClanResult ImageCompound(JSONObject player, ImagePlayersFrom tagData, String tag) throws IOException {
+    public ClanResult getRealTime(String tag, CocEquilibrium cocEquil) {
+        long startTime=System.currentTimeMillis();
+        log.info("开始生成村庄图片:"+tag);
+        AjaxHttpResult ajaxHttpResult = cocEquil.get(tag, ClanApiHttp.playerRealTime, true);
+        if(!ajaxHttpResult.getSuccess()) {
+            return new ClanResult(false,ajaxHttpResult.getErrorMsg());
+        }
+        JSONObject playersdata = ajaxHttpResult.getData();
+        ImagePlayersFrom tagData = TagData(playersdata);
+        //部落图片合成图片
+        try {
+            long endTime=System.currentTimeMillis();
+            log.info("V2.0玩家 获取玩家数据成功  共耗时："+(endTime-startTime)+"ms");
+            return  ImageCompound(playersdata, tagData, tag,ajaxHttpResult.getTime());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        long endTime=System.currentTimeMillis();
+        log.info("V2.0玩家 获取玩家数据失败  共耗时："+(endTime-startTime)+"ms");
+        return new ClanResult(false,tag+"玩家图片生成失败");
+    }
+
+    private ClanResult ImageCompound(JSONObject player, ImagePlayersFrom tagData, String tag,String time) throws IOException {
         BufferedImage I = ImageIO.read(new File(ConfigParameter.filePath_CocAll+"playImage.png"));//buffer.get("cocheader");
         Graphics2D g = (Graphics2D)I.createGraphics();
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
@@ -311,7 +333,9 @@ public class ImagePlayer {
         //6300
         //放入二维码
         g.drawImage(tagData.getErweima(), 204, 1030, 600, 600, null);
-
+        g.setFont(new Font("微软雅黑",Font.BOLD,50));
+        g.setColor(Color.black);
+        g.drawString(time,383,6645);
         //player
         String saveFilePath = tag.substring(1,tag.length());
         Thumbnails.of(I).outputFormat("jpg").scale(1f).outputQuality(0.45f).toFile(new File(ConfigParameter.filePath_ImagePlayer+"\\"+saveFilePath));

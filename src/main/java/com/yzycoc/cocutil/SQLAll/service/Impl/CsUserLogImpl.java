@@ -1,7 +1,7 @@
 package com.yzycoc.cocutil.SQLAll.service.Impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yzycoc.cocutil.SQLAll.bean.CsUserLog;
+import com.yzycoc.cocutil.SQLAll.bean.csuser.CsUserLog;
 import com.yzycoc.cocutil.SQLAll.mapper.CsUserLogMapper;
 import com.yzycoc.cocutil.SQLAll.service.CsUserLogService;
 import org.springframework.context.annotation.Primary;

@@ -104,8 +104,8 @@ public class ImageVip {
             g.setFont(stencil_std);
             g.drawString(getQqName(vipLog.getQqcode()),210,165);
             List<String> txt = new ArrayList<>();
-            txt.add("● 您本次积分"+vipLog.getScore() + "↑");
-            txt.add("● 现积分剩余:"+score.getNumber());
+            txt.add("● 您本次积分上涨："+vipLog.getScore() + "↑");
+            txt.add("● 现积分:"+score.getNumber());
             txt.add("● 您本次支付金额:"+vipLog.getMoney()+"元");
             if(csUserVip.getEternity()){
                 txt.add("● 会员时间:永久授权");
@@ -214,4 +214,57 @@ public class ImageVip {
     }
 
 
+    public BufferedImage resultMyScoreOkImage(String userNumber, Score score, CsUserVip csUserVip, Integer count,Integer privateNumber) {
+        try {
+            BufferedImage I = ImageIO.read(new File(ConfigParameter.filePath_CocAll+"score.png"));
+            Graphics2D g = (Graphics2D)I.createGraphics();
+            g.setColor(Color.white);
+            g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
+            Map<String, String> map = new HashMap<>();
+            map.put("b","qq");
+            map.put("nk",userNumber);
+            map.put("s","640");
+            g.drawImage(HttpClientUtils.httpGetNull("http://q1.qlogo.cn/g",map), 82, 132, 110,110,null);
+            Font stencil_std = new Font("微软雅黑", Font.PLAIN, 28);
+            g.setFont(stencil_std);
+            g.drawString(getQqName(userNumber),210,165);
+            List<String> txt = new ArrayList<>();
+            txt.add("● 积分:"+score.getNumber());
+            if(csUserVip.getEternity()){
+                txt.add("● 会员时间:永久授权");
+            }else{
+                txt.add("● 结束时间:"+csUserVip.getEndTime());
+                txt.add("● 会员总时间:"+csUserVip.getVipMember());
+            }
+
+            Integer group = csUserVip.getGroup();
+            txt.add("———————————————");
+            txt.add("● 您总共可授权："+group+"个群聊");
+            txt.add("● 已授权："+count+"个群聊");
+            txt.add("● 剩余："+(group-count)+"个群可授权！");
+            txt.add("———————————————");
+            txt.add("● 总共可添加BOT好友数："+csUserVip.getFriend()+"个");
+            txt.add("● 已经添加运行BOT："+privateNumber+"个");
+            txt.add("● 剩余可添加："+(csUserVip.getFriend() - privateNumber)+"个");
+            txt.add("——————————");
+            txt.add("● 可永久授权："+csUserVip.getGroupEternity()+"个群");
+            String binding = csUserVip.getBinding() == 0?"无限制":(csUserVip.getBinding()+"个");
+            txt.add("● 可coc绑定："+binding);
+            if(csUserVip.getNumber().compareTo(BigDecimal.ZERO) != 0){
+                txt.add("● 赞助过剩："+csUserVip.getNumber().toString());
+            }
+            for (int i = 0; i < txt.size(); i++) {
+                drawString(g,stencil_std,txt.get(i),85,(295 + i*40),450);
+            }
+            stencil_std = new Font("STENCIL STD", Font.PLAIN, 25);
+            g.setFont(stencil_std);
+            g.drawString("("+userNumber+")",207,195);
+            Integer X = content(String.valueOf(csUserVip.getVipGrade()), 55, stencil_std, g);
+            g.drawString(String.valueOf(csUserVip.getVipGrade()),292+X,234);
+            return I;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

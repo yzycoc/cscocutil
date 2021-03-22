@@ -1,7 +1,7 @@
 package com.yzycoc.cocutil.SQLAll.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.yzycoc.cocutil.SQLAll.bean.CsUserPrivateRemove;
+import com.yzycoc.cocutil.SQLAll.bean.csuser.CsUserPrivateRemove;
 
 /**
  * @program: cscocutil

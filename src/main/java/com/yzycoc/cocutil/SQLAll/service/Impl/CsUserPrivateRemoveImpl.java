@@ -1,7 +1,7 @@
 package com.yzycoc.cocutil.SQLAll.service.Impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yzycoc.cocutil.SQLAll.bean.CsUserPrivateRemove;
+import com.yzycoc.cocutil.SQLAll.bean.csuser.CsUserPrivateRemove;
 import com.yzycoc.cocutil.SQLAll.mapper.CsUserPrivateRemoveMapper;
 import com.yzycoc.cocutil.SQLAll.service.CsUserPrivateRemoveService;
 import org.springframework.context.annotation.Primary;

@@ -1,12 +1,11 @@
 package com.yzycoc.cocutil.SQLAll.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.yzycoc.cocutil.SQLAll.bean.CsUser;
+import com.yzycoc.cocutil.SQLAll.bean.csuser.CsUser;
 import com.yzycoc.custom.result.Result;
 import com.yzycoc.from.*;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @program: cscocutil
@@ -16,7 +15,7 @@ import java.util.Map;
  * @Version 1.0
  **/
 public interface CsUserService extends IService<CsUser> {
-    List<Map<String,Object>> getList(String json);
+    List<CsUser> getList(String json);
 
     /***
      * 购买绑定群
@@ -46,4 +45,10 @@ public interface CsUserService extends IService<CsUser> {
      */
     Result<?> getAuthorization(String userNumber);
 
+    /***
+     * 解除群授权
+     * @param deleteBot
+     * @return
+     */
+    Result<?> deleteGroup(DeleteBot deleteBot);
 }

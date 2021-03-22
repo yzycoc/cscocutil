@@ -13,7 +13,7 @@ import com.yzycoc.cocutil.SQLAll.bean.ScoreUuid;
 
 public interface ScoreUuidService extends IService<ScoreUuid> {
 
-    String saveNumber(Integer number,String remark);
+    String saveNumber(String number,String remark);
 
-    String saveNumber(Integer number);
+    String saveNumber(String number);
 }

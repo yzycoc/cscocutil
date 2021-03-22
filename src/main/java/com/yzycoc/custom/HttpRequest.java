@@ -3,6 +3,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.gargoylesoftware.htmlunit.HttpMethod;
 import com.yzycoc.cocutil.service.result.ClanResult;
+import com.yzycoc.cocutil.util.enums.ClanApiHttp;
 import com.yzycoc.config.ConfigParameter;
 import com.yzycoc.custom.result.AjaxHttpResult;
 import com.yzycoc.util.RedisUtil;
@@ -482,11 +483,11 @@ public class HttpRequest {
      * @param redis    redis
      * @param staTime 设置连接主机服务器的超时时间
      * @param endTime 设置读取远程返回的数据时间
-     * @param time 缓存存储的时间
+     * @param api 缓存存储的时间
      * @return
      */
-    public static AjaxHttpResult cocHttp(String urlPath, RedisUtil redis, int staTime, int endTime, long time) {
-        if(time>0){
+    public static AjaxHttpResult cocHttp(String urlPath, RedisUtil redis, int staTime, int endTime, ClanApiHttp api) {
+        if(api.getTime()>0){
             String jsons = (String)redis.get(urlPath);
             if(jsons!=null) {
                 System.out.println("调用缓存数据"+urlPath);
@@ -535,8 +536,8 @@ public class HttpRequest {
                     result.setSuccess(true);
                     result.setErrorMsg("获取成功");
                     result.setData(clans);
-                    if(time>0){
-                        redis.set(urlPath, sbf.toString(),time);
+                    if(api.getTime()>0){
+                        redis.set(urlPath, sbf.toString(),api.getTime());
                     }
                 } catch (Exception e) {
                     result.setSuccess(false);

@@ -103,7 +103,6 @@ public class ImageClanAll {
                         sumNumber +=troops.getJSONObject(i).getInteger("level");
                     }
                 }
-
                 JSONArray spells = memberPlayer.getJSONArray("spells");
                 for (int i = 0; i < spells.size(); i++) {
                     sumNumber +=spells.getJSONObject(i).getInteger("level");

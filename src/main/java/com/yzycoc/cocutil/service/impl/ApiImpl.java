@@ -78,7 +78,6 @@ public class ApiImpl implements ApiService {
     @Override
     public ClanResult imageDown(String id,HttpServletResponse response,  HttpServletRequest request) {
         try {
-            System.out.println("正在下载图片，id:"+id);
             ImageDown image = imageDownService.query().eq("file_uuid", id).lt("sum", "50").orderByDesc("create_date").last("  limit 1").one();
             if(image == null){
                 return new ClanResult(false,"文件已过期，请重新生成。");

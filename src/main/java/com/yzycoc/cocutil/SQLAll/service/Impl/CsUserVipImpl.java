@@ -6,8 +6,10 @@ import com.yzycoc.cocutil.SQLAll.bean.vip.CsUserVip;
 import com.yzycoc.cocutil.SQLAll.bean.score.ScireStore;
 import com.yzycoc.cocutil.SQLAll.bean.vip.VipApplyForLog;
 import com.yzycoc.cocutil.SQLAll.bean.vip.VipLog;
+import com.yzycoc.cocutil.SQLAll.mapper.CsUserPrivateMapper;
 import com.yzycoc.cocutil.SQLAll.mapper.CsUserVipMapper;
 import com.yzycoc.cocutil.SQLAll.service.*;
+import com.yzycoc.cocutil.SQLMy.service.MyCsUserService;
 import com.yzycoc.cocutil.service.accomplish.image.ImageVip;
 import com.yzycoc.custom.TimeUtiles;
 import com.yzycoc.custom.XmlCustom;
@@ -51,6 +53,10 @@ public class CsUserVipImpl extends ServiceImpl<CsUserVipMapper, CsUserVip> imple
     private ScoreUuidService scoreUuidService;
     @Autowired
     private ScoreService scoreService;
+    @Autowired
+    private CsUserService csUserService;
+    @Autowired
+    private CsUserPrivateMapper csUserPrivateMapper;
     @Override
     public List<Dom4jResult> dom4jXml(String xml, String robotNumber, String moneyNumber) {
         //储存的是用户日志
@@ -90,6 +96,8 @@ public class CsUserVipImpl extends ServiceImpl<CsUserVipMapper, CsUserVip> imple
                     if(number == -1){
                         one.setEternity(true);
                         one.setVipMember(8888);
+                        int i = one.getGroupEternity() == null ? 0 : one.getGroupEternity();
+                        one.setGroupEternity(i+1);
                     }else{
                         one.setEternity(false);
                         one.setVipMember(day);
@@ -189,6 +197,39 @@ public class CsUserVipImpl extends ServiceImpl<CsUserVipMapper, CsUserVip> imple
         vipLog.setRobotMoney(moneyNumber);
         vipLogService.save(vipLog);
         return result;
+    }
+
+    @Override
+    public void resultMyScoreOkImage(String userNumber, HttpServletRequest request, HttpServletResponse response) {
+        BufferedImage image = null;
+        try {
+            //VipLog vipLog = vipLogService.query().eq("uuid", uuid).one();
+            Score score = scoreService.query().eq("qq_num", userNumber).one();
+            CsUserVip csUserVip = this.query().eq("qqnumber", userNumber).one();
+            Integer count = csUserService.query().eq("create_name", userNumber).count();
+            AddCsUserPrivate addCsUserPrivate = new AddCsUserPrivate();
+            addCsUserPrivate.setUserNumber(userNumber);
+            Integer privateNumber = csUserPrivateMapper.getIsUser(addCsUserPrivate);
+
+            image = new ImageVip().resultMyScoreOkImage(userNumber,score,csUserVip,count,privateNumber);
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            ImageIO.write(image, "png", os);
+            InputStream fis = new ByteArrayInputStream(os.toByteArray());
+            response.setContentType("image/png");
+            response.addHeader("Content-Disposition", "attachment; filename=" + "QrCode");
+            ServletOutputStream out = response.getOutputStream();
+            byte[] buf = new byte[1024];
+            int n = 0;
+            while ((n = fis.read(buf)) != -1)
+                out.write(buf, 0, n);
+            fis.close();
+            out.flush();
+            out.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /***

@@ -2,8 +2,8 @@ package com.yzycoc.cocutil.SQLAll.service.Impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yzycoc.cocutil.SQLAll.bean.CsUserPrivate;
-import com.yzycoc.cocutil.SQLAll.bean.CsUserPrivateRemove;
+import com.yzycoc.cocutil.SQLAll.bean.csuser.CsUserPrivate;
+import com.yzycoc.cocutil.SQLAll.bean.csuser.CsUserPrivateRemove;
 import com.yzycoc.cocutil.SQLAll.bean.vip.CsUserVip;
 import com.yzycoc.cocutil.SQLAll.mapper.CsUserPrivateMapper;
 import com.yzycoc.cocutil.SQLAll.service.*;
@@ -81,11 +81,11 @@ public class CsUserPrivateImpl extends ServiceImpl<CsUserPrivateMapper,CsUserPri
         String frMSG = String.valueOf(friend);
         if(!(addCsUserPrivate.getMsg()).contains(frMSG))
             return Result.error("验证信息错误，请在http://yzycoc.com/qq/ts/state中复制好友添加码（防机器人）！");
-        Integer isUser = baseMapper.getIsUser(addCsUserPrivate);
         CsUserVip csUserVip = csUserVipService.query().eq("qqnumber", addCsUserPrivate.getUserNumber()).one();
         if(csUserVip==null){
             csUserVip = new CsUserVip();
         }
+        Integer isUser = baseMapper.getIsUser(addCsUserPrivate);
         if(isUser!=null && isUser >= csUserVip.getFriend()){
             Integer count = this.query().eq("robot_number", addCsUserPrivate.getRobotNumber()).eq("qq_number", addCsUserPrivate.getUserNumber()).count();
             count = count == null?0:count;

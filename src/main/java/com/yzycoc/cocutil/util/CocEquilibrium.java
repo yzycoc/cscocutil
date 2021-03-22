@@ -52,7 +52,7 @@ public class CocEquilibrium {
             tagCode = tagCode.toUpperCase();
         }
         String url = api.getPath()+tagCode;
-        AjaxHttpResult sendGetCoc = HttpRequest.cocHttp(url, redisUtil, 5000, 5000, api.getTime());
+        AjaxHttpResult sendGetCoc = HttpRequest.cocHttp(url, redisUtil, 5000, 5000, api);
         if(sendGetCoc.getSuccess()) {
             if(!"获取缓存".equals(sendGetCoc.getErrorMsg())&& ConfigParameter.clanHttpSaveSql) {
                 //保存更新数据
@@ -75,7 +75,7 @@ public class CocEquilibrium {
             }
         }
         log.info("第二次发送请求:"+url);
-        sendGetCoc = HttpRequest.cocHttp(url, redisUtil,20000,60000,api.getTime());
+        sendGetCoc = HttpRequest.cocHttp(url, redisUtil,20000,60000,api);
         if(sendGetCoc.getSuccess()){
             if(!"获取缓存".equals(sendGetCoc.getErrorMsg())&& ConfigParameter.clanHttpSaveSql) {
                 //保存更新数据
@@ -104,7 +104,7 @@ public class CocEquilibrium {
         coc.setSuccess(false);
         if(remsg!=null&&("403".equals(remsg)||"429".equals(remsg)||"500".equals(remsg)||"503".equals(remsg))) {
             JSONObject object = new JSONObject();
-            if(api == ClanApiHttp.Clan) {
+            if(api == ClanApiHttp.Clan || api == ClanApiHttp.ClanRealTime) {
                 ClanJson one = clanservice.query().eq("tag", "#"+tag).one();
                 if(one!=null) {
                     String json = one.getJson();
@@ -119,10 +119,11 @@ public class CocEquilibrium {
                     }
                     coc.setData(object);
                     coc.setSuccess(true);
+                    coc.setTime(one.getUpdatetime());
                 }
 
             }
-            if(api == ClanApiHttp.player) {
+            if(api == ClanApiHttp.player ||  api == ClanApiHttp.playerRealTime) {
                 PlayerJson one = service.query().eq("tag","#"+tag).one();
                 if(one!=null) {
                     String json = one.getJson();
@@ -133,6 +134,7 @@ public class CocEquilibrium {
                         String ClanName = Utf8Util.unicodeToString(clan.getString("name"));
                         clan.put("name", ClanName);
                     }
+                    coc.setTime(one.getUpdatetime());
                     coc.setData(object);
                     coc.setSuccess(true);
                 }

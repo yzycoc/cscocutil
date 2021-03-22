@@ -1,5 +1,6 @@
-package com.yzycoc.cocutil.SQLAll.bean;
+package com.yzycoc.cocutil.SQLAll.bean.csuser;
 
+import com.yzycoc.cocutil.SQLAll.bean.BaseEntity;
 import lombok.Data;
 
 /**
@@ -10,30 +11,30 @@ import lombok.Data;
  * @Version 1.0
  **/
 @Data
-public class CsUserPrivateRemove extends BaseEntity<Integer> {
+public class CsUserPrivate extends BaseEntity<Integer> {
 
     /** 用户QQ号 */
     private String qqNumber;
     /** 机器人QQ */
     private String robotNumber;
 
-    public CsUserPrivateRemove(Integer id, String qqNumber, String robotNumber) {
+    public CsUserPrivate(Integer id, String qqNumber, String robotNumber) {
         super(id);
         this.qqNumber = qqNumber;
         this.robotNumber = robotNumber;
     }
 
-    public CsUserPrivateRemove(Integer id, String createDate, String createName, String qqNumber, String robotNumber) {
+    public CsUserPrivate(Integer id, String createDate, String createName, String qqNumber, String robotNumber) {
         super(id, createDate, createName);
         this.qqNumber = qqNumber;
         this.robotNumber = robotNumber;
     }
 
-    public CsUserPrivateRemove(String qqNumber, String robotNumber) {
+    public CsUserPrivate(String qqNumber, String robotNumber) {
         this.qqNumber = qqNumber;
         this.robotNumber = robotNumber;
     }
 
-    public CsUserPrivateRemove() {
+    public CsUserPrivate() {
     }
 }

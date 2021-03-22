@@ -6,6 +6,7 @@ import com.yzycoc.cocutil.SQLClan.bean.ClanName;
 import com.yzycoc.cocutil.SQLClan.service.ClanNameService;
 import com.yzycoc.cocutil.service.result.ClanResult;
 import com.yzycoc.cocutil.util.CocEquilibrium;
+import com.yzycoc.cocutil.util.enums.ClanApiHttp;
 import com.yzycoc.cocutil.util.enums.CocState;
 import com.yzycoc.cocutil.util.enums.WarLeagueEnum;
 import com.yzycoc.config.ConfigParameter;
@@ -53,7 +54,7 @@ public class TextClanName {
             if(form.getSuccess()) {
                 String url = "https://api.clashofclans.com/v1/clans?name="+urlEncode+form.getResult()+"&limit=5";
                 /*url = "http://47.100.197.180:8081/coc?url=" +BackEndHttpRequest.urlEncode(url);*/
-                AjaxHttpResult sendGetCoc = HttpRequest.cocHttp(url, SpringContextUtil.getBean(RedisUtil.class), 10000, 30000, 30000);
+                AjaxHttpResult sendGetCoc = HttpRequest.cocHttp(url, SpringContextUtil.getBean(RedisUtil.class), 10000, 30000, ClanApiHttp.clanName);
                 if(sendGetCoc.getSuccess()) {
                     JSONObject parseObject = sendGetCoc.getData();
                     JSONArray items = parseObject.getJSONArray("items");

@@ -9,6 +9,7 @@ import lombok.Data;
 public class ClanJson {
 	private String json;
 
+	private String updatetime;
 	public String getJson() {
 		return json;
 	}

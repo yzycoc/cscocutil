@@ -3,11 +3,13 @@ package com.yzycoc;
 import com.baomidou.mybatisplus.autoconfigure.MybatisPlusAutoConfiguration;
 import com.yzycoc.cocutil.SQLAll.bean.MyIps;
 import com.yzycoc.cocutil.SQLAll.service.MyIpsService;
+import com.yzycoc.cocutil.SQLMy.service.MyCsUserService;
 import com.yzycoc.config.ConfigParameter;
 import com.yzycoc.custom.*;
 import com.yzycoc.custom.result.AjaxHttpResult;
 import com.yzycoc.custom.result.Result;
 import com.yzycoc.util.RedisUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,7 +25,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.UUID;
-
+@Slf4j
 @EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class, DataSourceTransactionManagerAutoConfiguration.class, MybatisPlusAutoConfiguration.class})
 @SpringBootApplication
 @EnableScheduling
@@ -48,11 +50,10 @@ public class CscocutilApplication {
         ConfigParameter.PROT = port;
         ConfigParameter.network_Path_IP = IP;
         ConfigParameter.LAN_Path_IP = myips;
-        System.out.println("外网API："+ConfigParameter.network_Path);
-        System.out.println("局域网API："+ConfigParameter.LAN_Path);
-        System.out.println("swagger-UI API："+ConfigParameter.LAN_Path+"/swagger-ui.html");
+        String path = env.getProperty("server.servlet.context-path");
         MyIpsService myIpsService = SpringContextUtil.getBean(MyIpsService.class);
         MyIps myIps = myIpsService.query().eq("ip", IP).eq("prot",port).one();
+        String appkey_String = null;
         if(myIps == null){
             myIps = new MyIps();
             myIps.setIp(IP);
@@ -61,25 +62,35 @@ public class CscocutilApplication {
             myIps.setWeight(1);//权重
             myIps.setCreateDate(TimeUtiles.getStringDate());
             myIps.setCreateName("系统");
-            System.out.println("请重启系统，填入APPKEY");
+            appkey_String = "请重启系统，填入APPKEY";
         }else{
-            System.out.println("密钥更新为 ["+ myIps.getCocApi()+"]");
+            appkey_String = "["+ myIps.getCocApi()+"]";
             ConfigParameter.CocApi =" "+ myIps.getCocApi();
         }
         myIps.setIntranetIp(myips);
         myIps.setUpdateDate(TimeUtiles.getStringDate());
         myIpsService.saveOrUpdate(myIps);
         RedisUtil redisUtil = SpringContextUtil.getBean(RedisUtil.class);
+        String randomUUID = null;
         try {
             Object object = redisUtil.get("friend");
             if(StringUtils.isEmpty(object)) {
-                String randomUUID = UUID.randomUUID().toString().replaceAll("-","").substring(0, 6).toUpperCase();
+                randomUUID = UUID.randomUUID().toString().replaceAll("-","").substring(0, 6).toUpperCase();
                 redisUtil.set("friend", randomUUID,3600);
-                System.out.println("redis:"+randomUUID);
             }else{
-                String randomUUID = String.valueOf(object);
-                System.out.println("redis:"+randomUUID);
+                randomUUID = String.valueOf(object);
             }
+            MyCsUserService bean = SpringContextUtil.getBean(MyCsUserService.class);
+            System.out.println("----------------------------------------------------------\n\t" +
+                    "仓鼠机器人后端程序运行成功-Spring-Boot is running! Access URLs:\n\t" +
+                    "外网API: \t"+ConfigParameter.network_Path  + path + "\n\t" +
+                    "局域网API: \t" + ConfigParameter.LAN_Path +  path + "\n\t" +
+                    "Swagger文档: \t" + ConfigParameter.LAN_Path + path + "swagger-ui.html\n\t" +
+                    "redis好友申请: \t"+randomUUID+" \n\t" +
+                    "群更新状态: \t"+bean.Synchronization()+"\n\t"+
+                    "密钥: \t "+appkey_String+" \n" +
+                    "----------------------------------------------------------");
+
         }catch (Exception e){
            e.printStackTrace();
         }

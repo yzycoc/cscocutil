@@ -62,16 +62,6 @@ public class ClanResult {
     }
 
 
-    @Override
-    public String toString() {
-        return "ClanResult{" +
-                "success=" + success +
-                ", result='" + result + '\'' +
-                ", filePath='" + filePath + '\'' +
-                ", fileType='" + fileType + '\'' +
-                '}';
-    }
-
     public Boolean getSuccess() {
         return success;
     }
@@ -110,5 +100,16 @@ public class ClanResult {
 
     public void setHttp(String http) {
         this.http = http;
+    }
+
+    @Override
+    public String toString() {
+        return "ClanResult{" +
+                "success=" + success +
+                ", result='" + result + '\'' +
+                ", filePath='" + filePath + '\'' +
+                ", fileType='" + fileType + '\'' +
+                ", http='" + http + '\'' +
+                '}';
     }
 }

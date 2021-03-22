@@ -1,6 +1,7 @@
 package com.yzycoc.cocutil.service.accomplish.yq;
 
 import com.yzycoc.cocutil.SQLAll.bean.xjpublic.YuQing;
+import com.yzycoc.cocutil.service.accomplish.image.ImageVip;
 import com.yzycoc.cocutil.util.ImageMapCache;
 import com.yzycoc.config.ConfigParameter;
 import net.coobird.thumbnailator.Thumbnails;
@@ -186,6 +187,174 @@ public class YqImage {
         }
         return false;
     }
+    public Boolean getImageTwo(YuQing yQ, String uid) {
+        Graphics2D g = null;
+        try {
+            BufferedImage Image = ImageIO.read(new File(ConfigParameter.file_Yq_Image_Two));//buffer.get("cocheader");
+            g = (Graphics2D)Image.createGraphics();
+            g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
+            g.setFont(new Font("STENCIL STD",Font.BOLD,55));
+            g.setColor(Color.white);
+            //世界
+            g.drawString(yQ.getWordZlp(), 621, 500);
+            g.drawString(yQ.getWordZx(), 347, 714);
+            g.drawString(yQ.getWordLx(), 347, 828);
+            g.drawString(yQ.getWordHd(), 406, 935);
+            g.drawString(yQ.getWordKgj(), 406, 1042);
+            //中国
+            g.drawString(yQ.getCnZlp(), 2065, 500);
+            g.drawString(yQ.getCnZx(), 1760, 714);
+            g.drawString(yQ.getCnLx(), 1760, 828);
+            g.drawString(yQ.getCnYhd(), 1830, 935);
+            g.drawString(yQ.getCnKgj(), 1830, 1042);
+
+            //百分比
+            g.setFont(new Font("Myriad Pro Cond ",Font.PLAIN,40));
+            String txt = "";
+            Integer bfb = 35;
+            txt = yQ.wgetWordZxBfb();
+            g.drawString(txt, 347+(NameWidth(yQ.getWordZx())*bfb), 714);
+            txt = yQ.wgetWordLxBfb();
+            g.drawString(txt, 347+(NameWidth(yQ.getWordLx())*bfb), 828);
+            txt = yQ.wgetWordHdBfb();
+            g.drawString(txt, 406+(NameWidth(yQ.getWordHd())*bfb), 937);
+            txt = yQ.wgetWordKgjBfb();
+            g.drawString(txt, 406+(NameWidth(yQ.getWordKgj())*bfb), 1042);
+
+            txt = yQ.wgetCnZxBfb();
+            g.drawString(txt, 1760+(NameWidth(yQ.getCnZx())*bfb), 714);
+            txt = yQ.wgetCnLxBfb();
+            g.drawString(txt, 1760+(NameWidth(yQ.getCnLx())*bfb), 828);
+            txt = yQ.wgetCnYhdBfb();
+            g.drawString(txt, 1830+(NameWidth(yQ.getCnYhd())*bfb), 937);
+            txt = yQ.wgetCnKgjBfb();
+            g.drawString(txt, 1830+(NameWidth(yQ.getCnKgj())*bfb), 1042);
+            //获取时间
+            /*g.setFont(new Font("微软雅黑",Font.BOLD,65));
+            g.drawString(yQ.getTime(), 2474, 1313);*/
+
+
+            //设置变化趋势
+            g.setFont(new Font("Hobo Std",Font.BOLD,55));
+            //世界的
+            String wordBh = yQ.getWordBh();
+            quShi(g,wordBh);
+            g.drawString(wordBh, 723, 605);
+            BufferedImage buff = getBuff(wordBh);
+            g.drawImage(buff, 650, 535, 60, 100, null);
+            //中国的
+            String cnBh = yQ.getCnBh();
+            quShi(g,cnBh);
+            g.drawString(cnBh, 2125, 605);
+            buff = getBuff(cnBh);
+            g.drawImage(buff, 2064, 535, 60, 100, null);
+
+            g.setFont(new Font("Hobo Std",Font.BOLD,45));
+            //全世界
+            int whiht = 1080;
+            int heigth = 719;
+            cnBh = yQ.getWordZxBh();
+            quShi(g,cnBh);
+            g.drawString(cnBh,whiht , heigth);
+            buff = getBuff(cnBh);
+            g.drawImage(buff, whiht-65, heigth-80, 60, 100, null);
+
+            heigth+=110;
+            cnBh = yQ.getWordLxBH();
+            quShi(g,cnBh);
+            //g.drawString(cnBh,whiht , heigth);
+            buff = getBuff(cnBh);
+            g.drawImage(buff, whiht-65, heigth-80, 60, 100, null);
+
+            heigth+=110;
+            cnBh = yQ.getWordHdBh();
+            quShi(g,cnBh);
+            g.drawString(cnBh,whiht , heigth);
+            buff = getBuff(cnBh);
+            g.drawImage(buff, whiht-65, heigth-80, 60, 100, null);
+
+            heigth+=110;
+            cnBh = yQ.getWordKgjBh();
+            quShi(g,cnBh);
+            g.drawString(cnBh,whiht , heigth);
+            buff = getBuff(cnBh);
+            g.drawImage(buff, whiht-65, heigth-80, 60, 100, null);
+            g.drawImage(buff, 2000, 1765, 60, 100, null);
+            /**
+             * 中国
+             */
+            whiht = 2505;
+            heigth = 719;
+
+            cnBh = yQ.getCnZxbh();
+            quShi(g,cnBh);
+            g.drawString(cnBh,whiht , heigth);
+            buff = getBuff(cnBh);
+            g.drawImage(buff, whiht-65, heigth-80, 60, 100, null);
+
+            heigth+=110;
+            cnBh = yQ.getCnLXBh();
+            quShi(g,cnBh);
+            //g.drawString(cnBh,whiht , heigth);
+            buff = getBuff(cnBh);
+            g.drawImage(buff, whiht-65, heigth-80, 60, 100, null);
+
+            heigth+=110;
+            cnBh = yQ.getCnYhdBh();
+            quShi(g,cnBh);
+            g.drawString(cnBh,whiht , heigth);
+            buff = getBuff(cnBh);
+            g.drawImage(buff, whiht-65, heigth-80, 60, 100, null);
+
+            heigth+=110;
+            cnBh = yQ.getCnKgjBh();
+            quShi(g,cnBh);
+            g.drawString(cnBh,whiht , heigth);
+            buff = getBuff(cnBh);
+            g.drawImage(buff, whiht-65, heigth-80, 60, 100, null);
+            //评分
+            ColorZs(g,yQ.getPf());
+            g.setFont(new Font("微软雅黑",Font.BOLD,60));
+            g.setColor(Color.black);
+            //建议怎么打
+            /*String[] dyyj = StringCd(yQ.getYj(),10,5);
+            for (int i = 0; i < dyyj.length; i++) {
+                if(i==0) {
+                    g.drawString(dyyj[i], 2474, 1437);
+                }else {
+                    g.drawString(dyyj[i], 2150, 1437+(i*65));
+                }
+            }*/
+            String yj = yQ.getYj();
+            ImageVip.drawString(g,new Font("微软雅黑",Font.BOLD,60),yj,415,1710,855);
+            g.setFont(new Font("微软雅黑",Font.BOLD,45));
+            g.drawString(yQ.getTs1(), 425, 1215);
+            g.drawString(yQ.getTs2(), 425, 1371);
+            g.drawString(yQ.getTs3(), 425, 1523);
+
+            BufferedImage read = ImageIO.read(new File(ConfigParameter.file_Yq_qushi_Image));
+            read = read.getSubimage(0, 0, 1200, read.getHeight());
+            int width = read.getWidth();
+            Integer wdith = Image.getWidth();
+            Integer heInteger = read.getHeight()*(Image.getWidth() / width);
+            BufferedImage cocImageAll = new BufferedImage(Image.getWidth(), Image.getHeight()+heInteger, BufferedImage.TYPE_INT_RGB);
+            Graphics2D gs = (Graphics2D)cocImageAll.createGraphics();
+            gs.drawImage(Image,0, 0, Image.getWidth(), Image.getHeight() , null);
+            gs.drawImage(read,0, Image.getHeight(), wdith, heInteger , null);
+            gs.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
+            gs.setFont(new Font("微软雅黑",Font.ITALIC,40));
+            gs.drawString("　　时间："+yQ.getHtmltime(),245, 2230);
+            Thumbnails.of(cocImageAll).outputFormat("jpg").scale(1f).outputQuality(0.7f).toFile(
+                    new File(ConfigParameter.filePath_Yq+"\\"+uid));
+            Image.flush();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            g.dispose();
+        }
+        return false;
+    }
     /***
      * 趋势颜色变化
      * @param g
@@ -195,12 +364,12 @@ public class YqImage {
         try {
             double parseDouble = Double.parseDouble(wordBh);
             if(parseDouble>=0) {
-                g.setColor(new Color(0,88,30));
+                g.setColor(new Color(35,169,56));//绿色
             }else {
-                g.setColor(new Color(132,38,30));
+                g.setColor(new Color(231,75,47));
             }
         } catch (Exception e) {
-            g.setColor(Color.black);
+            g.setColor(Color.white);
         }
     }
     /***
@@ -296,11 +465,27 @@ public class YqImage {
             g.setColor(new Color(132,38,30));//红色
         }
         if(number.length()==1) {
-            g.drawString(number, 1700, 1739);
+            g.drawString(number, 2040, 1739);
         }else if(number.length()==2) {
-            g.drawString(number, 1610, 1739);
+            g.drawString(number, 1950, 1739);
         }else{
-            g.drawString(number, 1570, 1739);
+            g.drawString(number, /*1570*/1910, 1739);
         }
     }
+
+    /***
+     * 文字居中
+     * @param text 文本内容
+     * @param width 宽度
+     * @param font Font
+     * @param g  Graphics2D
+     * @return
+     */
+    private static Integer content(String text,Integer width,Font font,Graphics2D g){
+        FontMetrics fontMetrics = g.getFontMetrics(font);
+        int textWidth = fontMetrics.stringWidth(text);
+        int X = (width - textWidth) / 2;
+        return X;
+    }
+
 }

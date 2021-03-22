@@ -1,7 +1,7 @@
 package com.yzycoc.cocutil.SQLAll.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.yzycoc.cocutil.SQLAll.bean.CsUserPrivateRemove;
+import com.yzycoc.cocutil.SQLAll.bean.csuser.CsUserPrivateRemove;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

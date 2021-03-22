@@ -1,0 +1,12 @@
+${AnsiColor.BRIGHT_BLUE}
+ _____  _____        _____ _____ _____
+/  __ \/  ___|      /  __ \  _  /  __ \
+| /  \/\ `--. ______| /  \/ | | | /  \/
+| |     `--. \______| |   | | | | |
+| \__/\/\__/ /      | \__/\ \_/ / \__/\
+ \____/\____/        \____/\___/ \____/
+
+${AnsiColor.BRIGHT_GREEN}
+仓鼠机器人:${spring-boot.formatted-version}
+Spring Boot Version: ${spring-boot.version}${spring-boot.formatted-version}
+${AnsiColor.BLACK}

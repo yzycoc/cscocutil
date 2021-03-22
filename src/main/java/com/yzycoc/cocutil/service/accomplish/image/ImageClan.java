@@ -32,7 +32,24 @@ import java.util.concurrent.Executor;
  **/
 public class ImageClan {
     Logger log= LoggerFactory.getLogger(getClass());
-
+    /***
+     * 实时生成生成图片
+     * @param tag
+     * @param service
+     * @return
+     */
+    public ClanResult getRealTime(String tag, CocEquilibrium service) {
+        long startTime=System.currentTimeMillis();
+        log.info("开始生成部落图片:"+tag);
+        AjaxHttpResult ajaxHttpResult = service.get(tag, ClanApiHttp.ClanRealTime, true);
+        if(!ajaxHttpResult.getSuccess()) {
+            return new ClanResult(false,ajaxHttpResult.getErrorMsg());
+        }
+        Map<String, BufferedImage> tagData = TagData(ajaxHttpResult.getData());
+        ClanResult clanResult = ImageClanHc(ajaxHttpResult.getData(), tagData);
+        log.info("部落"+tag+"图片生成完毕，生成状态["+clanResult.getSuccess()+"]耗时"+(System.currentTimeMillis() - startTime)+"ms");
+        return clanResult;
+    }
 
     /***
      * 生成图片
@@ -225,7 +242,7 @@ public class ImageClan {
      * @param data
      * @return
      */
-    private Map<String, BufferedImage> TagData(JSONObject data) {
+    public Map<String, BufferedImage> TagData(JSONObject data) {
         String tag = data.getString("tag");
         JSONArray labels = data.getJSONArray("labels");
         JSONArray memberList = data.getJSONArray("memberList");

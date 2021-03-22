@@ -40,7 +40,7 @@ public class ImageYq {
             if(!image) return new ClanResult(false,"鱼情图片合成失败；合成趋势图失败，请稍后重试！");
 
             //合成曲线图！
-            image = new YqImage().getImage(yuQing, uid);
+            image = new YqImage().getImageTwo(yuQing, uid);
             if(!image) return new ClanResult(false,"鱼情图片合成失败；合成图片失败，请稍后重试！");
             System.out.println("鱼情：合成图成功。共耗时："+(System.currentTimeMillis() - start));
             return new ClanResult(true,uid, ConfigParameter.filePath_Yq,"jpg");

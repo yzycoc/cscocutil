@@ -15,6 +15,8 @@ public class PlayerJson{
 	
 	private String json;
 
+	private String updatetime;
+
 	public String getJson() {
 		return json;
 	}

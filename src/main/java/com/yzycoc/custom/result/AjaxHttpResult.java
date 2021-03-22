@@ -1,6 +1,7 @@
 package com.yzycoc.custom.result;
 
 import com.alibaba.fastjson.JSONObject;
+import com.yzycoc.custom.TimeUtiles;
 
 /**
  * @program: cscocutil
@@ -13,6 +14,10 @@ public class AjaxHttpResult {
     private Boolean success;
     private String errorMsg;
     private JSONObject data;
+    /***
+     * 数据获取的时间
+     */
+    private String time = TimeUtiles.getStringDate();
 
     public AjaxHttpResult(Boolean success, String errorMsg, JSONObject data) {
         this.success = success;
@@ -70,6 +75,14 @@ public class AjaxHttpResult {
         this.data = data;
     }
 
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
     @Override
     public String toString() {
         return "AjaxHttpResult{" +
@@ -79,3 +92,4 @@ public class AjaxHttpResult {
                 '}';
     }
 }
+

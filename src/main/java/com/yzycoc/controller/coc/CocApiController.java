@@ -1,10 +1,11 @@
-package com.yzycoc.controller;
+package com.yzycoc.controller.coc;
 
 
 import com.yzycoc.cocutil.SQLAll.service.OpenLayoutService;
 import com.yzycoc.cocutil.service.*;
 import com.yzycoc.cocutil.service.result.ClanResult;
 import com.yzycoc.cocutil.util.enums.JarvisEnum;
+import com.yzycoc.config.ConfigParameter;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
  **/
 @Api(value = "COC相关接口",tags = "COC相关接口")
 @Controller
-public class ApiController {
+public class CocApiController {
 
     @Autowired
     private ClanApiService clanApiService;
@@ -60,6 +61,7 @@ public class ApiController {
         }
     }
 
+
     /***
      * 生成部落图片
      * @param tag
@@ -69,10 +71,12 @@ public class ApiController {
     @ApiImplicitParam(name="tag",value = "标签[不带#]",dataType = "String")
     @GetMapping(value="/getImageClan")
     @ResponseBody
-    private ClanResult getImageClan(String tag){
-       return clanApiService.getImageClan(tag);
-    }
-    /***
+    private ClanResult getImageClanRealTime(String tag,Integer realTime){
+        if(realTime!=null && realTime == 1){
+            return clanApiService.getImageClan(tag,true);
+        }
+        return  clanApiService.getImageClan(tag,false);
+    }/***
      * 生成玩家信息
      * @param tag
      * @return
@@ -81,8 +85,11 @@ public class ApiController {
     @ApiImplicitParam(name="tag",value = "标签[不带#]",dataType = "String")
     @GetMapping(value="/getImagePlayer")
     @ResponseBody
-    private ClanResult getImagePlayer(String tag){
-        return clanApiService.getImagePlayer(tag);
+    private ClanResult getImagePlayer(String tag,Integer realTime){
+        if(realTime!=null && realTime == 1){
+            return clanApiService.getImagePlayer(tag,true);
+        }
+        return clanApiService.getImagePlayer(tag,false);
     }
     /***
      * 生成鱼情信息
@@ -99,14 +106,16 @@ public class ApiController {
      * @param tag
      * @return
      */
-    @ApiOperation(value = "生成部落配置", notes = "V1.1")
-    @ApiImplicitParam(name="tag",value = "标签[不带#]",dataType = "String")
+    @ApiOperation(value = "生成部落科技配置", notes = "V1.1")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="tag",value = "标签[不带#]",dataType = "String"),
+            @ApiImplicitParam(name="qqcode",value = "查询用户的标识",dataType = "String"),
+    })
     @GetMapping(value="/getImageClanAll")
     @ResponseBody
-    private ClanResult getImageClanAll(String tag)
-
+    private ClanResult getImageClanAll(String tag,String qqcode)
     {
-        return clanApiService.getImageClanAll(tag);
+        return clanApiService.getImageClanAll(tag,qqcode);
     }
     /***
      * 部落配置分析 -- 文本
@@ -114,11 +123,14 @@ public class ApiController {
      * @return
      */
     @ApiOperation(value = "部落配置分析[文本]", notes = "V1.1")
-    @ApiImplicitParam(name="tag",value = "标签[不带#]",dataType = "String")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="tag",value = "标签[不带#]",dataType = "String"),
+            @ApiImplicitParam(name="qqcode",value = "查询用户的标识",dataType = "String"),
+    })
     @GetMapping(value="/getImageClanAllCollectText")
     @ResponseBody
-    private ClanResult getImageClanAllCollectText(String tag){
-        return clanApiService.getImageClanAllCollectText(tag);
+    private ClanResult getImageClanAllCollectText(String tag,String qqcode){
+        return clanApiService.getImageClanAllCollectText(tag,qqcode);
     }
     /***
      * 部落配置分析 -- 图片
@@ -126,11 +138,14 @@ public class ApiController {
      * @return
      */
     @ApiOperation(value = "部落配置分析[图片]", notes = "V1.1")
-    @ApiImplicitParam(name="tag",value = "标签[不带#]",dataType = "String")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="tag",value = "标签[不带#]",dataType = "String"),
+            @ApiImplicitParam(name="qqcode",value = "查询用户的标识",dataType = "String"),
+    })
     @GetMapping(value="/getImageClanAllCollectImage")
     @ResponseBody
-    private ClanResult getImageClanAllCollectImage(String tag){
-        return clanApiService.getImageClanAllCollectImage(tag);
+    private ClanResult getImageClanAllCollectImage(String tag,String qqcode){
+        return clanApiService.getImageClanAllCollectImage(tag,qqcode);
     }
     /***
      * 查询部落名
@@ -259,12 +274,13 @@ public class ApiController {
     @ApiOperation(value = "图片下载", notes = "V1.1")
     @ApiImplicitParam(name="id",value = "uuid",dataType = "String")
     @GetMapping(value="/imageDown")
-    @ResponseBody
-    private ClanResult imageDown(String id, HttpServletResponse response,HttpServletRequest request){
-        System.out.println(request.getRequestURL());
-        System.out.println(request.getQueryString());
+    private void imageDown(String id, HttpServletResponse response,HttpServletRequest request){
         ClanResult  result = apiService.imageDown(id,response,request);
-        return result;
+        System.out.println("----------------------------------------------------------\n\t" +
+                "请求地址: \t"+ request.getRequestURL() + "\n\t" +
+                "图片: \t" + request.getQueryString() + "\n\t" +
+                "请求反馈结果: \t "+result.toString()+" \n" +
+                "----------------------------------------------------------");
     }
 
 }

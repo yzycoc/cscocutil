@@ -1,7 +1,7 @@
 package com.yzycoc.cocutil.SQLAll.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.yzycoc.cocutil.SQLAll.bean.CsUserPrivate;
+import com.yzycoc.cocutil.SQLAll.bean.csuser.CsUserPrivate;
 import com.yzycoc.custom.result.Result;
 import com.yzycoc.from.AddCsUserPrivate;
 import com.yzycoc.util.RedisUtil;

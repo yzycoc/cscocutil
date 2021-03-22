@@ -27,9 +27,9 @@ public class CocApiAndCqCustom {
     //三王信息
     public static String[] heroes = {"Barbarian King","Archer Queen","Grand Warden","Royal Champion","Battle Machine"};//男王、女王、守护、
     //法术信息
-    public static String[] spells = {"Lightning Spell","Healing Spell","Rage Spell","Jump Spell","Freeze Spell","Clone Spell","Poison Spell","Earthquake Spell","Haste Spell","Skeleton Spell","Bat Spell"};
+    public static String[] spells = {"Lightning Spell","Healing Spell","Rage Spell","Jump Spell","Freeze Spell","Clone Spell","Poison Spell","Earthquake Spell","Haste Spell","Skeleton Spell","Bat Spell","Invisibility Spell"};
     //工程车
-    public static String[] s = {"Wall Wrecker","Battle Blimp","Stone Slammer","Siege Barracks"};
+    public static String[] s = {"Wall Wrecker","Battle Blimp","Stone Slammer","Siege Barracks","Log Launcher"};
 
     private static Map<String,String> mapnation =new HashMap<String, String>();
 
@@ -504,6 +504,7 @@ public class CocApiAndCqCustom {
             return 8;
         }
     }
+
 
     public static void main(String[] args) {
         //System.out.println(YqHtmlCustom.htmlAll.toString() );

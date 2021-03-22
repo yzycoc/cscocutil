@@ -1,6 +1,7 @@
 
 package com.yzycoc.controller;
 
+import com.yzycoc.cocutil.SQLAll.bean.csuser.CsUser;
 import com.yzycoc.cocutil.SQLAll.bean.score.Score;
 import com.yzycoc.cocutil.SQLAll.service.*;
 import com.yzycoc.custom.result.Result;
@@ -19,6 +20,9 @@ import java.util.*;
 import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * @program: cscocutil
  * @description: 用户控制器
@@ -28,7 +32,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 */
 @Controller
 @RequestMapping(value="/user")
-@Api(value = "用户相关接口",tags = "用户操作接口")
+@Api(value = "U-用户相关接口",tags = "用户操作接口")
 public class UserApiController {
     @Autowired
     private CsUserService csUserService;
@@ -38,7 +42,8 @@ public class UserApiController {
     private RedisUtil redisUtil;
     @Autowired
     private CsUserPrivateService csUserPrivateService;
-
+    @Autowired
+    private CsUserVipService csUserVipService;
     /***
      * 获取用户登录的所有JSON
      * @return
@@ -48,8 +53,8 @@ public class UserApiController {
     @ApiImplicitParam(name="json",value = "小栗子发送过来的用户JSON",dataType = "String")
     @PostMapping(value="/findAll")
     @ResponseBody
-    public List<Map<String,Object>> findAll(String json){
-        List<Map<String,Object>> result = csUserService.getList(json);
+    public List<CsUser> findAll(String json){
+        List<CsUser> result = csUserService.getList(json);
         return result;
     }
 
@@ -78,6 +83,13 @@ public class UserApiController {
         return csUserService.updateBotAdmin(updateBot);
     }
 
+    @ApiOperation(value = "C-删除群授权", notes = "V1.0")
+    @PostMapping(value = "/deleteGroup")
+    @ResponseBody
+    public Result<?> deleteGroup(DeleteBot deleteBot){
+        return csUserService.deleteGroup(deleteBot);
+    }
+
     @ApiOperation(value = "A-查询剩余积分", notes = "V1.0")
     @GetMapping(value = "/getMyScore")
     @ResponseBody
@@ -89,6 +101,13 @@ public class UserApiController {
         return Result.ok("\\uD83D\\uDC33积分:"+userCost+"\\uD83D\\uDC33");
     }
 
+
+    @ApiOperation(value = "A-查询剩余积分Vip", notes = "V1.0")
+    @GetMapping(value = "/getMyScoreImage")
+    @ApiImplicitParam(name = "userNumber",value = "唯一标识")
+    public void getMyScoreImage(String userNumber, HttpServletRequest request, HttpServletResponse response){
+        csUserVipService.resultMyScoreOkImage(userNumber,request,response);
+    }
 
     @ApiOperation(value = "A-查询授权情况", notes = "V1.0")
     @GetMapping(value = "/getAuthorization")

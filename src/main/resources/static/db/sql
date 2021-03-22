@@ -1,0 +1,28 @@
+select t.hms,
+    t2.data_value "4AT23-3",
+    t3.data_value "4AT23-4",
+    t4.data_value "4AT12-5",
+    t5.data_value "4AT14-1",
+    t6.data_value "4AT14-4",
+    t7.data_value "4AT31",
+    t8.data_value "4AT53-1",
+    T9.data_value "4AT33-4",
+  FROM (
+SELECT TO_CHAR(TO_DATE('2021','yyyy' ) + (LEVEL-1) ,'yyyy/mm/dd' ) HMS FROM dual CONNECT BY LEVEL < 42
+) t LEFT JOIN (
+	select * from r_d_curve_e_t where to_char(to_date(data_time,'yyyy/mm/dd'),'yyyy') = '2021' and ms_id = '7132026'
+) T2 ON T.HMS = T2.DATA_TIME LEFT JOIN (
+	select * from r_d_curve_e_t where to_char(to_date(data_time,'yyyy/mm/dd'),'yyyy') = '2021' and ms_id = '7132027'
+) T3 ON T.HMS = T3.DATA_TIME LEFT JOIN (
+	select * from r_d_curve_e_t where to_char(to_date(data_time,'yyyy/mm/dd'),'yyyy') = '2021' and ms_id = '7132031'
+) T4 ON T.HMS = T4.DATA_TIME LEFT JOIN (
+	select * from r_d_curve_e_t where to_char(to_date(data_time,'yyyy/mm/dd'),'yyyy') = '2021' and ms_id = '7132032'
+) T5 ON T.HMS = T5.DATA_TIME LEFT JOIN (
+	select * from r_d_curve_e_t where to_char(to_date(data_time,'yyyy/mm/dd'),'yyyy') = '2021' and ms_id = '7132033'
+) T6 ON T.HMS = T6.DATA_TIME LEFT JOIN (
+	select * from r_d_curve_e_t where to_char(to_date(data_time,'yyyy/mm/dd'),'yyyy') = '2021' and ms_id = '7132036'
+) T7 ON T.HMS = T7.DATA_TIME LEFT JOIN (
+	select * from r_d_curve_e_t where to_char(to_date(data_time,'yyyy/mm/dd'),'yyyy') = '2021' and ms_id = '7132018'
+) T8 ON T.HMS = T8.DATA_TIME LEFT JOIN (
+	select * from r_d_curve_e_t where to_char(to_date(data_time,'yyyy/mm/dd'),'yyyy') = '2021' and ms_id = '7132035'
+) T9 ON T.HMS = T9.DATA_TIME ORDER BY HMS ASC

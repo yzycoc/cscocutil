@@ -213,6 +213,9 @@ public class TimeUtiles {
         c.add(Calendar.DAY_OF_MONTH, 1);
         return formatter.format(c.getTime());
     }
+
+
+
     /****
      * 获取当前时间后X月的时间
      * @return
@@ -345,5 +348,18 @@ public class TimeUtiles {
         }
 
 
+    }
+
+
+
+    /****
+     * 获取当前时间后一天的时间
+     * @return
+     */
+    public static String endTime(Integer day) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DAY_OF_MONTH, day);
+        return formatter.format(c.getTime());
     }
 }

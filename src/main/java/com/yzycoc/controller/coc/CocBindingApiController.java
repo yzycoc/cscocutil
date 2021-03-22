@@ -1,4 +1,4 @@
-package com.yzycoc.controller;
+package com.yzycoc.controller.coc;
 
 import com.yzycoc.cocutil.SQLAll.bean.xjpublic.CocBinding;
 import com.yzycoc.cocutil.SQLAll.service.CocBindingService;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @Api(value = "COC接口",tags = "COC绑定相关接口")
 @Controller
 @RequestMapping(value = "binding")
-public class BindingApiController {
+public class CocBindingApiController {
     @Autowired
     private CocBindingService cocBindingService;
 
@@ -56,11 +56,12 @@ public class BindingApiController {
     })
     @PostMapping(value="/getBinding")
     @ResponseBody
-    public Result<?> getBinding(String qqcode,String msg){
+        public Result<?> getBinding(String qqcode,String msg){
         CocBinding cocBinding = cocBindingService.query().eq("msg", msg).eq("qqcode", qqcode).one();
         if(cocBinding == null){
             return Result.error("未查询到相关绑定信息。");
         }else{
+
             return Result.ok(cocBinding.getType()+"#"+cocBinding.getTag());
         }
     }

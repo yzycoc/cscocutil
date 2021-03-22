@@ -1,4 +1,4 @@
-package com.yzycoc.cocutil.SQLAll.bean;
+package com.yzycoc.cocutil.SQLAll.bean.csuser;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;

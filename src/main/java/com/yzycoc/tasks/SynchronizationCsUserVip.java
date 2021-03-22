@@ -9,6 +9,7 @@ import com.yzycoc.cocutil.SQLMy.bean.MyCsUserVip;
 import com.yzycoc.cocutil.SQLMy.service.MyCsUserVipService;
 import com.yzycoc.config.ConfigParameter;
 import com.yzycoc.custom.Utf8Util;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -25,6 +26,7 @@ import java.util.List;
  * @create: 2021-01-27 20:00
  * @Version 1.0
  **/
+@Slf4j
 @Component
 public class SynchronizationCsUserVip {
 
@@ -38,7 +40,7 @@ public class SynchronizationCsUserVip {
     private static Integer count_All= 0 ;
 
     //@Scheduled(cron="0 0/5 * * * ? ")
-    @Scheduled(cron="0/5 * * * * ? ")
+    @Scheduled(cron="0/20 * * * * ?")
     public void tasks() {
         int count = vipLogService.count();
         if(count != count_All){
@@ -49,18 +51,19 @@ public class SynchronizationCsUserVip {
     @Transactional
     public void saves() {
         List<CsUserVip> list = csUserVipService.list();
-        int count = myCsUserVipService.count();
-        if(list.size() >= count){
-            System.out.println("同步会员表数据!");
+        if(list.size() >= 1){
+            log.info("更新CsUserVip,用户资料!");
             QueryWrapper qw = new QueryWrapper();
             qw.eq("1","1");
             myCsUserVipService.remove(qw);
             for (CsUserVip csUserVip : list) {
                 MyCsUserVip myCsUserVip = new MyCsUserVip();
                 BeanUtils.copyProperties(csUserVip, myCsUserVip);
-                myCsUserVipService.save(myCsUserVip);
+                myCsUserVip.setId(csUserVip.getId());
+                myCsUserVipService.saveOrUpdate(myCsUserVip);
             }
         }
-
     }
+
+
 }

@@ -14,16 +14,18 @@ import com.yzycoc.cocutil.service.result.ClanResult;
     /***
      * 生成部落图片
      * @param tag 部落标签
+     * @param realTime 是否实时数据
      * @return
      */
-     ClanResult getImageClan(String tag);
+     ClanResult getImageClan(String tag,Boolean realTime);
 
     /***
      * 生成玩家信息
      * @param tag
+     * @param realTime 是否实时数据
      * @return
      */
-     ClanResult getImagePlayer(String tag);
+     ClanResult getImagePlayer(String tag,Boolean realTime);
 
     /***
      * 生成鱼情信息
@@ -39,24 +41,27 @@ import com.yzycoc.cocutil.service.result.ClanResult;
     /***
      * 生成部落配置 -- 大本营
      * @param tag
+     * @param qqcode
      * @return
      */
-     ClanResult getImageClanAll(String tag);
+     ClanResult getImageClanAll(String tag, String qqcode);
 
     /***
      * 部落配置分析 -- 文本
      * @param tag
+     * @param qqcode
      * @return
      */
-     ClanResult getImageClanAllCollectText(String tag);
+     ClanResult getImageClanAllCollectText(String tag, String qqcode);
 
 
     /***
      * 部落配置分析 -- 图片
      * @param tag
+     * @param qqcode
      * @return
      */
-     ClanResult getImageClanAllCollectImage(String tag);
+     ClanResult getImageClanAllCollectImage(String tag, String qqcode);
 
     /***
      * 查询部落名

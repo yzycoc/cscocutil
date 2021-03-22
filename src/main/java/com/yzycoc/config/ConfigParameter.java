@@ -38,7 +38,7 @@ public class ConfigParameter {
     //查看机器人文档的网络文档地址
     public static String http_document ="";
     //兵种最高等级
-    public static Integer ClanPlayermax = 259;
+    public static Integer ClanPlayermax = 273;
     //COC数据是否保存到数据库
     public static boolean clanHttpSaveSql = true;
 
@@ -71,7 +71,8 @@ public class ConfigParameter {
     public static final String filePath_ClanCollectImage = "c:\\cocutil\\imageClanAllCollectImage";
     //jarvis获取的图片存放地址
     public static final String filePath_jarvis_Image = "c:\\cocutil\\imageJarvis";
-
+    //生成的鱼情信息
+    public static final String filePath_group = "c:\\cocutil\\group";
     public static final String file_vips = "c:\\cocutil\\vip";
     /***
      * 默认文件存放地址
@@ -89,17 +90,20 @@ public class ConfigParameter {
     public static final String file_YuQing_TEXT = "c:\\cocutil\\yq\\yuqing.txt";
     //鱼情合成头部图片
     public static final String file_Yq_Image = "c:\\cocutil\\matter\\cocyq.jpg";
+
+    //鱼情合成头部图片
+    public static final String file_Yq_Image_Two = "c:\\cocutil\\matter\\cocyq1.jpg";
     //鱼情趋势图
     public static final String file_Yq_qushi_Image = "c:\\cocutil\\yq\\yuqing.png";
     //会员用户过期生成的图片
     public static final String file_vip = "c:\\cocutil\\vip\\userRemove.png";
     public static String filePath[] = {
             filePath_jarvis_Image,filePath_ClanImage,filePath_CocAll,filePath_ImageClan,filePath_ImagePlayer
-            ,filePath_Yq,filePath_ClanAll,filePath_ClanCollectText,filePath_ClanCollectImage,filePath_vip
+            ,filePath_Yq,filePath_ClanAll,filePath_ClanCollectText,filePath_ClanCollectImage,filePath_vip,filePath_group
     };
     public static String fileRemove[] = {
             filePath_ImageClan,filePath_ImagePlayer,filePath_Yq,filePath_ClanAll,filePath_ClanCollectText,filePath_ClanCollectImage,
-            filePath_jarvis_Image
+            filePath_jarvis_Image,filePath_group
     };
 
     static{

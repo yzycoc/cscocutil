@@ -26,7 +26,7 @@ import java.util.List;
 @Slf4j
 @Controller
 @RequestMapping(value="/uservip")
-@Api(value = "VIP用户相关接口",tags = "VIP用户操作接口")
+@Api(value = "U-VIP用户相关接口",tags = "VIP用户操作接口")
 public class UserVipApiContreoller {
     @Autowired
     private CsUserVipService csUserVipService;
