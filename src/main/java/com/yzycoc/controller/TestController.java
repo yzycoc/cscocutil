@@ -72,7 +72,7 @@ public class TestController {
     public void getImage(HttpServletResponse response){
         List<ApplyCocUser> list = publicLexiconService.list();
         try {
-            BufferedImage image = new ImageTable<ApplyCocUser>().table(list);
+            BufferedImage image = new ImageUtil().tableIamge(new ImageTable<ApplyCocUser>().table(list));
             ByteArrayOutputStream os = new ByteArrayOutputStream();
             ImageIO.write(image, "png", os);
             InputStream fis = new ByteArrayInputStream(os.toByteArray());
@@ -100,7 +100,7 @@ public class TestController {
             List<DemoEntity> ima = new ArrayList<>();
             ima.add(new DemoEntity("测试","heigths"));
             ima.add(new DemoEntity("高度","demo"));
-            BufferedImage image = new ImageTable<DemoEntity>().table(ima);
+            BufferedImage image =new ImageUtil().tableIamge(new ImageTable<DemoEntity>().table(ima));
             ByteArrayOutputStream os = new ByteArrayOutputStream();
             ImageIO.write(image, "png", os);
             InputStream fis = new ByteArrayInputStream(os.toByteArray());

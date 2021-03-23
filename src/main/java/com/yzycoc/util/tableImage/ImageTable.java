@@ -1,6 +1,5 @@
 package com.yzycoc.util.tableImage;
 
-import java.awt.image.BufferedImage;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +13,7 @@ import java.util.List;
  **/
 public class ImageTable<T> {
 
-    public <T> BufferedImage table(List<T> tableList) throws Exception {
+    public <T> List<List<String>> table(List<T> tableList) throws Exception {
         List<List<String>> result =new ArrayList<>();
         List<String> title = new ArrayList<>();
         for (int i = 0; i < tableList.size(); i++) {
@@ -52,7 +51,7 @@ public class ImageTable<T> {
                 throw new NullPointerException("类为空，无法找到field类");
             }
         }
-        return new ImageUtil().tableIamge(result);
+       return result;
     }
 
 }

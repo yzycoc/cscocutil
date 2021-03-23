@@ -2,6 +2,7 @@ package com.yzycoc.cocutil.SQLAll.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yzycoc.cocutil.SQLAll.bean.csuser.CsUser;
+import com.yzycoc.cocutil.service.result.ClanResult;
 import com.yzycoc.custom.result.Result;
 import com.yzycoc.from.*;
 
@@ -44,11 +45,18 @@ public interface CsUserService extends IService<CsUser> {
      * @return
      */
     Result<?> getAuthorization(String userNumber);
-
+    /***
+     * 新版本图片版本
+     * @param userNumber
+     * @return
+     */
+    ClanResult getAuthorization2(String userNumber);
     /***
      * 解除群授权
      * @param deleteBot
      * @return
      */
     Result<?> deleteGroup(DeleteBot deleteBot);
+
+
 }

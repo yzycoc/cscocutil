@@ -3,6 +3,7 @@ package com.yzycoc.cocutil.SQLAll.bean.csuser;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.yzycoc.cocutil.SQLAll.bean.BaseEntity;
+import com.yzycoc.util.tableImage.ImageName;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 

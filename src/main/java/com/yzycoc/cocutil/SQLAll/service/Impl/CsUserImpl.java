@@ -1,6 +1,7 @@
 package com.yzycoc.cocutil.SQLAll.service.Impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yzycoc.cocutil.SQLAll.bean.*;
 import com.yzycoc.cocutil.SQLAll.bean.csuser.CsUser;
@@ -13,16 +14,21 @@ import com.yzycoc.cocutil.SQLAll.mapper.CsUserMapper;
 import com.yzycoc.cocutil.SQLAll.mapper.CsUserPrivateMapper;
 import com.yzycoc.cocutil.SQLAll.service.*;
 import com.yzycoc.cocutil.SQLMy.service.MyCsUserService;
+import com.yzycoc.cocutil.service.accomplish.image.ImageCsUser;
+import com.yzycoc.cocutil.service.result.ClanResult;
 import com.yzycoc.config.ConfigParameter;
 import com.yzycoc.custom.TimeUtiles;
 import com.yzycoc.custom.result.Result;
 import com.yzycoc.from.*;
+import com.yzycoc.util.tableImage.ImageTable;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.awt.image.BufferedImage;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -394,6 +400,77 @@ public class CsUserImpl  extends ServiceImpl<CsUserMapper, CsUser> implements Cs
             return Result.ok(result.toString());
         }
         return Result.ok("您未在任何群进行授权。");
+    }
+
+    @Override
+    public ClanResult getAuthorization2(String userNumber) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("MM-dd HH:mm:ss");
+            List<CsUserImageVo> list = baseMapper.listCreateNumber(userNumber);
+            if(list.size()==0){
+                return new ClanResult(false,"您还未授权过任何群里！");
+            }
+            List<CsUserImage> data = new ArrayList<>();
+            for (CsUserImageVo csUserImageVo : list) {
+                CsUserImage csUserImage = new CsUserImage();
+                csUserImage.setRemark(csUserImageVo.getRemark());
+                csUserImage.setRobotNumber(csUserImageVo.getRobotNumber());
+                csUserImage.setGroupNumber(csUserImageVo.getGroupNumber());
+                csUserImage.setName(csUserImageVo.getName());
+                if(csUserImageVo.getPerpetual()){
+                    csUserImage.setPerpetual("★永久授权★");
+                }else{
+                    int i = TimeUtiles.differentDays(new Date(), csUserImageVo.getTime());
+                    if(i>1){
+                        csUserImage.setPerpetual("剩余"+i+"天");
+                    }else if(i >= 0){
+                        csUserImage.setPerpetual(sdf.format(csUserImageVo.getTime()));
+                    }else{
+                        csUserImage.setPerpetual("已过期"+(i*-1) + "天");
+                    }
+                }
+                data.add(csUserImage);
+            }
+            try {
+                ClanResult realTime = new ImageCsUser().getRealTime(data,userNumber);
+                return realTime;
+            }catch (Exception e){
+                Map<String,List<CsUserImageVo>> cs = new HashMap<>();
+                for (CsUserImageVo csUser : list) {
+                    List<CsUserImageVo> csUsers = cs.get(csUser.getRobotNumber());
+                    if(csUsers == null){
+                        csUsers = new ArrayList<>();
+                        csUsers.add(csUser);
+                        cs.put(csUser.getRobotNumber(),csUsers);
+                    }else{
+                        csUsers.add(csUser);
+                        cs.put(csUser.getRobotNumber(),csUsers);
+                    }
+                }
+                StringBuffer result = new StringBuffer();
+                for (String key : cs.keySet()) {
+                    result.append("\\uD83E\\uDD16"+key+"\\uD83E\\uDD16\n");
+                    List<CsUserImageVo> csUsers = cs.get(key);
+                    for (CsUserImageVo csUser : csUsers) {
+                        result.append("\\uD83D\\uDC65群"+csUser.getGroupNumber()+"\n");
+                        if(csUser.getPerpetual()){
+                            result.append("\\uD83D\\uDC8E永久授权\\uD83D\\uDC8E\n");
+                        }else{
+                            int i = TimeUtiles.differentDays(new Date(), csUser.getTime());
+                            if(i>0){
+                                result.append("\\u23F3剩余"+i+"天\\u23F3\n");
+                            }else{
+                                result.append("\\u23F3已过期\\u23F3\n");
+                            }
+                        }
+                    }
+                }
+                return new ClanResult(false, result.toString());
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ClanResult(false,"您还未授权过任何群里！");
     }
 
     @Override

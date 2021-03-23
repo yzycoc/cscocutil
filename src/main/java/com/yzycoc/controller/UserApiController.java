@@ -4,6 +4,7 @@ package com.yzycoc.controller;
 import com.yzycoc.cocutil.SQLAll.bean.csuser.CsUser;
 import com.yzycoc.cocutil.SQLAll.bean.score.Score;
 import com.yzycoc.cocutil.SQLAll.service.*;
+import com.yzycoc.cocutil.service.result.ClanResult;
 import com.yzycoc.custom.result.Result;
 import com.yzycoc.from.*;
 import com.yzycoc.util.RedisUtil;
@@ -116,6 +117,12 @@ public class UserApiController {
         return csUserService.getAuthorization(userNumber);
     }
 
+    @ApiOperation(value = "A-查询授权情况", notes = "V1.2")
+    @GetMapping(value = "/getAuthorization2")
+    @ResponseBody
+    public ClanResult getAuthorization2(String userNumber){
+        return csUserService.getAuthorization2(userNumber);
+    }
 
 
 

@@ -297,6 +297,16 @@ public class TimeUtiles {
         return tcMsg;
     }
 
+    public static void main(String[] args) {
+        Date date = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.MINUTE,-5660);
+        Date time = cal.getTime();
+        System.out.println(time.toString());
+        int i = differentDays(date, cal.getTime());
+        System.out.println(i);
+    }
     /**
      * date2比date1多的天数
      * @param date1
