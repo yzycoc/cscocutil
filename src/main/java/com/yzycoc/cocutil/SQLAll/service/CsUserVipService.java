@@ -25,4 +25,6 @@ public interface CsUserVipService extends IService<CsUserVip> {
     List<Dom4jResult> dom4jXml(String xml, String robotNumber, String money);
 
     void resultMyScoreOkImage(String userNumber, HttpServletRequest request, HttpServletResponse response);
+
+    StringBuffer getMyScore(String userNumber);
 }

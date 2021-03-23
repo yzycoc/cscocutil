@@ -5,6 +5,7 @@ import com.yzycoc.cocutil.SQLAll.bean.csuser.CsUser;
 import com.yzycoc.cocutil.SQLAll.bean.score.Score;
 import com.yzycoc.cocutil.SQLAll.service.*;
 import com.yzycoc.cocutil.service.result.ClanResult;
+import com.yzycoc.cocutil.util.CocApiAndCqCustom;
 import com.yzycoc.custom.result.Result;
 import com.yzycoc.from.*;
 import com.yzycoc.util.RedisUtil;
@@ -95,11 +96,8 @@ public class UserApiController {
     @GetMapping(value = "/getMyScore")
     @ResponseBody
     public Result<?> getMyScore(String userNumber){
-        Score user = scoreService.query().eq("qq_Num", userNumber).one();
-        Integer userCost = 0;
-        if(user!=null)
-            userCost = user.getNumber();
-        return Result.ok("\\uD83D\\uDC33积分:"+userCost+"\\uD83D\\uDC33");
+        StringBuffer result = csUserVipService.getMyScore(userNumber);
+        return Result.ok(result.toString());
     }
 
 

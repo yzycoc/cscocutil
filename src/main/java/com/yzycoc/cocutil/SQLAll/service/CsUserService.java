@@ -58,5 +58,4 @@ public interface CsUserService extends IService<CsUser> {
      */
     Result<?> deleteGroup(DeleteBot deleteBot);
 
-
 }

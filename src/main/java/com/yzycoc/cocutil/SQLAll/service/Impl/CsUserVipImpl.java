@@ -203,7 +203,6 @@ public class CsUserVipImpl extends ServiceImpl<CsUserVipMapper, CsUserVip> imple
     public void resultMyScoreOkImage(String userNumber, HttpServletRequest request, HttpServletResponse response) {
         BufferedImage image = null;
         try {
-            //VipLog vipLog = vipLogService.query().eq("uuid", uuid).one();
             Score score = scoreService.query().eq("qq_num", userNumber).one();
             CsUserVip csUserVip = this.query().eq("qqnumber", userNumber).one();
             Integer count = csUserService.query().eq("create_name", userNumber).count();
@@ -309,5 +308,23 @@ public class CsUserVipImpl extends ServiceImpl<CsUserVipMapper, CsUserVip> imple
         }
     }
 
-
+    @Override
+    public StringBuffer getMyScore(String userNumber) {
+        Score user = scoreService.query().eq("qq_Num", userNumber).one();
+        Integer userCost = 0;
+        if(user!=null)
+            userCost = user.getNumber();
+        StringBuffer result = new StringBuffer();
+        Integer count = csUserService.query().eq("create_name", userNumber).count();
+        AddCsUserPrivate addCsUserPrivate = new AddCsUserPrivate();
+        addCsUserPrivate.setUserNumber(userNumber);
+        Integer privateNumber = csUserPrivateMapper.getIsUser(addCsUserPrivate);
+        result.append("┏[@"+userNumber+"]");
+        result.append("\n┣积分剩余："+userCost);
+        result.append("\n┣可授权群：1个");
+        result.append("\n┣已授权群："+count+"个");
+        result.append("\n┣可添加机器人：1个");
+        result.append("\n┗已添加机器人："+privateNumber+"个");
+        return result;
+    }
 }
