@@ -38,6 +38,7 @@ public class ImageCsUser {
         log.info("开始生成用户群授权信息！");
         String saveFilePath = "group" + userNumber;
         ImageUtil imageUtil = new ImageUtil();
+        imageUtil.setMarginWidth(50);
         BufferedImage image = imageUtil.tableIamge(new ImageTable<CsUserImage>().table(data));
         Thumbnails.of(image).outputFormat("jpg").scale(1f).outputQuality(1f).toFile(new File(ConfigParameter.filePath_group+"\\"+saveFilePath));
         log.info("用户群授权信息图片生成完毕，耗时"+(System.currentTimeMillis() - startTime)+"ms");

@@ -2,7 +2,10 @@ package com.yzycoc;
 
 import com.baomidou.mybatisplus.autoconfigure.MybatisPlusAutoConfiguration;
 import com.yzycoc.cocutil.SQLAll.bean.MyIps;
+import com.yzycoc.cocutil.SQLAll.bean.csuser.CsUser;
+import com.yzycoc.cocutil.SQLAll.service.CsUserService;
 import com.yzycoc.cocutil.SQLAll.service.MyIpsService;
+import com.yzycoc.cocutil.SQLMy.bean.MyCsUser;
 import com.yzycoc.cocutil.SQLMy.service.MyCsUserService;
 import com.yzycoc.config.ConfigParameter;
 import com.yzycoc.custom.*;
@@ -10,6 +13,7 @@ import com.yzycoc.custom.result.AjaxHttpResult;
 import com.yzycoc.custom.result.Result;
 import com.yzycoc.util.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,7 +27,10 @@ import redis.clients.jedis.JedisShardInfo;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 @Slf4j
 @EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class, DataSourceTransactionManagerAutoConfiguration.class, MybatisPlusAutoConfiguration.class})
@@ -94,6 +101,39 @@ public class CscocutilApplication {
         }catch (Exception e){
            e.printStackTrace();
         }
+       /*
+        MyCsUserService myCsUserService = SpringContextUtil.getBean(MyCsUserService.class);
+        CsUserService csUserService = SpringContextUtil.getBean(CsUserService.class);
+        List<MyCsUser> list = myCsUserService.list();
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.YEAR,1);
+        SimpleDateFormat SDF =new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        for (MyCsUser myCsUser : list) {
+        String groupNumber = myCsUser.getGroupNumber();
+        Boolean perpetual = myCsUser.getPerpetual();
+        if(!perpetual){
+        CsUser group_number = csUserService.query().eq("group_number", groupNumber).one();
+        if(group_number == null){
+        group_number = new CsUser();
+        myCsUser.setId(null);
+        BeanUtils.copyProperties(myCsUser,group_number);
+        csUserService.save(group_number);
+        System.out.println("新增成功");
+        }
+        }else{
+        CsUser group_number = csUserService.query().eq("group_number", groupNumber).one();
+        if(group_number == null){
+        group_number = new CsUser();
+        myCsUser.setId(null);
+        myCsUser.setPerpetual(false);
+        myCsUser.setCreateDate(SDF.format(cal.getTime()));
+        BeanUtils.copyProperties(myCsUser,group_number);
+        csUserService.save(group_number);
+        System.out.println("新增成功"+group_number.getGroupNumber());
+        }
+        }
+        }
+        */
     }
 
 }

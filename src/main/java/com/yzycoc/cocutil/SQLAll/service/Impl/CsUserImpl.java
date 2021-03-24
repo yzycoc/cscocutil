@@ -207,7 +207,7 @@ public class CsUserImpl  extends ServiceImpl<CsUserMapper, CsUser> implements Cs
                         .eq("robot_Number", addCsUser.getRobotNumber()).eq("perpetual", "1")
                         .count();
                 if(robot_number!=null&&robot_number>500&&!islyh){
-                    return Result.error("此bot授权的群已达到500。[PS：一个QQ号做多添加500个群]，为避免加群失败，请跟换bot进行授权。");
+                    return Result.error("此bot授权的群已达到500。[PS：一个QQ号做多添加500个群]，为避免加群失败，请跟换bot进行授权。\n您可以访问http://yzycoc.com/qq/ts/state查询正在运行的其他机器人！");
                 }
                 if(number == -1){
                     groupNumber.setPerpetual(true);
