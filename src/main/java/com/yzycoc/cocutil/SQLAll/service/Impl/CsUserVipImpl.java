@@ -319,7 +319,7 @@ public class CsUserVipImpl extends ServiceImpl<CsUserVipMapper, CsUserVip> imple
         AddCsUserPrivate addCsUserPrivate = new AddCsUserPrivate();
         addCsUserPrivate.setUserNumber(userNumber);
         Integer privateNumber = csUserPrivateMapper.getIsUser(addCsUserPrivate);
-        result.append("┏[@"+userNumber+"]");
+        result.append("┏[@"+userNumber+"] ");
         result.append("\n┣积分剩余："+userCost);
         result.append("\n┣可授权群：1个");
         result.append("\n┣已授权群："+count+"个");
