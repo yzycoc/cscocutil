@@ -28,7 +28,12 @@ import java.util.concurrent.Executor;
  **/
 public class ClanListAll {
 
-
+    /***
+     *
+     * @param clanAllTag
+     * @param cocservice
+     * @return
+     */
     public static ClanAllListHttp ClanHttp(String clanAllTag, CocEquilibrium cocservice) {
         try {
             AjaxHttpResult cocHttpResult = cocservice.get(clanAllTag, ClanApiHttp.Clan, true);

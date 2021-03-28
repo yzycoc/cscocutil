@@ -66,6 +66,7 @@ public class ConfigParameter {
     public static final String filePath_Yq = "c:\\cocutil\\imageYq";
     //生成的部落配置信息
     public static final String filePath_ClanAll = "c:\\cocutil\\imageClanAll";
+    public static final String filePath_Statistics = "c:\\cocutil\\imageStatistics";
     //生成部落配置统计
     public static final String filePath_ClanCollectText = "c:\\cocutil\\imageClanAllCollectText";
     public static final String filePath_ClanCollectImage = "c:\\cocutil\\imageClanAllCollectImage";
@@ -99,11 +100,11 @@ public class ConfigParameter {
     public static final String file_vip = "c:\\cocutil\\vip\\userRemove.png";
     public static String filePath[] = {
             filePath_jarvis_Image,filePath_ClanImage,filePath_CocAll,filePath_ImageClan,filePath_ImagePlayer
-            ,filePath_Yq,filePath_ClanAll,filePath_ClanCollectText,filePath_ClanCollectImage,filePath_vip,filePath_group
+            ,filePath_Yq,filePath_ClanAll,filePath_ClanCollectText,filePath_ClanCollectImage,filePath_vip,filePath_group,filePath_Statistics
     };
     public static String fileRemove[] = {
             filePath_ImageClan,filePath_ImagePlayer,filePath_Yq,filePath_ClanAll,filePath_ClanCollectText,filePath_ClanCollectImage,
-            filePath_jarvis_Image,filePath_group
+            filePath_jarvis_Image,filePath_group,filePath_Statistics
     };
 
     static{

@@ -21,6 +21,9 @@ public class ClanAllListHttp extends ClanResult {
     private JSONObject clan;
     private List<JSONObject> memberPlayer = new ArrayList<JSONObject>();
     private BufferedImage clanImage;
+
+
+
     public JSONObject getClan() {
         return clan;
     }

@@ -23,7 +23,7 @@ public class MyTestDemo {
     public static void main(String[] args){
         try {
 
-            MyDemo<DemoEntity> objectMyDemo = new MyDemo<>();
+            /*MyDemo<DemoEntity> objectMyDemo = new MyDemo<>();
             List<DemoEntity> ima = new ArrayList<>();
             ima.add(new DemoEntity("测试","heigths"));
             ima.add(new DemoEntity("高度","demo"));
@@ -33,7 +33,7 @@ public class MyTestDemo {
                 for (String s : list) {
                     System.out.print(s+"\t");
                 }
-            }
+            }*/
             /*ImageUtil imageUtil = new ImageUtil();
             //imageUtil.setTextFont(new Font("微软雅黑",Font.PLAIN,12));
             //imageUtil.setTextTitleFont(new Font("微软雅黑",Font.BOLD,12));

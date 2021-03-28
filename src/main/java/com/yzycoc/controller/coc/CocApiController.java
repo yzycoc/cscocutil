@@ -76,7 +76,8 @@ public class CocApiController {
             return clanApiService.getImageClan(tag,true);
         }
         return  clanApiService.getImageClan(tag,false);
-    }/***
+    }
+    /***
      * 生成玩家信息
      * @param tag
      * @return
@@ -101,6 +102,24 @@ public class CocApiController {
     private ClanResult getImageYq(){
         return clanApiService.getImageYq();
     }
+
+    /***
+     * 生成部落配置 -- 大本营
+     * @param tag
+     * @return
+     */
+    @ApiOperation(value = "生成部落统计", notes = "V1.0")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="tag",value = "标签[不带#]",dataType = "String"),
+            @ApiImplicitParam(name="qqcode",value = "查询用户的标识",dataType = "String"),
+    })
+    @GetMapping(value="/getImageClanStatistics")
+    @ResponseBody
+    private ClanResult getImageClanStatistics(String tag,String qqcode,String type)
+    {
+        return clanApiService.getImageClanStatistics(tag,qqcode,type);
+    }
+
     /***
      * 生成部落配置 -- 大本营
      * @param tag

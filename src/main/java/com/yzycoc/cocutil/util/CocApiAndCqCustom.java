@@ -31,6 +31,7 @@ public class CocApiAndCqCustom {
     //工程车
     public static String[] s = {"Wall Wrecker","Battle Blimp","Stone Slammer","Siege Barracks","Log Launcher"};
 
+
     private static Map<String,String> mapnation =new HashMap<String, String>();
 
     public static final Map<String, String> war = new HashMap<>();

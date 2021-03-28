@@ -9,7 +9,6 @@ import com.yzycoc.cocutil.SQLMy.service.MyLexiconService;
 import com.yzycoc.config.ConfigParameter;
 import com.yzycoc.util.DemoEntity;
 import com.yzycoc.util.GetIp;
-import com.yzycoc.util.MyDemo;
 import com.yzycoc.util.tableImage.ImageTable;
 import com.yzycoc.util.tableImage.ImageUtil;
 import io.swagger.annotations.*;
