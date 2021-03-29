@@ -14,14 +14,14 @@ import java.util.Date;
  **/
 @Data
 public class CsUserImage {
+    @ImageName("BOT 昵称")
+    private String name;
+    @ImageName("授权机器人")
+    private String robotNumber;//robotQQ
     @ImageName("QQ群号")
     private String groupNumber;//QQ群号
     @ImageName("授权截止时间")
     private String perpetual;//是否永久
-    @ImageName("授权机器人")
-    private String robotNumber;//robotQQ
-    @ImageName("BOT 昵称")
-    private String name;
     @ImageName("BOT 备注")
     private String remark;
 }

@@ -8,6 +8,7 @@ import com.yzycoc.cocutil.service.result.ClanStatistics;
 import com.yzycoc.cocutil.service.result.clanAll.ClanAllListHttp;
 import com.yzycoc.cocutil.util.CocApiAndCqCustom;
 import com.yzycoc.cocutil.util.CocEquilibrium;
+import com.yzycoc.cocutil.util.enums.WarLeagueEnum;
 import com.yzycoc.config.ConfigParameter;
 import com.yzycoc.custom.ErweimaQRCodeUtil;
 import com.yzycoc.util.ImageUtils;
@@ -62,13 +63,38 @@ public class ImageClanStatistics {
             Graphics2D g = image.createGraphics();
             g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
             g.fillRect(0, 0, image.getWidth(), image.getHeight());
-            g.drawImage(ErweimaQRCodeUtil.createImage("测试", ConfigParameter.file_QRcode, true), 0, 0 ,200,200, null);
+            //进行二维码计算
+            g.drawImage(ErweimaQRCodeUtil.createImage(ConfigParameter.HttpUrl+"", ConfigParameter.file_QRcode, true), 0, 0 ,200,200, null);
             g.drawImage(clanImage, 300, 0 ,200,200, null);
             Font f = new Font("微软雅黑", Font.BOLD, 30);
             g.setColor(Color.black);
             g.setFont(f);
-            ImageUtils.drawString(g,f,"扫码进网站，还可以到处Excel",200,50,100);
+            g.drawString("进网站",210,35);
+            g.drawString("可导出",210,75+40);
+            g.drawString("Excel",210,115+80);
             g.drawImage(bufferedImage, 0, 200, bufferedImage.getWidth(), bufferedImage.getHeight(), null);
+            //
+            g.drawString("部落名："+clan.getString("name"),520,35);
+            g.drawString("部落标签："+clan.getString("tag"),520,75);
+            JSONObject warLeague = clan.getJSONObject("warLeague");
+            if(warLeague!=null) {
+                g.drawString("联赛等级："+WarLeagueEnum.getName(warLeague.getString("id")),520,115);
+            }else{
+                g.drawString("联赛等级：未定级",520,115);
+            }
+            g.drawString("部落人数："+clan.getString("members"),520,155);
+            StringBuffer txt = new StringBuffer();
+            txt.append("部落等级："+clan.getString("clanLevel"));
+            txt.append("级  类型："+CocApiAndCqCustom.CocTpe(clan.getString("type")));
+            txt.append( "   所需奖杯：" + clan.getString("requiredTrophies"));
+            Boolean isWarLogPublic = clan.getBoolean("isWarLogPublic");
+            if(isWarLogPublic){
+                txt.append( "   战争日志：公开");
+            }else{
+                txt.append( "   战争日志：未公开");
+            }
+            txt.append( "   部落战：胜/平/败|"+JSONString(clan,"warWins")+"/"+JSONString(clan,"warTies")+"/"+JSONString(clan,"warLosses"));
+            g.drawString(txt.toString(),520,195);
             Thumbnails.of(image).outputFormat("jpg").scale(1f).outputQuality(1f).toFile(new File(ConfigParameter.filePath_Statistics+"\\"+saveFilePath));
             return new ClanResult(true,saveFilePath, ConfigParameter.filePath_Statistics,"jpg");
         } catch (Exception e) {
