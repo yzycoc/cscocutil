@@ -157,7 +157,8 @@ public class CocEquilibrium {
             case "400":
                 return new AjaxHttpResult(true, "标签错误，查询失败，建议您进入游戏直接复制标签。");
             case "403":
-                log.error("COCAPI无法使用，请更换！"+URL);
+
+                log.error("COCAPI无法使用，请更换！\r\n网址：{}\r\nAPI:{}",URL,ConfigParameter.CocApi);
                 return new AjaxHttpResult(true, "查询失败，因为COCAPI密钥出现问题！您可以向作者反馈哦！");
             case "404":
                 return new AjaxHttpResult(true,"查询失败，标签错误，游戏接口无法获取数据！");

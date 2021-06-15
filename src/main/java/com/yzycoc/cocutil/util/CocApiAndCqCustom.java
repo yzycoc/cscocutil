@@ -6,11 +6,9 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.channels.FileChannel;
-import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.yzycoc.config.ConfigParameter.file_YuQing_HTML;
 
 /**
  * @program: cscocutil
@@ -21,7 +19,10 @@ import static com.yzycoc.config.ConfigParameter.file_YuQing_HTML;
  **/
 public class CocApiAndCqCustom {
     //主世界兵种列表
-    public static String[] troops_home = {"Barbarian","Archer","Giant","Goblin","Wall Breaker","Balloon","Wizard","Healer","Dragon","P.E.K.K.A","Baby Dragon","Miner","Electro Dragon","Yeti","Minion","Hog Rider","Valkyrie","Golem","Witch","Lava Hound","Bowler","Ice Golem","Headhunter"};
+    public static String[] troops_home = {"Barbarian","Archer","Giant","Goblin","Wall Breaker","Balloon"
+            ,"Wizard","Healer","Dragon","P.E.K.K.A","Baby Dragon","Miner","Electro Dragon","Yeti"
+            ,"Minion","Hog Rider","Valkyrie","Golem","Witch","Lava Hound","Bowler","Ice Golem"
+            ,"Headhunter"};
     //夜世界兵种列表
     public static String[] troops_builderBase = {"Raged Barbarian","Sneaky Archer","Boxer Giant","Beta Minion","Bomber","Baby Dragon","Cannon Cart","Night Witch","Drop Ship","Super P.E.K.K.A","Hog Glider"};
     //三王信息
@@ -31,7 +32,8 @@ public class CocApiAndCqCustom {
     //工程车
     public static String[] s = {"Wall Wrecker","Battle Blimp","Stone Slammer","Siege Barracks","Log Launcher"};
 
-
+    //主世界兵种列表
+    public static String[] troops_home_zhanChon = {"L.A.S.S.I","Electro Owl","Mighty Yak","Unicorn"};
     private static Map<String,String> mapnation =new HashMap<String, String>();
 
     public static final Map<String, String> war = new HashMap<>();
@@ -466,22 +468,24 @@ public class CocApiAndCqCustom {
     public static Integer getTownHallLevel(Integer townHallLevel) {
         if(townHallLevel==null) {
             return 7;
-        }else if(townHallLevel == 13) {
+        }else if(townHallLevel == 14) {
             return 0;
-        }else if(townHallLevel == 12) {
+        }else if(townHallLevel == 13) {
             return 1;
-        }else if(townHallLevel == 11) {
+        }else if(townHallLevel == 12) {
             return 2;
-        }else if(townHallLevel == 10) {
+        }else if(townHallLevel == 11) {
             return 3;
-        }else if(townHallLevel == 9) {
+        }else if(townHallLevel == 10) {
             return 4;
-        }else if(townHallLevel == 8) {
+        }else if(townHallLevel == 9) {
             return 5;
-        }else if(townHallLevel == 7) {
+        }else if(townHallLevel == 8) {
             return 6;
-        }else {
+        }else if(townHallLevel == 7) {
             return 7;
+        }else {
+            return 8;
         }
     }
     public static Integer getLeague(Integer id) {

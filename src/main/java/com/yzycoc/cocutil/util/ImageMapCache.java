@@ -29,7 +29,7 @@ public class ImageMapCache {
                     //奖杯
                     ,"Plaryleague29000000","Plaryleague29000001","Plaryleague29000002","Plaryleague29000003","Plaryleague29000004","Plaryleague29000005","Plaryleague29000006","Plaryleague29000007","Plaryleague29000008","Plaryleague29000009","Plaryleague29000010","Plaryleague29000011","Plaryleague29000012","Plaryleague29000013","Plaryleague29000014","Plaryleague29000015","Plaryleague29000016","Plaryleague29000017","Plaryleague29000018","Plaryleague29000019","Plaryleague29000020","Plaryleague29000021","Plaryleague29000022"
                     //大本营
-                    ,"Lv3","Lv4","Lv5","Lv6","Lv7","Lv8","Lv9","Lv10","Lv11","Lv12-1","Lv12-2","Lv12-3","Lv12-4","Lv12-5","Lv13-1","Lv13-2","Lv13-3","Lv13-4","Lv13-5"
+                    ,"Lv3","Lv4","Lv5","Lv6","Lv7","Lv8","Lv9","Lv10","Lv11","Lv12-1","Lv12-2","Lv12-3","Lv12-4","Lv12-5","Lv13-1","Lv13-2","Lv13-3","Lv13-4","Lv13-5","Lv14-1","Lv14-2","Lv14-3","Lv14-4","Lv14-5"
                     //夜世界
                     ,"BH2","BH3","BH4","BH5","BH6","BH7","BH8","BH9"
                     //鱼情

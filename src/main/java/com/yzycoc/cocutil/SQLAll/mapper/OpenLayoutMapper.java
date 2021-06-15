@@ -16,4 +16,5 @@ import org.apache.ibatis.annotations.Select;
 public interface OpenLayoutMapper extends BaseMapper<OpenLayout> {
     @Select("SELECT  * FROM open_layout WHERE id IN (SELECT t.id FROM (SELECT id FROM open_layout  ORDER BY RAND() LIMIT 1 ) AS t )")
     OpenLayout getRandomFormation();
+
 }

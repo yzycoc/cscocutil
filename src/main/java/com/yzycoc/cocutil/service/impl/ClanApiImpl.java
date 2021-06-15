@@ -144,7 +144,6 @@ public class ClanApiImpl implements ClanApiService {
         String clanCacheQqcode = "ImageClanAllCode"+qqcode;
         Boolean isExist = ConfigParameter.clanCache.get(clanCacheName);
         if(isExist != null) return new ClanResult(false,"此部落科技配置图片已在生成中，请勿重复获取。");
-
         isExist = ConfigParameter.clanCache.get(clanCacheQqcode);
         if(isExist != null) return new ClanResult(false,"您上一个查询还未完成，请等待上一个查询结束后在查询。");
         //添加 该部落 的查询 限制
@@ -355,6 +354,43 @@ public class ClanApiImpl implements ClanApiService {
         }
         try {
             ClanResult clanResults = new ImageClanStatistics().get(tag,type,cocHttp);
+            if(clanResults.getSuccess()){
+                /**如果成功，则此用户无法进行查询 + 1*/
+                vipCocAstrictService.isOk(qqcode,"ImageClanStatistics");
+            }
+            ConfigParameter.clanCache.remove(clanCacheName);
+            ConfigParameter.clanCache.remove(clanCacheQqcode);
+            return clanResults;
+        }catch (Exception e){
+            e.printStackTrace();
+            ConfigParameter.clanCache.remove(clanCacheName);
+            ConfigParameter.clanCache.remove(clanCacheQqcode);
+            return new ClanResult(false,"查询部落科技配置图片异常，请反馈作者！");
+        }
+    }
+
+    @Override
+    public ClanResult imageClanStatisticsHtml(String tag, String qqcode, String type) {
+        String clanCacheName = "getImageClanStatistics" + tag;
+        String clanCacheQqcode = "ImageClanStatistics"+qqcode;
+        Boolean isExist = ConfigParameter.clanCache.get(clanCacheName);
+        if(isExist != null) return new ClanResult(false,"此部落统计图片已在生成中，请勿重复获取。");
+
+        isExist = ConfigParameter.clanCache.get(clanCacheQqcode);
+        if(isExist != null) return new ClanResult(false,"您上一个查询还未完成，请等待上一个查询结束后在查询。");
+        //添加 该部落 的查询 限制
+        ConfigParameter.clanCache.putPlusMinutes(clanCacheName,true,4);
+        //用户唯一标识的限制
+        ConfigParameter.clanCache.putPlusMinutes(clanCacheQqcode,true,4);
+        //查询用户是否还有可查询的剩余次数
+        Boolean t = vipCocAstrictService.isGoto(qqcode,"ImageClanStatistics",1);
+        if(t){
+            ConfigParameter.clanCache.remove(clanCacheName);
+            ConfigParameter.clanCache.remove(clanCacheQqcode);
+            return new ClanResult(false,"由于用户增加，为减少服务器负担，每日仅提供一次查询，每日0点恢复。如需增加查询，您可以赞助后即恢复无限制查询机会。");
+        }
+        try {
+            ClanResult clanResults = new ImageClanStatistics().getHtml(tag,type,cocHttp);
             if(clanResults.getSuccess()){
                 /**如果成功，则此用户无法进行查询 + 1*/
                 vipCocAstrictService.isOk(qqcode,"ImageClanStatistics");

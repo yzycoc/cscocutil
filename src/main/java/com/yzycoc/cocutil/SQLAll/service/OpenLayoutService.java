@@ -15,8 +15,9 @@ public interface OpenLayoutService extends IService<OpenLayout> {
     /***
      * 获取一个随机 阵型
      * @return
+     * @param type
      */
-    ClanResult getRandomFormation();
+    ClanResult getRandomFormation(String type);
 
     ClanResult getFormation(String tag);
 }

@@ -27,13 +27,13 @@ import javax.servlet.http.HttpServletResponse;
 public class CocApiController {
 
     @Autowired
-    private ClanApiService clanApiService;
+    public ClanApiService clanApiService;
     @Autowired
-    private JarvisApiService jarvisApiService;
+    public JarvisApiService jarvisApiService;
     @Autowired
-    private ApiService apiService;
+    public ApiService apiService;
     @Autowired
-    private OpenLayoutService openLayoutService;
+    public OpenLayoutService openLayoutService;
     /***
      * 测试链接是否正常
      * @return
@@ -41,7 +41,7 @@ public class CocApiController {
     @ApiOperation(value = "查询机器人状态", notes = "V1.0")
     @GetMapping(value={"/state","/"})
     @ResponseBody
-    private Boolean state(){
+    public Boolean state(){
         return true;
     }
 
@@ -52,7 +52,7 @@ public class CocApiController {
     @ApiOperation(value = "更新鱼情信息", notes = "V1.1")
     @GetMapping(value="/yq")
     @ResponseBody
-    private int updateYq() {
+    public int updateYq() {
         try {
             return clanApiService.updateYq()==true?1:0;
         } catch (Exception e) {
@@ -71,7 +71,7 @@ public class CocApiController {
     @ApiImplicitParam(name="tag",value = "标签[不带#]",dataType = "String")
     @GetMapping(value="/getImageClan")
     @ResponseBody
-    private ClanResult getImageClanRealTime(String tag,Integer realTime){
+    public ClanResult getImageClanRealTime(String tag,Integer realTime){
         if(realTime!=null && realTime == 1){
             return clanApiService.getImageClan(tag,true);
         }
@@ -86,7 +86,7 @@ public class CocApiController {
     @ApiImplicitParam(name="tag",value = "标签[不带#]",dataType = "String")
     @GetMapping(value="/getImagePlayer")
     @ResponseBody
-    private ClanResult getImagePlayer(String tag,Integer realTime){
+    public ClanResult getImagePlayer(String tag,Integer realTime){
         if(realTime!=null && realTime == 1){
             return clanApiService.getImagePlayer(tag,true);
         }
@@ -99,27 +99,44 @@ public class CocApiController {
     @ApiOperation(value = "生成鱼情信息", notes = "V1.1")
     @GetMapping(value="/getImageYq")
     @ResponseBody
-    private ClanResult getImageYq(){
+    public ClanResult getImageYq(){
         return clanApiService.getImageYq();
     }
 
     /***
-     * 生成部落配置 -- 大本营
+     * coc统计
      * @param tag
      * @return
      */
-    @ApiOperation(value = "生成部落统计", notes = "V1.0")
+    @ApiOperation(value = "coc统计", notes = "V1.1")
     @ApiImplicitParams({
             @ApiImplicitParam(name="tag",value = "标签[不带#]",dataType = "String"),
             @ApiImplicitParam(name="qqcode",value = "查询用户的标识",dataType = "String"),
+            @ApiImplicitParam(name="type",value = "类型",dataType = "String"),
     })
-    @GetMapping(value="/getImageClanStatistics")
+    @GetMapping(value="/imageClanstat")
     @ResponseBody
-    private ClanResult getImageClanStatistics(String tag,String qqcode,String type)
-    {
+    public ClanResult imageClanStatistics(String tag,String qqcode,String type){
         return clanApiService.getImageClanStatistics(tag,qqcode,type);
     }
 
+
+    /***
+     * coc统计
+     * @param tag
+     * @return
+     */
+    @ApiOperation(value = "coc统计HTML", notes = "V1.1")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="tag",value = "标签[不带#]",dataType = "String"),
+            @ApiImplicitParam(name="qqcode",value = "查询用户的标识",dataType = "String"),
+            @ApiImplicitParam(name="type",value = "类型",dataType = "String"),
+    })
+    @GetMapping(value="/imageClanStatisticsHtml")
+    @ResponseBody
+    public ClanResult imageClanStatisticsHtml(String tag,String qqcode,String type){
+        return clanApiService.imageClanStatisticsHtml(tag,qqcode,type);
+    }
     /***
      * 生成部落配置 -- 大本营
      * @param tag
@@ -132,7 +149,7 @@ public class CocApiController {
     })
     @GetMapping(value="/getImageClanAll")
     @ResponseBody
-    private ClanResult getImageClanAll(String tag,String qqcode)
+    public ClanResult getImageClanAll(String tag,String qqcode)
     {
         return clanApiService.getImageClanAll(tag,qqcode);
     }
@@ -148,7 +165,7 @@ public class CocApiController {
     })
     @GetMapping(value="/getImageClanAllCollectText")
     @ResponseBody
-    private ClanResult getImageClanAllCollectText(String tag,String qqcode){
+    public ClanResult getImageClanAllCollectText(String tag,String qqcode){
         return clanApiService.getImageClanAllCollectText(tag,qqcode);
     }
     /***
@@ -163,7 +180,7 @@ public class CocApiController {
     })
     @GetMapping(value="/getImageClanAllCollectImage")
     @ResponseBody
-    private ClanResult getImageClanAllCollectImage(String tag,String qqcode){
+    public ClanResult getImageClanAllCollectImage(String tag,String qqcode){
         return clanApiService.getImageClanAllCollectImage(tag,qqcode);
     }
     /***
@@ -175,7 +192,7 @@ public class CocApiController {
     @ApiImplicitParam(name="name",value = "原查询内容",dataType = "String")
     @GetMapping(value="/getNameClan")
     @ResponseBody
-    private ClanResult getNameClan(String name){
+    public ClanResult getNameClan(String name){
         System.out.println("查询部落名:"+name);
         String[] tag = name.split("#");
         return clanApiService.getNameClan(tag);
@@ -189,7 +206,7 @@ public class CocApiController {
     @ApiImplicitParam(name="name",value = "原查询内容",dataType = "String")
     @GetMapping(value="/getNamePlayer")
     @ResponseBody
-    private ClanResult getNamePlayer(String name){
+    public ClanResult getNamePlayer(String name){
         System.out.println("查询玩家名:"+name);
         String[] tag = name.split("#");
         return clanApiService.getNamePlayer(tag);
@@ -210,7 +227,7 @@ public class CocApiController {
     })
     @GetMapping(value="/getJarvis")
     @ResponseBody
-    private ClanResult getJarvis(String tag, String jarvis, String war){
+    public ClanResult getJarvis(String tag, String jarvis, String war){
         JarvisEnum jarvisEnum = JarvisEnum.get(jarvis);
         if(jarvisEnum == null){
             return new ClanResult(false,"无法寻找对应的列表，请反馈作者："+jarvis);
@@ -230,7 +247,7 @@ public class CocApiController {
     @ApiImplicitParam(name="tag",value = "标签[不带#]",dataType = "String")
     @GetMapping(value="/getClan")
     @ResponseBody
-    private ClanResult getClan(String tag){
+    public ClanResult getClan(String tag){
         return clanApiService.getClan(tag);
     }
 
@@ -243,7 +260,7 @@ public class CocApiController {
     @ApiImplicitParam(name="tag",value = "标签[不带#]",dataType = "String")
     @GetMapping(value="/getPlayer")
     @ResponseBody
-    private ClanResult getPlayer(String tag){
+    public ClanResult getPlayer(String tag){
         return clanApiService.getPlayer(tag);
     }
 
@@ -254,9 +271,9 @@ public class CocApiController {
     @ApiOperation(value = "获取一个随机阵型", notes = "V1.1")
     @GetMapping(value="/getRandomFormation")
     @ResponseBody
-    private ClanResult getRandomFormation(){
+    public ClanResult getRandomFormation(String type){
          System.out.println("获取随机阵型！");
-        return openLayoutService.getRandomFormation();
+        return openLayoutService.getRandomFormation(type);
     }
     /**
      * 获取一个阵型
@@ -266,7 +283,7 @@ public class CocApiController {
     @ApiImplicitParam(name="tag",value = "编号",dataType = "String")
     @GetMapping(value="/getFormation")
     @ResponseBody
-    private ClanResult getFormation(String tag){
+    public ClanResult getFormation(String tag){
         System.out.println("获取阵型:"+tag);
         return openLayoutService.getFormation(tag);
     }
@@ -277,7 +294,7 @@ public class CocApiController {
     @ApiOperation(value = "重新启动机器人", notes = "V1.1")
     @GetMapping(value="/result")
     @ResponseBody
-    private void result(String path){
+    public void result(String path){
         apiService.resultQQRobot(path);
     }
 
@@ -293,7 +310,7 @@ public class CocApiController {
     @ApiOperation(value = "图片下载", notes = "V1.1")
     @ApiImplicitParam(name="id",value = "uuid",dataType = "String")
     @GetMapping(value="/imageDown")
-    private void imageDown(String id, HttpServletResponse response,HttpServletRequest request){
+    public void imageDown(String id, HttpServletResponse response,HttpServletRequest request){
         ClanResult  result = apiService.imageDown(id,response,request);
         System.out.println("----------------------------------------------------------\n\t" +
                 "请求地址: \t"+ request.getRequestURL() + "\n\t" +

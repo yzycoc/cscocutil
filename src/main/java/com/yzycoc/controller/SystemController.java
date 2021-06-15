@@ -56,14 +56,14 @@ public class SystemController {
 
     @ApiOperation(value = "B-修改CocAPPKEY", notes = "V1.0")
     @PostMapping(value="updateAppkey")
-    @ApiImplicitParam(name = "appkey",value = "文件路径")
+    @ApiImplicitParam(name = "appkey",value = "cockey")
     @ResponseBody
     public Result updateAppkey(String appkey){
         MyIpsService myIpsService = SpringContextUtil.getBean(MyIpsService.class);
         MyIps myIps = myIpsService.query().eq("ip", ConfigParameter.network_Path_IP).eq("prot",ConfigParameter.PROT).one();
         myIps.setCocApi(appkey);
         myIpsService.saveOrUpdate(myIps);
-        ConfigParameter.CocApi =" "+ myIps.getCocApi();
+        ConfigParameter.CocApi =myIps.getCocApi();
         System.out.println("已修改成功："+appkey);
         return Result.ok(ConfigParameter.CocApi);
     }

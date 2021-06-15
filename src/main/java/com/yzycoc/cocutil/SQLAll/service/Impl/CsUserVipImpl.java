@@ -9,13 +9,16 @@ import com.yzycoc.cocutil.SQLAll.bean.vip.VipLog;
 import com.yzycoc.cocutil.SQLAll.mapper.CsUserPrivateMapper;
 import com.yzycoc.cocutil.SQLAll.mapper.CsUserVipMapper;
 import com.yzycoc.cocutil.SQLAll.service.*;
-import com.yzycoc.cocutil.SQLMy.service.MyCsUserService;
 import com.yzycoc.cocutil.service.accomplish.image.ImageVip;
 import com.yzycoc.custom.TimeUtiles;
+import com.yzycoc.custom.Utf8Util;
 import com.yzycoc.custom.XmlCustom;
+import com.yzycoc.custom.result.Result;
 import com.yzycoc.custom.result.Xlzdom4jXmlResult;
 import com.yzycoc.from.*;
+import com.yzycoc.util.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -57,6 +60,8 @@ public class CsUserVipImpl extends ServiceImpl<CsUserVipMapper, CsUserVip> imple
     private CsUserService csUserService;
     @Autowired
     private CsUserPrivateMapper csUserPrivateMapper;
+    @Autowired
+    private RedisUtil redisUtil;
     @Override
     public List<Dom4jResult> dom4jXml(String xml, String robotNumber, String moneyNumber) {
         //储存的是用户日志
@@ -326,5 +331,61 @@ public class CsUserVipImpl extends ServiceImpl<CsUserVipMapper, CsUserVip> imple
         result.append("\n┣可添加机器人：1个");
         result.append("\n┗已添加机器人："+privateNumber+"个");
         return result;
+    }
+
+    @Override
+    public String wxQqcode(String qqcode) {
+        CsUserVip wx_id = this.query().eq("wx_id", qqcode).one();
+        if(wx_id!=null){
+            return wx_id.getQqnumber();
+        }
+        return qqcode;
+    }
+
+    @Override
+    public Result<Object> getWxBingding(String userNumber) {
+        CsUserVip one = this.query().eq("qqnumber", userNumber).one();
+        if(one == null){
+            return  Result.error("目前微信绑定只提供给赞助过的VIP用户呢。");
+        }
+        if(StringUtils.isNotEmpty(one.getWxId())){
+            return Result.error("您已经进行过微信绑定，现在无法进行！");
+        }
+        String uuid = UUID.randomUUID().toString();
+        redisUtil.set(uuid,userNumber,120);
+        return Result.ok(uuid);
+    }
+
+    @Override
+    public Result<?> getAddBinding(String wxId, String uuid) {
+        String username = (String)redisUtil.get(uuid);
+        if(username == null){
+            return Result.error("该命令已过期，在QQ中获取重新获取最新的绑定信息！");
+        }
+        CsUserVip one = this.query().eq("wx_Id",wxId).one();
+        if(one!=null){
+            return Result.error("您已经和QQ进行过绑定。无法再次进行绑定！");
+        }
+        one = this.query().eq("qqnumber",username).one();
+        one.setWxId(wxId);
+        this.updateById(one);
+        StringBuffer result = new StringBuffer();
+        result.append("\n┏绑定成功\n");
+        result.append("┣会员QQ：\n");
+        result.append("┣"+username+"\n");
+        result.append("┣注意事项：\n");
+        result.append("┣无法更换绑定！\n");
+        result.append("┣绑定永久有效！\n");
+        result.append("┗感谢您一直以来的支持！");
+        return Result.ok(result.toString());
+    }
+
+    @Override
+    public String isVip(String userNumber) {
+        CsUserVip wx_id = this.query().eq("wx_id", userNumber).one();
+        if(wx_id!=null){
+            return wx_id.getQqnumber();
+        }
+        return null;
     }
 }

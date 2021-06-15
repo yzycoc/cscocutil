@@ -114,7 +114,7 @@ public class ImageClanAllCollectImage {
             g.drawString("主世界配置", 115, h_heigth+25);
             h_heigth+=35;
             for (String[] strings : townHallLevel) {
-                String User_number = strings[1];
+                    String User_number = strings[1];
                 if(!"无".equals(User_number)) {
                     BufferedImage coc = ImageIO.read(new File(ConfigParameter.filePath_CocAll + "moban\\"+strings[0]+".png"));
                     cocg = (Graphics2D)coc.createGraphics();

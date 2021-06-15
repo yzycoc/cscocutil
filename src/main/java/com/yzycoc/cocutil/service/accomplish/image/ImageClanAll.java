@@ -68,7 +68,7 @@ public class ImageClanAll {
             allClan.setLabels(clanLabelsList);
             List<ClanAllListPlayer> clanPlayerList = new ArrayList<>();
 
-            Integer[][] townHallLevel = new Integer[9][10];
+            Integer[][] townHallLevel = new Integer[10][10];
             Integer maxNumber = ConfigParameter.ClanPlayermax;
             for (JSONObject memberPlayer : clanHttp.getMemberPlayer()) {
                 ClanAllListPlayer player = new ClanAllListPlayer();
@@ -82,9 +82,9 @@ public class ImageClanAll {
                 Integer leagueId = memberPlayer.getJSONObject("league")==null?29000000:memberPlayer.getJSONObject("league").getInteger("id");
                 Integer t2 = CocApiAndCqCustom.getLeague(leagueId);
                 townHallLevel[t1][t2] = (townHallLevel[t1][t2]==null?0:townHallLevel[t1][t2]) + 1;
-                townHallLevel[8][9] = (townHallLevel[8][9] == null?0:townHallLevel[8][9]) + 1;
+                townHallLevel[9][9] = (townHallLevel[9][9] == null?0:townHallLevel[9][9]) + 1;
                 townHallLevel[t1][9] = (townHallLevel[t1][9] == null?0:townHallLevel[t1][9]) + 1;
-                townHallLevel[8][t2] = (townHallLevel[8][t2] == null?0:townHallLevel[8][t2])  + 1;
+                townHallLevel[9][t2] = (townHallLevel[9][t2] == null?0:townHallLevel[9][t2])  + 1;
                 //System.out.println(memberPlayer.getString("tag")+"大本营"+ memberPlayer.getString("townHallLevel")+"分割"+t1+"奖杯"+(memberPlayer.getJSONObject("league")==null?"无法获取":memberPlayer.getJSONObject("league").getInteger("id"))+"类型"+t2);
                 player.setLeagueId("Plaryleague"+leagueId);
                 JSONArray playerLabels = memberPlayer.getJSONArray("labels");
@@ -150,6 +150,7 @@ public class ImageClanAll {
             allClan.setTownHallLevel(townHallLevel);
             return allClan;
         }catch (Exception e){
+            e.printStackTrace();
             return null;
         }
 

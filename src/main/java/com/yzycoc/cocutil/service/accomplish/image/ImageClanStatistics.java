@@ -11,7 +11,8 @@ import com.yzycoc.cocutil.util.CocEquilibrium;
 import com.yzycoc.cocutil.util.enums.WarLeagueEnum;
 import com.yzycoc.config.ConfigParameter;
 import com.yzycoc.custom.ErweimaQRCodeUtil;
-import com.yzycoc.util.ImageUtils;
+import com.yzycoc.custom.SpringContextUtil;
+import com.yzycoc.util.RedisUtil;
 import com.yzycoc.util.tableImage.ImageTable;
 import com.yzycoc.util.tableImage.ImageUtil;
 import net.coobird.thumbnailator.Thumbnails;
@@ -21,6 +22,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @program: cscocutil
@@ -45,7 +47,19 @@ public class ImageClanStatistics {
         ClanResult result = ImageClanHc(data,saveFilePath,clanHttp.getClan(),clanHttp.getClanImage());
         return result;
     }
-
+    public ClanResult getHtml(String tag, String type, CocEquilibrium cocEquil) {
+        if(type == null) {
+            type = "大本营";
+        }
+        ClanAllListHttp clanHttp = ClanListAll.ClanHttp(tag,cocEquil);
+        if(!clanHttp.getSuccess()) {
+            return new ClanResult(false, clanHttp.getResult());
+        }
+        RedisUtil redisUtil = SpringContextUtil.getBean(RedisUtil.class);
+        String uuid = UUID.randomUUID().toString();
+        redisUtil.set(uuid,clanHttp.getClan().getString("tag").replace("#",""),3600);
+        return new ClanResult(false, ConfigParameter.HttpUrl+"qq/cocApi/applyCoc?key="+uuid);
+    }
     /***
      * 合成图片
      * @param data
@@ -64,7 +78,10 @@ public class ImageClanStatistics {
             g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
             g.fillRect(0, 0, image.getWidth(), image.getHeight());
             //进行二维码计算
-            g.drawImage(ErweimaQRCodeUtil.createImage(ConfigParameter.HttpUrl+"", ConfigParameter.file_QRcode, true), 0, 0 ,200,200, null);
+            RedisUtil redisUtil = SpringContextUtil.getBean(RedisUtil.class);
+            String uuid = UUID.randomUUID().toString();
+            redisUtil.set(uuid,clan.getString("tag").replace("#",""),3600);
+            g.drawImage(ErweimaQRCodeUtil.createImage(ConfigParameter.HttpUrl+"qq/cocApi/applyCoc?key="+uuid, ConfigParameter.file_QRcode, true), 0, 0 ,200,200, null);
             g.drawImage(clanImage, 300, 0 ,200,200, null);
             Font f = new Font("微软雅黑", Font.BOLD, 30);
             g.setColor(Color.black);
@@ -141,7 +158,7 @@ public class ImageClanStatistics {
             data.setDonations(JSONString(JSON,"donations") +"/"+JSONString(JSON,"donationsReceived"));
             data.setVersusBattleWinCount(JSONString(JSON,"versusBattleWinCount"));
             JSONArray troops = JSON.getJSONArray("troops");
-            for (int i = 0; i < troops.size(); i++) {
+            /*for (int i = 0; i < troops.size(); i++) {
                 JSONObject troopsJSON = troops.getJSONObject(i);
                 String troopsJSONName = troopsJSON.getString("name");
                 String village = troopsJSON.getString("village");
@@ -345,7 +362,7 @@ public class ImageClanStatistics {
                         data.setInvisibilitySpell(troopsJSON.getString("level"));
                         break;
                 }
-            }
+            }*/
             result.add(data);
         }
         return result;

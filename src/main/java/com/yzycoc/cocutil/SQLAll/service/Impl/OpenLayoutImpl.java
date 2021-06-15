@@ -6,7 +6,9 @@ import com.yzycoc.cocutil.SQLAll.mapper.OpenLayoutMapper;
 import com.yzycoc.cocutil.SQLAll.service.DlUrlService;
 import com.yzycoc.cocutil.SQLAll.service.OpenLayoutService;
 import com.yzycoc.cocutil.service.result.ClanResult;
+import com.yzycoc.config.ConfigParameter;
 import com.yzycoc.custom.TimeUtiles;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -29,22 +31,17 @@ public class OpenLayoutImpl extends ServiceImpl<OpenLayoutMapper, OpenLayout> im
     private OpenLayoutMapper mapper;
 
     @Override
-    public ClanResult getRandomFormation() {
+    public ClanResult getRandomFormation(String type) {
         OpenLayout open = mapper.getRandomFormation();
+
         StringBuffer result = new StringBuffer();
-        String dlurl = open.getDlurl();
-        if(dlurl == null){
-            dlurl = dlUrlService.dl(open.getUrl());
-            open.setDlurl(dlurl);
-            open.setDldate(TimeUtiles.endDdHhmmss());
-            this.updateById(open);
+        result.append("┏编号："+open.getNumber());
+        if(StringUtils.isEmpty(open.getLabel())){
+            result.append("\n┣"+open.getNumber());
         }
-        result.append("[bq190]编号：");
-        result.append(open.getNumber());
-        result.append("\n");
-        result.append("\\uD83C\\uDF0F");
-        result.append(dlurl);
-        result.append("[CQ:image,file="+open.getImageUrl()+"&token=Yaozhenyong-]");
+        result.append("\n┗↓点击链接复制阵型↓\n");
+        String id = TimeUtiles.DlNumber(open.getId());
+        result.append(ConfigParameter.HttpUrl+"qq/cocApi/openlayout/"+id);
         return new ClanResult(result.toString());
     }
 
@@ -54,19 +51,13 @@ public class OpenLayoutImpl extends ServiceImpl<OpenLayoutMapper, OpenLayout> im
         if(number.size()>0){
             OpenLayout open = number.get(number.size() - 1);
             StringBuffer result = new StringBuffer();
-            String dlurl = open.getDlurl();
-            if(dlurl == null){
-                dlurl = dlUrlService.dl(open.getUrl());
-                open.setDlurl(dlurl);
-                open.setDldate(TimeUtiles.endDdHhmmss());
-                this.updateById(open);
+                result.append("┏编号："+open.getNumber());
+            if(StringUtils.isEmpty(open.getLabel())){
+                result.append("\n┣"+open.getNumber());
             }
-            result.append("[bq190]编号：");
-            result.append(open.getNumber());
-            result.append("\n");
-            result.append("\\uD83C\\uDF0F");
-            result.append(dlurl);
-            result.append("[CQ:image,file="+open.getImageUrl()+"&token=Yaozhenyong-]");
+            result.append("\n┗↓点击链接复制阵型↓\n");
+            String id = TimeUtiles.DlNumber(open.getId());
+            result.append(ConfigParameter.HttpUrl+"qq/cocApi/openlayout/"+id);
             return new ClanResult(result.toString());
         }
         return new ClanResult(false,"未找到阵型！");

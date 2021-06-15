@@ -44,8 +44,11 @@ public class IMyLexcionImpl extends ServiceImpl<MyLexiconMapper, MyLexicon> impl
         List<String> ids = new ArrayList<>();
         ids.add("14");//COC所有信息
         ids.add("1");//部落冲突各个版本下载
+        ids.add("5");//微信机器人专用词库
+        ids.add("6");//微信机器人需要下载的图片
         ids.add("10");//天使专属词库
         ids.add("18");//需要下载图片的
+        ids.add("7");//公共的
         QueryWrapper queryWrapper = new QueryWrapper();
         queryWrapper.eq("1","1");
         this.remove(queryWrapper);
@@ -53,7 +56,7 @@ public class IMyLexcionImpl extends ServiceImpl<MyLexiconMapper, MyLexicon> impl
         for (int i = 0; i < lexicon.size(); i++) {
             PublicLexicon pl = lexicon.get(i);
             MyLexicon myLexicon = new MyLexicon();
-            if(pl.getPublictypeId() == 18){
+            if(pl.getPublictypeId() == 18 || pl.getPublictypeId() == 6 ){
                 String response = pl.getResponse();
                 response = HttpImage(response,pl.getAntistop());
                 pl.setResponse(response);
@@ -61,8 +64,15 @@ public class IMyLexcionImpl extends ServiceImpl<MyLexiconMapper, MyLexicon> impl
             BeanUtils.copyProperties(pl, myLexicon);
             myLexicon.setIsuser(true);
             myLexicon.setSum(0);
+            if(pl.getPublictypeId() == 10 || pl.getPublictypeId() == 18){
+                myLexicon.setQunnumber("QQ");
+            }else if(pl.getPublictypeId() == 5 || pl.getPublictypeId() == 6){
+                myLexicon.setQunnumber("微信");
+            }else{
+                myLexicon.setQunnumber("公共");
+            }
             this.save(myLexicon);
-            System.out.print(i+",");
+            System.out.print(lexicon.get(i).getId()+",");
         }
         return Result.ok("更新成功");
     }

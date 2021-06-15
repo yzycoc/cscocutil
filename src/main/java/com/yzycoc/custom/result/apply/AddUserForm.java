@@ -2,6 +2,7 @@ package com.yzycoc.custom.result.apply;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * @program: cscocutil
@@ -24,4 +25,31 @@ public class AddUserForm {
     private String msg;
     @ApiModelProperty(value = "标签")
     private String tag;
+    @ApiModelProperty(value = "用户QQ")
+    private String userName;
+    @ApiModelProperty(value = "群名称")
+    private String groupName;
+    @ApiModelProperty(value = "用户头像")
+    private String userImage;
+
+    public String getUserName() {
+        if(StringUtils.isEmpty(userName)){
+            return userNumber;
+        }
+        return userName;
+    }
+
+    public String getGroupName() {
+        if(StringUtils.isEmpty(groupName)){
+            return groupNumber;
+        }
+        return groupName;
+    }
+
+    public String getUserImage() {
+        if(StringUtils.isEmpty(userImage)){
+            return "http://q.qlogo.cn/g?b=qq&s=100&nk="+userNumber;
+        }
+        return userImage;
+    }
 }

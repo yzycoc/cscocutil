@@ -290,7 +290,7 @@ public class TimeUtiles {
             sl = (char) (num - 42 + (int) 'a');
             tcMsg = "" + sl;
         }else if(num >= 36){
-            int yushu = num/36 - 1;
+            int yushu = num/36;
             int ys = num%36;
             tcMsg = DlNumber(yushu)+DlNumber(ys);
         }

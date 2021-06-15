@@ -177,6 +177,7 @@ public class ImagePlayer {
         Color level_back = new Color(0,160,233);//普通背景颜色
         Color maxlevel = Color.white;//满级等级颜色
         Color maxlevel_back =new Color(255,140,0);//满级背景颜色
+        //三王
         whdth= 230;
         heigth = 2980;
         Integer txt_width = whdth+35;
@@ -203,9 +204,44 @@ public class ImagePlayer {
             whdth +=252;
             txt_width +=252;
         }
-
+        //战宠
         whdth= 230;
-        heigth = 3410;
+        heigth = 3380;
+        txt_width = whdth+35;
+        txt_heigth = heigth+75;
+        List<PlayleTroops> troops_home_zhanchong = tagData.getTroops_home_zhanchong();
+        for (int j = 0; j < troops_home_zhanchong.size(); j++) {
+            PlayleTroops playleTroops = troops_home_zhanchong.get(j);
+            if(playleTroops==null) {
+                g.setColor(new Color(128,128,128));
+                g.fillArc(whdth,heigth , 100, 100, 0,360);
+                g.setColor(Color.white);
+                g.drawString("无", txt_width-15, txt_heigth);
+            }else if(playleTroops!=null&&playleTroops.getMax()) {
+                g.setColor(maxlevel_back);
+                g.fillArc(whdth,heigth , 100, 100, 0,360);
+                g.setColor(maxlevel);
+                g.drawString(playleTroops.getNumber(), playleTroopsTxt(playleTroops.getNumber(),txt_width), txt_heigth);
+            }else {
+                g.setColor(level_back);
+                g.fillArc(whdth,heigth , 100, 100, 0,360);
+                g.setColor(level);
+                g.drawString(playleTroops.getNumber(), playleTroopsTxt(playleTroops.getNumber(),txt_width), txt_heigth);
+            }
+            whdth +=244;
+            txt_width +=244;
+            if((j+1)%7==0) {
+                whdth= 230;
+                heigth += 285;
+                txt_width = whdth+35;
+                txt_heigth = heigth+75;
+            }
+        }
+
+
+        //玩家
+        whdth= 230;
+        heigth = 3782;
         txt_width = whdth+35;
         txt_heigth = heigth+75;
         List<PlayleTroops> troops_home = tagData.getTroops_home();
@@ -237,9 +273,9 @@ public class ImagePlayer {
             }
         }
 
-
+        //战车
         whdth= 215;
-        heigth = 4690;
+        heigth = 5059;
         txt_width = whdth+35;
         txt_heigth = heigth+75;
         List<PlayleTroops> gcd = tagData.getGcd();
@@ -265,8 +301,43 @@ public class ImagePlayer {
             txt_width +=244;
         }
 
+
+        //法术
+        whdth= 225;
+        heigth = 5462;
+        txt_width = whdth+35;
+        txt_heigth = heigth+75;
+        List<PlayleTroops> spells = tagData.getSpells();
+        for (int j = 0; j < spells.size(); j++) {
+            PlayleTroops playleTroops = spells.get(j);
+            if(playleTroops==null) {
+                g.setColor(new Color(128,128,128));
+                g.fillArc(whdth,heigth , 100, 100, 0,360);
+                g.setColor(Color.white);
+                g.drawString("无", txt_width-15, txt_heigth);
+            }else if(playleTroops!=null&&playleTroops.getMax()) {
+                g.setColor(maxlevel_back);
+                g.fillArc(whdth,heigth , 100, 100, 0,360);
+                g.setColor(maxlevel);
+                g.drawString(playleTroops.getNumber(), playleTroopsTxt(playleTroops.getNumber(),txt_width), txt_heigth);
+            }else {
+                g.setColor(level_back);
+                g.fillArc(whdth,heigth , 100, 100, 0,360);
+                g.setColor(level);
+                g.drawString(playleTroops.getNumber(), playleTroopsTxt(playleTroops.getNumber(),txt_width), txt_heigth);
+            }
+            whdth +=245;
+            txt_width +=245;
+            if((j+1)%7==0) {
+                whdth= 230;
+                heigth += 285;
+                txt_width = whdth+35;
+                txt_heigth = heigth+75;
+            }
+        }
+
         whdth= 215;
-        heigth = 5060;
+        heigth = 6129;
         txt_width = whdth+35;
         txt_heigth = heigth+75;
         List<PlayleTroops> troops_builderBase = tagData.getTroops_builderBase();
@@ -298,44 +369,12 @@ public class ImagePlayer {
             }
         }
 
-        whdth= 225;
-        heigth = 5720;
-        txt_width = whdth+35;
-        txt_heigth = heigth+75;
-        List<PlayleTroops> spells = tagData.getSpells();
-        for (int j = 0; j < spells.size(); j++) {
-            PlayleTroops playleTroops = spells.get(j);
-            if(playleTroops==null) {
-                g.setColor(new Color(128,128,128));
-                g.fillArc(whdth,heigth , 100, 100, 0,360);
-                g.setColor(Color.white);
-                g.drawString("无", txt_width-15, txt_heigth);
-            }else if(playleTroops!=null&&playleTroops.getMax()) {
-                g.setColor(maxlevel_back);
-                g.fillArc(whdth,heigth , 100, 100, 0,360);
-                g.setColor(maxlevel);
-                g.drawString(playleTroops.getNumber(), playleTroopsTxt(playleTroops.getNumber(),txt_width), txt_heigth);
-            }else {
-                g.setColor(level_back);
-                g.fillArc(whdth,heigth , 100, 100, 0,360);
-                g.setColor(level);
-                g.drawString(playleTroops.getNumber(), playleTroopsTxt(playleTroops.getNumber(),txt_width), txt_heigth);
-            }
-            whdth +=245;
-            txt_width +=245;
-            if((j+1)%7==0) {
-                whdth= 230;
-                heigth += 285;
-                txt_width = whdth+35;
-                txt_heigth = heigth+75;
-            }
-        }
         //6300
         //放入二维码
         g.drawImage(tagData.getErweima(), 204, 1030, 600, 600, null);
         g.setFont(new Font("微软雅黑",Font.BOLD,50));
         g.setColor(Color.black);
-        g.drawString(time,383,6645);
+        g.drawString(time,363,7021);
         //player
         String saveFilePath = tag.substring(1,tag.length());
         Thumbnails.of(I).outputFormat("jpg").scale(1f).outputQuality(0.45f).toFile(new File(ConfigParameter.filePath_ImagePlayer+"\\"+saveFilePath));
@@ -539,6 +578,13 @@ public class ImagePlayer {
             gcd.add(troopsmap.get(CocApiAndCqCustom.s[i]+"home"));
         }
         form.setGcd(gcd);
+
+        //战宠
+        List<PlayleTroops> troops_home_zhanChon  = new ArrayList<>();
+        for (int i = 0; i < CocApiAndCqCustom.troops_home_zhanChon.length; i++) {
+            troops_home_zhanChon.add(troopsmap.get(CocApiAndCqCustom.troops_home_zhanChon[i]+"home"));
+        }
+        form.setTroops_home_zhanchong(troops_home_zhanChon);
 
         //获取总捐兵数
         JSONArray achievements = play.getJSONArray("achievements");

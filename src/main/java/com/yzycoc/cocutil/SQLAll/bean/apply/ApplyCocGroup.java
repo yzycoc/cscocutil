@@ -41,4 +41,10 @@ public class ApplyCocGroup extends BaseEntity<Integer> {
      * uuid
      */
     private String uuid;
+
+    private String groupName;
+
+    private String userName;
+
+    private String groupImage;
 }

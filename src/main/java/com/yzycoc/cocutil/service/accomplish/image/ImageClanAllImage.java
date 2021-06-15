@@ -38,7 +38,7 @@ public class ImageClanAllImage {
             }
             Integer[][] townHallLevel = clanData.getTownHallLevel();
             width = 1100;
-            Integer height = 257;
+            Integer height = 209;
             g.setFont(new Font("STENCIL STD",Font.BOLD,55));
             g.setColor(Color.black);
             for (int j = 0; j < townHallLevel.length; j++) {

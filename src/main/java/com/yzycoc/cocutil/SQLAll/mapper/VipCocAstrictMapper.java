@@ -10,7 +10,7 @@ import org.mapstruct.Mapper;
 public interface VipCocAstrictMapper extends BaseMapper<VipCocAstrict> {
 
     @Select("select count(1) ID from  vip_coc_astrict t1 left join (\n" +
-            "select qqnumber,eternity,end_time from cs_user_vip where eternity = '1' or end_time >= now()\n" +
-            ") t2 on t1.qqcode = t2.qqnumber where qqcode = #{qqcode} and t1.type = #{type} and sum_number >= #{sumNumber} and query_date = date_format(now(), '%Y-%m-%d') and (eternity != '1'  or eternity is null)and ( end_time < now() or end_time is null)")
+            "select qqnumber,eternity,end_time,uuid,wx_id from cs_user_vip where eternity = '1' or end_time >= now()\n" +
+            ") t2 on t1.qqcode = t2.qqnumber where ( qqcode = #{qqcode} or wx_id = #{qqcode} or uuid = #{qqcode}) and t1.type = #{type} and sum_number >= #{sumNumber} and query_date = date_format(now(), '%Y-%m-%d') and (eternity != '1'  or eternity is null)and ( end_time < now() or end_time is null)")
     Integer isGoto(@Param("qqcode")String qqcode,@Param("type") String type,@Param("sumNumber")Integer sumNumber);
 }
