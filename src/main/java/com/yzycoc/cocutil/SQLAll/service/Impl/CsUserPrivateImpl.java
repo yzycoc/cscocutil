@@ -2,6 +2,7 @@ package com.yzycoc.cocutil.SQLAll.service.Impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yzycoc.cocutil.SQLAll.bean.TsIps;
 import com.yzycoc.cocutil.SQLAll.bean.csuser.CsUserPrivate;
 import com.yzycoc.cocutil.SQLAll.bean.csuser.CsUserPrivateRemove;
 import com.yzycoc.cocutil.SQLAll.bean.vip.CsUserVip;
@@ -34,6 +35,8 @@ public class CsUserPrivateImpl extends ServiceImpl<CsUserPrivateMapper,CsUserPri
     private CsUserPrivateRemoveService csUserPrivateRemoveService;
     @Autowired
     private CsUserVipService csUserVipService;
+    @Autowired
+    private TsIpsService tsIpsService;
     @Transactional
     @Override
     public void SynchronizeUser(String user) {
@@ -68,6 +71,11 @@ public class CsUserPrivateImpl extends ServiceImpl<CsUserPrivateMapper,CsUserPri
                 CsUserPrivateRemove csUserPrivateRemove = new CsUserPrivateRemove(deleteQqCode, robotNumber);
                 csUserPrivateRemove.setCreateDate(TimeUtiles.getStringDate());
                 csUserPrivateRemoveService.save(csUserPrivateRemove);
+            }
+            TsIps qqcode = tsIpsService.query().eq("qqcode", robotNumber).one();
+            if(qqcode!=null){
+                qqcode.setNumber(String.valueOf(splitNumber.length));
+                tsIpsService.updateById(qqcode);
             }
         }
     }

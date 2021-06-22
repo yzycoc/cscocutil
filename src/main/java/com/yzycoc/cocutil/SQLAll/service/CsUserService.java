@@ -17,7 +17,12 @@ import java.util.List;
  **/
 public interface CsUserService extends IService<CsUser> {
     List<CsUser> getList(String json);
-
+    /***
+     *
+     * @param json
+     * @return
+     */
+    List<CsUser> getGroupList(String json);
     /***
      * 购买绑定群
      * @param addCsUser
@@ -57,5 +62,6 @@ public interface CsUserService extends IService<CsUser> {
      * @return
      */
     Result<?> deleteGroup(DeleteBot deleteBot);
+
 
 }

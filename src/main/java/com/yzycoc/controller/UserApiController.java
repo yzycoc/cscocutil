@@ -60,6 +60,15 @@ public class UserApiController {
         return result;
     }
 
+    @ApiOperation(value = "A-获取所有群聊JSON", notes = "V1.0")
+    @ApiImplicitParam(name="json",value = "小栗子发送过来的群聊JSON",dataType = "String")
+    @PostMapping(value="/findGroupAll")
+    @ResponseBody
+    public List<CsUser> findGroupAll(String json){
+        List<CsUser> result = csUserService.getGroupList(json);
+        return result;
+    }
+
     @ApiOperation(value = "B-机器人绑定QQ群", notes = "V1.0")
     @PostMapping(value = "/addGroup")
     @ResponseBody
@@ -159,5 +168,6 @@ public class UserApiController {
         csUserPrivateService.SynchronizeUser(user);
         return null;
     }
+
 
 }

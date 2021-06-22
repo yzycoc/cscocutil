@@ -61,6 +61,13 @@ public class CsUserImpl  extends ServiceImpl<CsUserMapper, CsUser> implements Cs
      */
     @Autowired
     private CsUserFreeLogService csUserFreeLogService;
+
+    @Override
+    public List<CsUser> getGroupList(String json) {
+        List<CsUser> result = new ArrayList<>();
+
+        return null;
+    }
     @Override
     public List<CsUser> getList(String json) {
         List<CsUser> result = new ArrayList<>();
@@ -113,6 +120,8 @@ public class CsUserImpl  extends ServiceImpl<CsUserMapper, CsUser> implements Cs
         }
         return result;
     }
+
+
 
     @Transactional
     @Override
