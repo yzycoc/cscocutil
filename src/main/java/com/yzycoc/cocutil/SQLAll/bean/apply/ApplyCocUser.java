@@ -43,4 +43,13 @@ public class ApplyCocUser extends BaseEntity<Integer> {
      */
     @ImageName("备注")
     private String remark;
+
+    private String userName;
+
+    private String groupName;
+
+    private String userImage;
+
+
+
 }

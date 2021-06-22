@@ -2,6 +2,7 @@ package com.yzycoc.controller.coc;
 
 import com.yzycoc.cocutil.SQLAll.bean.xjpublic.CocBinding;
 import com.yzycoc.cocutil.SQLAll.service.CocBindingService;
+import com.yzycoc.cocutil.SQLAll.service.CsUserVipService;
 import com.yzycoc.custom.result.Result;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,8 @@ public class CocBindingApiController {
     @Autowired
     private CocBindingService cocBindingService;
 
+    @Autowired
+    private CsUserVipService csUserVipService;
     @ApiOperation(value = "U-获取绑定列表", notes = "V1.0")
     @ApiImplicitParams({
             @ApiImplicitParam(name="qqcode",value = "用户QQ号",dataType = "String")
@@ -29,6 +32,9 @@ public class CocBindingApiController {
     @PostMapping(value="/getBindingList")
     @ResponseBody
     public Result<?> getBindingList(String qqcode){
+        if(qqcode.contains("wx")){
+            qqcode = csUserVipService.wxQqcode(qqcode);
+        }
         Result<?> result = cocBindingService.getBindingList(qqcode);
         return result;
     }
@@ -44,6 +50,9 @@ public class CocBindingApiController {
     @PostMapping(value="/addBinding")
     @ResponseBody
     public Result<?> addBinding(String qqcode,String msg,String tag,String type){
+        if(qqcode.contains("wx")){
+            qqcode = csUserVipService.wxQqcode(qqcode);
+        }
         Result<?> result = cocBindingService.addBinding(qqcode,msg,tag,type);
         return result;
     }
@@ -57,11 +66,13 @@ public class CocBindingApiController {
     @PostMapping(value="/getBinding")
     @ResponseBody
         public Result<?> getBinding(String qqcode,String msg){
+        if(qqcode.contains("wx")){
+            qqcode = csUserVipService.wxQqcode(qqcode);
+        }
         CocBinding cocBinding = cocBindingService.query().eq("msg", msg).eq("qqcode", qqcode).one();
         if(cocBinding == null){
             return Result.error("未查询到相关绑定信息。");
         }else{
-
             return Result.ok(cocBinding.getType()+"#"+cocBinding.getTag());
         }
     }
@@ -75,6 +86,9 @@ public class CocBindingApiController {
     @PostMapping(value="/removeBinding")
     @ResponseBody
     public Result<?> removeBinding(String qqcode,String msg){
+        if(qqcode.contains("wx")){
+            qqcode = csUserVipService.wxQqcode(qqcode);
+        }
         CocBinding cocBinding = cocBindingService.query().eq("msg", msg).eq("qqcode", qqcode).one();
         if(cocBinding == null){
             return Result.error("删除失败，未查询到此触发词绑定的相关信息。");
@@ -83,4 +97,7 @@ public class CocBindingApiController {
             return Result.ok("删除成功，已解除绑定。");
         }
     }
+
+
+
 }

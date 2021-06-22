@@ -77,7 +77,7 @@ public class ImageApply {
         List<List<String>> result = new ArrayList<>();
         List<String> applyData = new ArrayList<>();
         applyData.add("开始报名时间");
-        applyData.add("机器人QQ");
+        applyData.add("机器人账号");
         applyData.add("启动报名者");
         applyData.add("部落标签");
         applyData.add("部落名称");
@@ -92,7 +92,7 @@ public class ImageApply {
             JSONObject clan = JSONObject.parseObject(applyCocGroup.getClanJson());
             applyData.add(applyCocGroup.getCreateDate());
             applyData.add(applyCocGroup.getCreateName());
-            applyData.add(applyCocGroup.getUserNumber());
+            applyData.add(applyCocGroup.getUserName());
             applyData.add("#"+applyCocGroup.getClanTag());
             applyData.add(Utf8Util.unicodeToString(clan.getString("name")));
             applyData.add(clan.getString("members"));
@@ -111,11 +111,11 @@ public class ImageApply {
      */
     public ClanResult getAll(String groupNumber,String type,ApplyCocGroup applyGroup, List<ApplyCocUser> applyUser) {
         List<List<String>> lists = UserTag(type,applyGroup, applyUser);
-        ClanResult result= UserImage(groupNumber,applyGroup,lists);
+        ClanResult result= UserImage(applyGroup.getGroupName(),applyGroup,lists,type);
         return result;
     }
 
-    private ClanResult UserImage(String groupNumber,ApplyCocGroup applyGroup, List<List<String>> lists) {
+    private ClanResult UserImage(String groupNumber,ApplyCocGroup applyGroup, List<List<String>> lists,String type) {
         try {
             String saveFilePath = applyGroup.getGroupNumber() + applyGroup.getUuid();
             ImageUtil imageUtil = new ImageUtil();
@@ -128,7 +128,7 @@ public class ImageApply {
             g.setFont(f);
             g.drawImage(bufferedImage, 0, 200, bufferedImage.getWidth(), bufferedImage.getHeight(), null);
             JSONObject JSON = JSONObject.parseObject(applyGroup.getClanJson());
-            Map<String, BufferedImage> tagData = TagData(groupNumber,JSON);
+            Map<String, BufferedImage> tagData = TagData(groupNumber,JSON,type);
             g.drawImage(tagData.get("ewm"), image.getWidth()-200, 0 ,200,200, null);
 
             JSONArray labels = JSON.getJSONArray("labels");
@@ -159,7 +159,7 @@ public class ImageApply {
             content(g,f,txt.toString(),200,190,bufferedImage.getWidth() - 400);
             f = new Font("微软雅黑", Font.BOLD, 50);
             txt = new StringBuffer();
-            txt.append(Utf8Util.unicodeToString(JSON.getString("name"))+"【"+JSON.getString("tag")+"】"+" /   QQ群："+groupNumber);
+            txt.append(Utf8Util.unicodeToString(JSON.getString("name"))+"【"+JSON.getString("tag")+"】"+" /   群："+groupNumber);
             g.setFont(f);
             g.setColor(Color.orange);
             content(g,f,txt.toString(),200,80,bufferedImage.getWidth() - 400);
@@ -189,9 +189,10 @@ public class ImageApply {
     /***
      * 数据处理区
      * @param data
+     * @param type
      * @return
      */
-    public Map<String, BufferedImage> TagData(String groupNumber,JSONObject data) {
+    public Map<String, BufferedImage> TagData(String groupNumber, JSONObject data, String type) {
         String tag = data.getString("tag");
         JSONArray labels = data.getJSONArray("labels");
         Integer countDownSize  = 2 + labels.size() ;
@@ -264,8 +265,8 @@ public class ImageApply {
                 }
             });
         }
-
-        String PLAY_TXT = "网页版本清单将在后期版本推出！";// ConfigParameter.HttpUrlClan+tag.substring(1, tag.length());
+        // "网页版本清单将在后期版本推出！";//
+        String PLAY_TXT =ConfigParameter.HttpUrlapplyCocGroup + type;//+tag.substring(1, tag.length());
         threadPool.execute(()->{
             try {
                 BufferedImage image = ErweimaQRCodeUtil.createImage(PLAY_TXT, ConfigParameter.file_QRcode, true);
@@ -335,8 +336,8 @@ public class ImageApply {
                 }
             }
             data.setCreateDate(user.getCreateDate());
-            data.setUserNumber(user.getUserNumber());
-            data.setGroupNumber(user.getGroupNumber());
+            data.setUserNumber(user.getUserName());
+            data.setGroupNumber(user.getGroupName());
             data.setRobotNumber(user.getCreateName());
             data.setRemark(user.getRemark()==null?"":user.getRemark());
             result.add(data);
@@ -347,7 +348,7 @@ public class ImageApply {
         List<String> applyData = new ArrayList<>();
         applyData.add("玩家名");
         applyData.add("游戏标签");
-        applyData.add("报名QQ");
+        applyData.add("报名账号");
         applyData.add("大本营");
         applyData.add("夜世界");
         applyData.add("蛮王");

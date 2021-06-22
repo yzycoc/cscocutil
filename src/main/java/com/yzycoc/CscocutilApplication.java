@@ -72,7 +72,7 @@ public class CscocutilApplication {
             appkey_String = "请重启系统，填入APPKEY";
         }else{
             appkey_String = "["+ myIps.getCocApi()+"]";
-            ConfigParameter.CocApi =" "+ myIps.getCocApi();
+            ConfigParameter.CocApi =""+ myIps.getCocApi();
         }
         myIps.setIntranetIp(myips);
         myIps.setUpdateDate(TimeUtiles.getStringDate());

@@ -36,6 +36,11 @@ public class CsUserVip extends BaseEntity<Integer> {
     @ApiModelProperty(value = "可以永久授权的群数量")
     private Integer groupEternity = 0;
 
+    @ApiModelProperty(value = "公众号")
+    private String uuid;
+
+    @ApiModelProperty(value = "微信ID")
+    private String wxId;
     /***
      * 是否是会员
      * @return

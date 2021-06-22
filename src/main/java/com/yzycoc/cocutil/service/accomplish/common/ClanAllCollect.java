@@ -61,7 +61,7 @@ public class ClanAllCollect {
 
                 //查询各主世界大本营等级排序情况
                 String town = play.getString("townHallLevel");
-                if("12".equals(town)||"13".equals(town)) {
+                if("12".equals(town)||"13".equals(town)||"14".equals(town)) {
                     town = town + play.getString("townHallWeaponLevel");
                 }
                 mapHallLevelMap.put(town,mapHallLevelMap.get(town)==null?1:(mapHallLevelMap.get(town)+1));

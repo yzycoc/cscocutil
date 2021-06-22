@@ -33,4 +33,6 @@ public interface ApplyCocGroupService extends IService<ApplyCocGroup> {
     ClanResult getGroupApply(String groupNumber);
 
     ClanResult getGroupApplyAll(String type,String groupNumber, String uuid);
+
+    Result updateApply(UpdateGroupForm updateGroup);
 }

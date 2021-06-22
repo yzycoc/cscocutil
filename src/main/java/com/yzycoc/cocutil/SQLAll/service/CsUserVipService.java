@@ -2,6 +2,7 @@ package com.yzycoc.cocutil.SQLAll.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yzycoc.cocutil.SQLAll.bean.vip.CsUserVip;
+import com.yzycoc.custom.result.Result;
 import com.yzycoc.from.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,4 +28,12 @@ public interface CsUserVipService extends IService<CsUserVip> {
     void resultMyScoreOkImage(String userNumber, HttpServletRequest request, HttpServletResponse response);
 
     StringBuffer getMyScore(String userNumber);
+
+    String wxQqcode(String qqcode);
+
+    Result<Object> getWxBingding(String userNumber);
+
+    Result<?> getAddBinding(String wxId, String uuid);
+
+    String isVip(String userNumber);
 }

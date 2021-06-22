@@ -93,4 +93,6 @@ import com.yzycoc.cocutil.service.result.ClanResult;
 
 
     ClanResult getImageClanStatistics(String tag,String qqcode,String type);
+
+    ClanResult imageClanStatisticsHtml(String tag, String qqcode, String type);
 }

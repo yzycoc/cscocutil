@@ -24,7 +24,8 @@ public class ConfigParameter {
     public static CacheMap<String, ClanResult> clanCacheImage = new CacheMap<>();
     public static final String HttpUrlClan  = HttpUrl + "qq/cocApi/clancoc?tag=";
     public static final String HttpUrlPlayer  = HttpUrl + "qq/cocApi/playercoc?tag=";
-
+    //玩家报名列表
+    public static final String HttpUrlapplyCocGroup  = HttpUrl + "qq/cocApi/applyCocGroup?key=";
     public static final String HttpOSS_Alibaba = "http://yzycoc.oss-cn-shanghai.aliyuncs.com/";
     public static final String Jarvis_API = "http://107.172.140.107:59547/api";
     public static final String Jarvis_AUTO = "dF0bvQfq7WGwPHbq92tQLgGi";//"Mpf7GZgIBcZSBGeFKI9jA0Gu";//"dF0bvQfq7WGwPHbq92tQLgGi";
@@ -38,7 +39,7 @@ public class ConfigParameter {
     //查看机器人文档的网络文档地址
     public static String http_document ="";
     //兵种最高等级
-    public static Integer ClanPlayermax = 273;
+    public static Integer ClanPlayermax = 313;
     //COC数据是否保存到数据库
     public static boolean clanHttpSaveSql = true;
 
@@ -116,7 +117,7 @@ public class ConfigParameter {
         }
     }
     //COC官方提供的API
-    public static  String CocApi = " ";
+    public static  String CocApi = "";
 
 
 }

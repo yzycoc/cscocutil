@@ -19,6 +19,7 @@ public class ImagePlayersFrom {
     private BufferedImage grth = null;//杯段，默认无杯段
     private BufferedImage erweima  = null;
     private List<PlayleTroops> troops_home  = new ArrayList<>();//主世界兵种列表
+    private List<PlayleTroops> troops_home_zhanchong  = new ArrayList<>();//主世界兵种列表
     private List<PlayleTroops> troops_builderBase  = new ArrayList<>();//夜世界兵种列表
     private List<PlayleTroops> heroes  = new ArrayList<>();//英雄列表
     private List<PlayleTroops> spells  = new ArrayList<>();//法术列表
@@ -30,7 +31,6 @@ public class ImagePlayersFrom {
     private List<String> play_two = new ArrayList<>();
     private List<String> play_three = new ArrayList<>();
     private List<String> play_five = new ArrayList<>();
-
     public List<String> getPlay_five() {
         return play_five;
     }
@@ -163,5 +163,13 @@ public class ImagePlayersFrom {
 
     public void setPlay_one(List<String> play_one) {
         this.play_one = play_one;
+    }
+
+    public List<PlayleTroops> getTroops_home_zhanchong() {
+        return troops_home_zhanchong;
+    }
+
+    public void setTroops_home_zhanchong(List<PlayleTroops> troops_home_zhanchong) {
+        this.troops_home_zhanchong = troops_home_zhanchong;
     }
 }

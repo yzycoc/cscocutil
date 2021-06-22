@@ -3,6 +3,7 @@ package com.yzycoc.custom.result.apply;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * @program: cscocutil
@@ -26,5 +27,23 @@ public class AddApplyFrom {
     private String uuid;
     @ApiModelProperty(value = "机器人QQ")
     private String robotNumber;
+    @ApiModelProperty(value = "群名称")
+    private String groupName;
+    @ApiModelProperty(value = "群头像")
+    private String groupImage;
 
+
+    public String getGroupName() {
+        if(StringUtils.isEmpty(groupName)){
+            return groupNumber;
+        }
+        return groupName;
+    }
+
+    public String getGroupImage() {
+        if(StringUtils.isEmpty(groupImage)){
+            return "http://p.qlogo.cn/gh/"+groupNumber+"/"+groupNumber+"/0";
+        }
+        return groupImage;
+    }
 }

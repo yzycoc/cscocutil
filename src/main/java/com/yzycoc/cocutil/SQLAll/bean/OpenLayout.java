@@ -27,6 +27,16 @@ public class OpenLayout  implements Serializable {
     private String createDate; // 更新时间
     private String dlurl;//短链的
     private String dldate;
+    private String label;//标签
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
     public String getCreateName() {
         return createName;
     }
